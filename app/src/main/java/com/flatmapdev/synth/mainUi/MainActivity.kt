@@ -3,25 +3,31 @@ package com.flatmapdev.synth.mainUi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.flatmapdev.synth.R
+import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
-import com.flatmapdev.synth.deviceData.AndroidDeviceFeaturesAdapter
-import com.flatmapdev.synth.engineData.SynthEngine
+import com.flatmapdev.synth.deviceData.adapter.AndroidDeviceFeaturesAdapter
+import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    private val synthEngine = SynthEngine()
+    @Inject
+    lateinit var synthEngineAdapter: SynthEngineAdapter
     private val getDeviceFeatures: GetDeviceFeatures = GetDeviceFeatures(
         AndroidDeviceFeaturesAdapter(this)
     )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as App).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         engineVersion.text = getString(
             R.string.app_engine_version,
-            synthEngine.getVersion()
+            synthEngineAdapter.getVersion()
         )
 
         val deviceFeatures = getDeviceFeatures.execute()

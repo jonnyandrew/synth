@@ -7,7 +7,10 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.flatmapdev.synth.R
+import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.Before
 import org.junit.Test
@@ -20,12 +23,16 @@ class MainActivityTest {
 
     @Before
     fun setUp() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val app = instrumentation.targetContext.applicationContext as App
+        val testComponent = DaggerTestAppComponent.builder().build()
+        app.appComponent = testComponent
         scenario = launch<MainActivity>(MainActivity::class.java)
     }
 
     @Test
     fun `it shows the engine version`() {
-        onView(withId(R.id.engineVersion)).check(matches(withText(containsString("Engine version: "))))
+        onView(withId(R.id.engineVersion)).check(matches(withText(containsString("Engine version: 1.0.0"))))
     }
 
     @Test

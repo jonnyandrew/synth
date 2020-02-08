@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Synth</string>
+    <string name="app_engine_version">Engine version: %1$s</string>
+    <string name="device_features_supports_low_latency">Supports low latency: %1$s</string>
+    <string name="device_features_supports_pro_latency">Supports pro latency: %1$s</string>
 </resources>

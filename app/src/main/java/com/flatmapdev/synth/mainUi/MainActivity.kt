@@ -13,9 +13,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var synthEngineAdapter: SynthEngineAdapter
-    private val getDeviceFeatures: GetDeviceFeatures = GetDeviceFeatures(
-        AndroidDeviceFeaturesAdapter(this)
-    )
+
+    @Inject
+    lateinit var getDeviceFeatures: GetDeviceFeatures
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

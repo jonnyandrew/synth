@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.deviceData
+package com.flatmapdev.synth.deviceData.adapter
 
 import android.app.Application
 import android.content.pm.PackageManager

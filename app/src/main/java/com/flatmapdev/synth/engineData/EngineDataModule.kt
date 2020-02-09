@@ -9,5 +9,4 @@ import dagger.Module
 abstract class EngineDataModule {
     @Binds
     abstract fun synthEngineAdapter(impl: NativeSynthEngineAdapter): SynthEngineAdapter
-
 }

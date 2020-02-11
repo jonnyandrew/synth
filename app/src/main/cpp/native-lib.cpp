@@ -2,9 +2,9 @@
 #include <string>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_flatmapdev_synth_MainActivity_stringFromJNI(
-        JNIEnv* env,
+Java_com_flatmapdev_synth_jni_Synth_getVersion(
+        JNIEnv *env,
         jobject /* this */) {
-    std::string hello = "Wow from C++";
-    return env->NewStringUTF(hello.c_str());
+    std::string version = "0.1.0";
+    return env->NewStringUTF(version.c_str());
 }

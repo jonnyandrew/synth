@@ -1,9 +1,10 @@
-package com.flatmapdev.synth.deviceData
+package com.flatmapdev.synth.deviceData.adapter
 
 import android.app.Application
 import android.content.pm.PackageManager
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.flatmapdev.synth.deviceData.adapter.AndroidDeviceFeaturesAdapter
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

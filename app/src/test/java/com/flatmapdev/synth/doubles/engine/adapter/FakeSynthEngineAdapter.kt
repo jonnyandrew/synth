@@ -15,4 +15,8 @@ class FakeSynthEngineAdapter @Inject constructor(): SynthEngineAdapter {
     override fun playNote() {
 
     }
+
+    override fun stopNote() {
+
+    }
 }

@@ -10,4 +10,16 @@ class NativeSynthEngineAdapter @Inject constructor(
     override fun getVersion(): String {
         return synth.getVersion()
     }
+
+    override fun start() {
+        synth.start()
+    }
+
+    override fun playNote() {
+        synth.playNote()
+    }
+
+    override fun stopNote() {
+        synth.stopNote()
+    }
 }

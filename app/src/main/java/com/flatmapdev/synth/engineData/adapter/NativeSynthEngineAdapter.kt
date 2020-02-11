@@ -1,25 +1,25 @@
 package com.flatmapdev.synth.engineData.adapter
 
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
-import com.flatmapdev.synth.jni.Synth
+import com.flatmapdev.synth.jni.NativeSynth
 import javax.inject.Inject
 
 class NativeSynthEngineAdapter @Inject constructor(
-    private val synth: Synth
+    private val nativeSynth: NativeSynth
 ) : SynthEngineAdapter {
     override fun getVersion(): String {
-        return synth.getVersion()
+        return nativeSynth.getVersion()
     }
 
     override fun start() {
-        synth.start()
+        nativeSynth.start()
     }
 
     override fun playNote() {
-        synth.playNote()
+        nativeSynth.playNote()
     }
 
     override fun stopNote() {
-        synth.stopNote()
+        nativeSynth.stopNote()
     }
 }

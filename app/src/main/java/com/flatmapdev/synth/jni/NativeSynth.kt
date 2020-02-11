@@ -6,6 +6,9 @@ import javax.inject.Inject
 @AppScope
 class NativeSynth @Inject constructor() : Synth {
     external override fun getVersion(): String
+    external override fun start()
+    external override fun playNote()
+    external override fun stopNote()
 
     companion object {
         init {

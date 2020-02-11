@@ -2,6 +2,7 @@ package com.flatmapdev.synth.mainUi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
@@ -39,6 +40,17 @@ class MainActivity : AppCompatActivity() {
             R.string.device_features_supports_pro_latency,
             deviceFeatures.isProLatency.toString()
         )
+        synthEngineAdapter.start()
     }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN ->
+                synthEngineAdapter.playNote()
+            MotionEvent.ACTION_UP ->
+                synthEngineAdapter.stopNote()
+        }
+
+        return super.onTouchEvent(event)
+    }
 }

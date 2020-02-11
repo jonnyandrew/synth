@@ -7,4 +7,12 @@ class FakeSynthEngineAdapter @Inject constructor(): SynthEngineAdapter {
     override fun getVersion(): String {
         return "1.0.0"
     }
+
+    override fun start() {
+
+    }
+
+    override fun playNote() {
+
+    }
 }

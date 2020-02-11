@@ -1,7 +1,3 @@
-//
-// Created by jonny on 10/02/20.
-//
-
 #include <oboe/AudioStream.h>
 #include <oboe/Oboe.h>
 #include <android/log.h>

@@ -1,7 +1,3 @@
-//
-// Created by jonny on 10/02/20.
-//
-
 #ifndef SYNTH_AUDIOENGINE_H
 #define SYNTH_AUDIOENGINE_H
 

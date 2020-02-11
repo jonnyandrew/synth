@@ -1,7 +1,3 @@
-//
-// Created by jonny on 11/02/20.
-//
-
 #ifndef SYNTH_CONSTANTS_H
 #define SYNTH_CONSTANTS_H
 

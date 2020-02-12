@@ -1,17 +1,25 @@
 package com.flatmapdev.synth.mainUi
 
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.flatmapdev.synth.R
-import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
-import org.hamcrest.CoreMatchers.containsString
+import com.flatmapdev.synth.app.getApp
+import com.flatmapdev.synth.doubles.device.FakeDeviceDataModule
+import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
+import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
+import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
+import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.keyboardCore.model.Key
+import com.flatmapdev.synth.keyboardCore.model.Note
+import io.mockk.spyk
+import io.mockk.verify
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,29 +27,113 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
-    private lateinit var scenario: ActivityScenario<MainActivity>
+    private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
 
     @Before
     fun setUp() {
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val app = instrumentation.targetContext.applicationContext as App
-        val testComponent = DaggerTestAppComponent.builder().build()
-        app.appComponent = testComponent
-        scenario = launch<MainActivity>(MainActivity::class.java)
+        testComponentBuilder = DaggerTestAppComponent.builder()
     }
 
     @Test
     fun `it shows the engine version`() {
-        onView(withId(R.id.engineVersion)).check(matches(withText(containsString("Engine version: 1.0.0"))))
+        testComponentBuilder.fakeEngineDataModule(
+            FakeEngineDataModule(
+                FakeSynthEngineAdapter(
+                    version = "1.2.345"
+                )
+            )
+        )
+        getApp().appComponent = testComponentBuilder.build()
+        launch<MainActivity>(MainActivity::class.java)
+
+        onView(withId(R.id.engineVersion)).check(matches(withText("Engine version: 1.2.345")))
     }
 
     @Test
     fun `it shows the low latency support`() {
-        onView(withId(R.id.lowLatencyStatus)).check(matches(withText(containsString("Supports low latency: "))))
+        getApp().appComponent = testComponentBuilder
+            .fakeDeviceDataModule(
+                FakeDeviceDataModule(
+                    deviceFeaturesAdapter = StubDeviceFeaturesAdapter(
+                        deviceFeatures = createDeviceFeatures(
+                            isLowLatency = true
+                        )
+                    )
+                )
+            ).build()
+        launch<MainActivity>(MainActivity::class.java)
+
+        onView(withId(R.id.lowLatencyStatus)).check(matches(withText("Supports low latency: true")))
     }
 
     @Test
     fun `it shows the pro latency support`() {
-        onView(withId(R.id.proLatencyStatus)).check(matches(withText(containsString("Supports pro latency: "))))
+        getApp().appComponent = testComponentBuilder
+            .fakeDeviceDataModule(
+                FakeDeviceDataModule(
+                    deviceFeaturesAdapter = StubDeviceFeaturesAdapter(
+                        deviceFeatures = createDeviceFeatures(
+                            isProLatency = true
+                        )
+                    )
+                )
+            ).build()
+        launch<MainActivity>(MainActivity::class.java)
+
+        onView(withId(R.id.proLatencyStatus)).check(matches(withText("Supports pro latency: true")))
+    }
+
+    @Test
+    fun `it shows the keyboard`() {
+        getApp().appComponent = testComponentBuilder.build()
+        launch<MainActivity>(MainActivity::class.java)
+
+        onView(withId(R.id.keyboard))
+            .check(
+                matches(
+                    allOf(
+                        withChild(
+                            allOf(
+                                withTagValue(
+                                    equalTo(Key(Note.C, 4))
+                                ), withParentIndex(0)
+                            )
+                        ),
+                        withChild(
+                            allOf(
+                                withTagValue(
+                                    equalTo(Key(Note.D, 4))
+                                ), withParentIndex(1)
+                            )
+                        ),
+                        withChild(
+                            allOf(
+                                withTagValue(
+                                    equalTo(Key(Note.E, 4))
+                                ), withParentIndex(2)
+                            )
+                        )
+                    )
+                )
+            )
+    }
+
+    @Test
+    fun `when a key is tapped, it sends a signal to the synth engine`() {
+        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
+        getApp().appComponent = testComponentBuilder
+            .fakeEngineDataModule(
+                FakeEngineDataModule(
+                    synthEngineAdapter = spySynthEngineAdapter
+                )
+            )
+            .build()
+        launch<MainActivity>(MainActivity::class.java)
+        val key = Key(Note.C, 4)
+
+        onView(withTagValue(equalTo(key)))
+            .perform(click())
+
+        verify { spySynthEngineAdapter.playNote(key) }
     }
 }

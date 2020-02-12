@@ -1,10 +1,10 @@
 #include "Oscillator.h"
 #include "Constants.h"
+#include "Pitch.h"
 #include <math.h>
 
 void Oscillator::setSampleRate(int32_t sampleRate) {
-    const double frequency = 440.0;
-    phaseIncrement_ = (TWO_PI * frequency) / (double) sampleRate;
+    sampleRate_ = sampleRate;
 }
 
 void Oscillator::setWaveOn(bool isWaveOn) {
@@ -32,4 +32,9 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
             audioData[i] = 0;
         }
     }
+}
+
+void Oscillator::setPitch(int32_t pitch) {
+    double frequency = PITCH_FREQUENCIES[pitch];
+    phaseIncrement_ = (TWO_PI * frequency) / (double) sampleRate_;
 }

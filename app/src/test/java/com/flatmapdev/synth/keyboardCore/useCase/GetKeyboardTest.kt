@@ -15,9 +15,17 @@ class GetKeyboardTest {
 
         assertThat(result).isEqualTo(
             listOf(
+                Key(Note.G, 3),
+                Key(Note.A, 3),
+                Key(Note.B, 3),
                 Key(Note.C, 4),
                 Key(Note.D, 4),
-                Key(Note.E, 4)
+                Key(Note.E, 4),
+                Key(Note.F, 4),
+                Key(Note.G, 4),
+                Key(Note.A, 4),
+                Key(Note.B, 4),
+                Key(Note.C, 5)
             )
         )
     }

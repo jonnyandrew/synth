@@ -9,6 +9,10 @@ import javax.inject.Inject
 class GetKeyboard @Inject constructor() {
     fun execute(): List<Key> {
         return listOf(
+            Key(Note.C, 3),
+            Key(Note.D, 3),
+            Key(Note.E, 3),
+            Key(Note.F, 3),
             Key(Note.G, 3),
             Key(Note.A, 3),
             Key(Note.B, 3),

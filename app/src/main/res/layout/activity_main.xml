@@ -37,16 +37,15 @@
         app:layout_constraintTop_toBottomOf="@+id/lowLatencyStatus"
         tools:text="Supports pro latency: false" />
 
-    <LinearLayout
+    <com.flatmapdev.synth.mainUi.KeyboardView
         android:id="@+id/keyboard"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/proLatencyStatus">
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/proLatencyStatus"
+        app:numKeys="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

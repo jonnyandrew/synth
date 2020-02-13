@@ -14,12 +14,8 @@ import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
 import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
 import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
-import com.flatmapdev.synth.keyboardCore.model.Key
-import com.flatmapdev.synth.keyboardCore.model.Note
 import io.mockk.spyk
 import io.mockk.verify
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -89,33 +85,7 @@ class MainActivityTest {
         launch<MainActivity>(MainActivity::class.java)
 
         onView(withId(R.id.keyboard))
-            .check(
-                matches(
-                    allOf(
-                        listOf(
-                            Key(Note.G, 3),
-                            Key(Note.A, 3),
-                            Key(Note.B, 3),
-                            Key(Note.C, 4),
-                            Key(Note.D, 4),
-                            Key(Note.E, 4),
-                            Key(Note.F, 4),
-                            Key(Note.G, 4),
-                            Key(Note.A, 4),
-                            Key(Note.B, 4),
-                            Key(Note.C, 5)
-                        ).mapIndexed { index, key ->
-                            withChild(
-                                allOf(
-                                    withTagValue(
-                                        equalTo(key)
-                                    ), withParentIndex(index)
-                                )
-                            )
-                        }
-                    )
-                )
-            )
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -129,11 +99,10 @@ class MainActivityTest {
             )
             .build()
         launch<MainActivity>(MainActivity::class.java)
-        val key = Key(Note.C, 4)
 
-        onView(withTagValue(equalTo(key)))
+        onView(withId(R.id.keyboard))
             .perform(click())
 
-        verify { spySynthEngineAdapter.playNote(key) }
+        verify { spySynthEngineAdapter.playNote(any()) }
     }
 }

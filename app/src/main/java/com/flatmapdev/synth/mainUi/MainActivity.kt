@@ -1,11 +1,10 @@
 package com.flatmapdev.synth.mainUi
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
@@ -63,21 +62,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupKeyboard(keys: List<Key>) {
-        for (key in keys) {
-            val key = (layoutInflater.inflate(R.layout.view_key, keyboard, false) as TextView)
-                .apply {
-                    tag = key
-                    text = key.note.name
-                    setOnTouchListener { v, event ->
-                        when (event.action) {
-                            MotionEvent.ACTION_DOWN -> playKey.execute(key)
-                            MotionEvent.ACTION_UP -> stopKey.execute(key)
-                            else -> return@setOnTouchListener super.onTouchEvent(event)
-                        }
-                        true
-                    }
-                }
-            keyboard.addView(key)
+        keyboard.numKeys = keys.size
+        keyboard.keyTouchListener = { keyIndex ->
+            when(keyIndex) {
+                // TODO fix arbitrary stop keys argument
+                null -> stopKey.execute(keys[0])
+                else -> playKey.execute(keys[keyIndex])
+            }
         }
     }
 }

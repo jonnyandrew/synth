@@ -6,10 +6,10 @@ import dagger.Reusable
 import javax.inject.Inject
 
 @Reusable
-class StopKey @Inject constructor(
+class StopKeys @Inject constructor(
     private val synthEngineAdapter: SynthEngineAdapter
 ) {
-    fun execute(key: Key) {
-        synthEngineAdapter.stopNote(key)
+    fun execute() {
+        synthEngineAdapter.stopNote()
     }
 }

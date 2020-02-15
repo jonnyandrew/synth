@@ -6,5 +6,5 @@ interface SynthEngineAdapter {
     fun getVersion(): String
     fun start()
     fun playNote(key: Key)
-    fun stopNote(key: Key)
+    fun stopNote()
 }

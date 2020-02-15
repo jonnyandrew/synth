@@ -23,7 +23,7 @@ class NativeSynthEngineAdapter @Inject constructor(
         )
     }
 
-    override fun stopNote(key: Key) {
+    override fun stopNote() {
         nativeSynth.stopNote()
     }
 }

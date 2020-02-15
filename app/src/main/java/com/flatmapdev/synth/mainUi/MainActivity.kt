@@ -1,10 +1,7 @@
 package com.flatmapdev.synth.mainUi
 
 import android.os.Bundle
-import android.view.MotionEvent
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
@@ -12,7 +9,7 @@ import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
-import com.flatmapdev.synth.keyboardCore.useCase.StopKey
+import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -28,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var playKey: PlayKey
 
     @Inject
-    lateinit var stopKey: StopKey
+    lateinit var stopKeys: StopKeys
 
     @Inject
     lateinit var synthEngineAdapter: SynthEngineAdapter
@@ -65,8 +62,7 @@ class MainActivity : AppCompatActivity() {
         keyboard.numKeys = keys.size
         keyboard.keyTouchListener = { keyIndex ->
             when(keyIndex) {
-                // TODO fix arbitrary stop keys argument
-                null -> stopKey.execute(keys[0])
+                null -> stopKeys.execute()
                 else -> playKey.execute(keys[keyIndex])
             }
         }

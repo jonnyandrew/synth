@@ -1,8 +1,6 @@
 package com.flatmapdev.synth.keyboardCore.useCase
 
 import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
-import com.flatmapdev.synth.keyboardCore.model.Key
-import com.flatmapdev.synth.keyboardCore.model.Note
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.SpyK
 import io.mockk.verify
@@ -20,10 +18,10 @@ class StopKeyTest {
 
     @Test
     fun `it sends a signal to the engine`() {
-        val subject = StopKey(spyEngineAdapter)
-        val key = Key(Note.C, 6)
+        val subject = StopKeys(spyEngineAdapter)
 
-        subject.execute(key)
-        verify { spyEngineAdapter.stopNote(key) }
+        subject.execute()
+
+        verify { spyEngineAdapter.stopNote() }
     }
 }

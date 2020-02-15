@@ -18,7 +18,7 @@ class FakeSynthEngineAdapter(
 
     }
 
-    override fun stopNote(key: Key) {
+    override fun stopNote() {
 
     }
 }

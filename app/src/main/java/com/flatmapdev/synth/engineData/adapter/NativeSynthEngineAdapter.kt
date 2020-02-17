@@ -9,13 +9,11 @@ import javax.inject.Inject
 class NativeSynthEngineAdapter @Inject constructor(
     private val nativeSynth: NativeSynth
 ) : SynthEngineAdapter {
-    override fun getVersion(): String {
-        return nativeSynth.getVersion()
-    }
+    override fun getVersion() = nativeSynth.getVersion()
 
-    override fun start() {
-        nativeSynth.start()
-    }
+    override fun start() = nativeSynth.start()
+
+    override fun stop() = nativeSynth.stop()
 
     override fun playNote(key: Key) {
         nativeSynth.playNote(
@@ -23,7 +21,5 @@ class NativeSynthEngineAdapter @Inject constructor(
         )
     }
 
-    override fun stopNote() {
-        nativeSynth.stopNote()
-    }
+    override fun stopNote() = nativeSynth.stopNote()
 }

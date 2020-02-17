@@ -15,6 +15,7 @@ import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
 import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
 import io.mockk.spyk
 import io.mockk.verify
+import io.mockk.verifyOrder
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -44,5 +45,26 @@ class MainActivityTest {
         onView(isDisplayed())
 
         verify { spySynthEngineAdapter.start() }
+    }
+
+    @Test
+    fun `when it is destroyed, it stops the synth engine`() {
+        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
+        getApp().appComponent = testComponentBuilder
+            .fakeEngineDataModule(
+                FakeEngineDataModule(
+                    synthEngineAdapter = spySynthEngineAdapter
+                )
+            )
+            .build()
+        val scenario = launch<MainActivity>(MainActivity::class.java)
+
+        scenario.recreate()
+
+        verifyOrder {
+            spySynthEngineAdapter.start()
+            spySynthEngineAdapter.stop()
+            spySynthEngineAdapter.start()
+        }
     }
 }

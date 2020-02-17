@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         synthEngineAdapter.start()
     }
 
+    override fun onDestroy() {
+        synthEngineAdapter.stop()
+        super.onDestroy()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }

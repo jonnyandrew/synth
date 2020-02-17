@@ -7,48 +7,40 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
-import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
-import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
-import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
+import com.flatmapdev.synth.keyboardCore.model.Key
 import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
 class MainFragment : Fragment(R.layout.fragment_main) {
     @Inject
-    lateinit var getKeyboard: GetKeyboard
-
-    @Inject
-    lateinit var playKey: PlayKey
-
-    @Inject
-    lateinit var stopKeys: StopKeys
+    lateinit var viewModelFactory: MainViewModel.Factory
+    private lateinit var viewModel: MainViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context.applicationContext as App).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        exitTransition =  Fade(Fade.MODE_OUT)
+        exitTransition = Fade(Fade.MODE_OUT)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val keys = getKeyboard.execute()
-        keyboard.numKeys = keys.size
-        keyboard.keyTouchListener = { keyIndex ->
-            when (keyIndex) {
-                null -> stopKeys.execute()
-                else -> playKey.execute(keys[keyIndex])
-            }
-        }
+        viewModel.keyboard.observe(viewLifecycleOwner, Observer { keys ->
+            setUpKeyboard(keys)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,5 +60,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun navigateToAbout() {
         findNavController().navigate(R.id.aboutFragment)
+    }
+
+    private fun setUpKeyboard(keys: List<Key>) {
+        keyboard.numKeys = keys.size
+        keyboard.keyTouchListener = { keyIndex ->
+            when (keyIndex) {
+                null -> viewModel.stopKeys()
+                else -> viewModel.playKey(keys[keyIndex])
+            }
+        }
     }
 }

@@ -3,7 +3,9 @@ package com.flatmapdev.synth.aboutUi
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
@@ -17,6 +19,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     @Inject
     lateinit var synthEngineAdapter: SynthEngineAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition =  Fade(Fade.MODE_IN)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

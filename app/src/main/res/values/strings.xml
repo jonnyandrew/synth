@@ -3,4 +3,7 @@
     <string name="app_engine_version">Engine version: %1$s</string>
     <string name="device_features_supports_low_latency">Supports low latency: %1$s</string>
     <string name="device_features_supports_pro_latency">Supports pro latency: %1$s</string>
+    <string name="menu_main_about">About</string>
+    <string name="about_title">About</string>
+    <string name="main_title">Synth</string>
 </resources>

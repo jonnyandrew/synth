@@ -20,6 +20,8 @@ public:
 
     void start();
 
+    void stop();
+
     void playNote(int32_t);
 
     void stopNote();

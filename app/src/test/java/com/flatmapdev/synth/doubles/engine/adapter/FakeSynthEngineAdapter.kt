@@ -6,19 +6,13 @@ import com.flatmapdev.synth.keyboardCore.model.Key
 class FakeSynthEngineAdapter(
     private val version: String = "1.0.0"
 ) : SynthEngineAdapter {
-    override fun getVersion(): String {
-        return version
-    }
+    override fun getVersion() = version
 
-    override fun start() {
+    override fun start() {}
 
-    }
+    override fun stop() {}
 
-    override fun playNote(key: Key) {
+    override fun playNote(key: Key) {}
 
-    }
-
-    override fun stopNote() {
-
-    }
+    override fun stopNote() {}
 }

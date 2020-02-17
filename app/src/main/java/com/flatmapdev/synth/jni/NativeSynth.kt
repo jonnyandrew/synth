@@ -7,6 +7,7 @@ import javax.inject.Inject
 class NativeSynth @Inject constructor() {
     external fun getVersion(): String
     external fun start()
+    external fun stop()
     external fun playNote(pitch: Int)
     external fun stopNote()
 

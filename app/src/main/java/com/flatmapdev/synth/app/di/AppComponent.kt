@@ -1,9 +1,11 @@
 package com.flatmapdev.synth.app.di
 
 import android.content.Context
+import com.flatmapdev.synth.aboutUi.AboutFragment
 import com.flatmapdev.synth.deviceData.DeviceDataModule
 import com.flatmapdev.synth.engineData.EngineDataModule
 import com.flatmapdev.synth.mainUi.MainActivity
+import com.flatmapdev.synth.mainUi.MainFragment
 import com.flatmapdev.synth.shared.scopes.AppScope
 import dagger.BindsInstance
 import dagger.Component
@@ -16,6 +18,8 @@ import dagger.Component
 )
 @AppScope
 interface AppComponent {
+    fun inject(aboutFragment: AboutFragment)
+    fun inject(mainFragment: MainFragment)
     fun inject(activity: MainActivity)
 
     @Component.Factory

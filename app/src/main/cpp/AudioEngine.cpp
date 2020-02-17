@@ -42,6 +42,10 @@ void AudioEngine::start() {
     stream_->requestStart();
 }
 
+void AudioEngine::stop() {
+    stream_->close();
+}
+
 oboe::DataCallbackResult
 AudioEngine::onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames) {
     // We requested AudioFormat::Float so we assume we got it.
@@ -62,3 +66,4 @@ void AudioEngine::playNote(int32_t pitch) {
 void AudioEngine::stopNote() {
     oscillator_->setWaveOn(false);
 }
+

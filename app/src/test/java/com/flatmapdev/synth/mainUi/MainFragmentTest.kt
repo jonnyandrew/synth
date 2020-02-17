@@ -1,10 +1,9 @@
 package com.flatmapdev.synth.mainUi
 
-import androidx.test.core.app.ActivityScenario.launch
+import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -15,14 +14,12 @@ import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
 import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
 import io.mockk.spyk
 import io.mockk.verify
-import io.mockk.verifyOrder
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
 
     @Before
@@ -31,24 +28,16 @@ class MainActivityTest {
     }
 
     @Test
-    fun `it starts the synth engine`() {
-        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
-        getApp().appComponent = testComponentBuilder
-            .fakeEngineDataModule(
-                FakeEngineDataModule(
-                    synthEngineAdapter = spySynthEngineAdapter
-                )
-            )
-            .build()
-        launch<MainActivity>(MainActivity::class.java)
+    fun `it shows the keyboard`() {
+        getApp().appComponent = testComponentBuilder.build()
+        launchFragmentInContainer<MainFragment>()
 
-        onView(isDisplayed())
-
-        verify { spySynthEngineAdapter.start() }
+        onView(withId(R.id.keyboard))
+            .check(matches(isDisplayed()))
     }
 
     @Test
-    fun `when it is destroyed, it stops the synth engine`() {
+    fun `when a key is tapped, it sends a signal to the synth engine`() {
         val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
         getApp().appComponent = testComponentBuilder
             .fakeEngineDataModule(
@@ -57,14 +46,11 @@ class MainActivityTest {
                 )
             )
             .build()
-        val scenario = launch<MainActivity>(MainActivity::class.java)
+        launchFragmentInContainer<MainFragment>()
 
-        scenario.recreate()
+        onView(withId(R.id.keyboard))
+            .perform(click())
 
-        verifyOrder {
-            spySynthEngineAdapter.start()
-            spySynthEngineAdapter.stop()
-            spySynthEngineAdapter.start()
-        }
+        verify { spySynthEngineAdapter.playNote(any()) }
     }
 }

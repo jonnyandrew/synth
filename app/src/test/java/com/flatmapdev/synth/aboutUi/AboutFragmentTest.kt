@@ -1,9 +1,10 @@
 package com.flatmapdev.synth.aboutUi
 
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
@@ -38,8 +39,8 @@ class AboutFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<AboutFragment>()
 
-        Espresso.onView(ViewMatchers.withId(R.id.engineVersion))
-            .check(ViewAssertions.matches(ViewMatchers.withText("Engine version: 1.2.345")))
+        onView(withId(R.id.engineVersion))
+            .check(matches(withText("Engine version: 1.2.345")))
     }
 
     @Test
@@ -56,8 +57,8 @@ class AboutFragmentTest {
             ).build()
         launchFragmentInContainer<AboutFragment>()
 
-        Espresso.onView(ViewMatchers.withId(R.id.lowLatencyStatus))
-            .check(ViewAssertions.matches(ViewMatchers.withText("Supports low latency: true")))
+        onView(withId(R.id.lowLatencyStatus))
+            .check(matches(withText("Supports low latency: true")))
     }
 
     @Test
@@ -74,7 +75,7 @@ class AboutFragmentTest {
             ).build()
         launchFragmentInContainer<AboutFragment>()
 
-        Espresso.onView(ViewMatchers.withId(R.id.proLatencyStatus))
-            .check(ViewAssertions.matches(ViewMatchers.withText("Supports pro latency: true")))
+        onView(withId(R.id.proLatencyStatus))
+            .check(matches(withText("Supports pro latency: true")))
     }
 }

@@ -69,5 +69,4 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun navigateToAbout() {
         findNavController().navigate(R.id.aboutFragment)
     }
-
 }

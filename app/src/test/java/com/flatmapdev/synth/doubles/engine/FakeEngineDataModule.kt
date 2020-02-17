@@ -4,10 +4,14 @@ import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @Module
-abstract class FakeEngineDataModule {
-    @Binds
-    abstract fun synthEngineAdapter(impl: FakeSynthEngineAdapter): SynthEngineAdapter
-
+class FakeEngineDataModule(
+    private val synthEngineAdapter: FakeSynthEngineAdapter = FakeSynthEngineAdapter()
+) {
+    @Provides
+    fun synthEngineAdapter(): SynthEngineAdapter {
+        return synthEngineAdapter
+    }
 }

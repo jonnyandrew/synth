@@ -1,22 +1,34 @@
 package com.flatmapdev.synth.mainUi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MotionEvent
+import androidx.appcompat.app.AppCompatActivity
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
-import com.flatmapdev.synth.deviceData.adapter.AndroidDeviceFeaturesAdapter
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
+import com.flatmapdev.synth.keyboardCore.model.Key
+import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
+import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
+import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var synthEngineAdapter: SynthEngineAdapter
+    lateinit var getDeviceFeatures: GetDeviceFeatures
 
     @Inject
-    lateinit var getDeviceFeatures: GetDeviceFeatures
+    lateinit var getKeyboard: GetKeyboard
+
+    @Inject
+    lateinit var playKey: PlayKey
+
+    @Inject
+    lateinit var stopKeys: StopKeys
+
+    @Inject
+    lateinit var synthEngineAdapter: SynthEngineAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,16 +53,18 @@ class MainActivity : AppCompatActivity() {
             deviceFeatures.isProLatency.toString()
         )
         synthEngineAdapter.start()
+
+        val keys = getKeyboard.execute()
+        setupKeyboard(keys)
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN ->
-                synthEngineAdapter.playNote()
-            MotionEvent.ACTION_UP ->
-                synthEngineAdapter.stopNote()
+    private fun setupKeyboard(keys: List<Key>) {
+        keyboard.numKeys = keys.size
+        keyboard.keyTouchListener = { keyIndex ->
+            when(keyIndex) {
+                null -> stopKeys.execute()
+                else -> playKey.execute(keys[keyIndex])
+            }
         }
-
-        return super.onTouchEvent(event)
     }
 }

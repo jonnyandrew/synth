@@ -54,7 +54,8 @@ AudioEngine::onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32
     return oboe::DataCallbackResult::Continue;
 }
 
-void AudioEngine::playNote() {
+void AudioEngine::playNote(int32_t pitch) {
+    oscillator_->setPitch(pitch);
     oscillator_->setWaveOn(true);
 }
 

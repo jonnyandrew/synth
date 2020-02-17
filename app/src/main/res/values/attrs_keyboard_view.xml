@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="KeyboardView">
+        <attr name="numKeys" format="integer" />
+    </declare-styleable>
+</resources>

@@ -19,7 +19,9 @@ public:
             int32_t numFrames);
 
     void start();
-    void playNote();
+
+    void playNote(int32_t);
+
     void stopNote();
 
 private:

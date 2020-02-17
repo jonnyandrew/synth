@@ -20,8 +20,12 @@ Java_com_flatmapdev_synth_jni_NativeSynth_start() {
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_flatmapdev_synth_jni_NativeSynth_playNote() {
-    audioEngine.playNote();
+Java_com_flatmapdev_synth_jni_NativeSynth_playNote(
+        JNIEnv *env,
+        jclass cls,
+        jint pitch
+) {
+    audioEngine.playNote(pitch);
 }
 
 extern "C" JNIEXPORT void JNICALL

@@ -12,7 +12,7 @@ void Oscillator::setWaveOn(bool isWaveOn) {
 }
 
 void Oscillator::render(float *audioData, int32_t numFrames) {
-    double amplitude = 0.3;
+    double amplitude = 1.0;
 
     if (!isWaveOn_.load()) phase_ = 0;
 

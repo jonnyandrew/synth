@@ -19,6 +19,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++14"
+                version "3.10.2"
             }
         }
     }
@@ -31,8 +32,30 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.10.2"
         }
+    }
+
+    flavorDimensions "cpp"
+
+    productFlavors {
+        cpptest {
+            dimension "cpp"
+            externalNativeBuild {
+                cmake {
+                    arguments "-DRUN_UNIT_TESTS=TRUE"
+                }
+            }
+        }
+
+        cppprod {
+            dimension "cpp"
+            externalNativeBuild {
+                cmake {
+                    arguments "-DRUN_UNIT_TESTS=FALSE"
+                }
+            }
+        }
+
     }
     kotlinOptions {
         jvmTarget = "1.8"

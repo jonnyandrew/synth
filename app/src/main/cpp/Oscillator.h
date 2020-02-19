@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <stdint.h>
+#include <math.h>
 
 class Oscillator {
 public:
@@ -16,8 +17,8 @@ public:
 
 private:
     std::atomic<bool> isWaveOn_{false};
-    double phase_ = 0.0;
-    double phaseIncrement_ = 0.0;
+    double_t phase_ = 0.0;
+    double_t phaseIncrement_ = 0.0;
     int32_t sampleRate_;
 };
 

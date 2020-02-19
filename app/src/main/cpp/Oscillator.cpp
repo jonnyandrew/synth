@@ -12,7 +12,7 @@ void Oscillator::setWaveOn(bool isWaveOn) {
 }
 
 void Oscillator::render(float *audioData, int32_t numFrames) {
-    double amplitude = 1.0;
+    double_t amplitude = 1.0;
 
     if (!isWaveOn_.load()) phase_ = 0;
 
@@ -35,6 +35,6 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
 }
 
 void Oscillator::setPitch(int32_t pitch) {
-    double frequency = PITCH_FREQUENCIES[pitch];
-    phaseIncrement_ = (TWO_PI * frequency) / (double) sampleRate_;
+    double_t frequency = PITCH_FREQUENCIES[pitch];
+    phaseIncrement_ = (TWO_PI * frequency) / static_cast<double_t>(sampleRate_);
 }

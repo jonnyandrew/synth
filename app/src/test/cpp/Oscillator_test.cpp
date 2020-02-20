@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <iostream>
-#include "Oscillator.h"
-#include "Constants.h"
+#include "../../main/cpp/Oscillator.h"
+#include "../../main/cpp/Constants.h"
 
 TEST(DemoTest, ZeroEqualsZero) {
     EXPECT_EQ(0, 0);

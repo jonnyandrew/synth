@@ -24,7 +24,7 @@ jobs:
       with:
         api-level: 29
         script: ./gradlew connectedCpptestDebugAndroidTest -PabiFilters=x86
-    - name: Build with Gradle
-      run: ./gradlew lintCppprodRelease testCppprodRelease build
+    - name: Lint, test, assemble
+      run: ./gradlew lintCppprodRelease testCppprodRelease assembleCppprod
 
 

@@ -19,13 +19,14 @@ target_include_directories(
         ${GOOGLETEST_ROOT}/include
 )
 
-add_executable(Oscillator_test ./Oscillator_test.cpp ../../main/cpp/Oscillator.cpp)
+add_executable(Oscillator_test ./Oscillator_test.cpp)
 
 find_program(ADB adb)
 
 target_link_libraries(
         Oscillator_test
         gtest
+        synth-engine
 )
 
 add_custom_command(TARGET Oscillator_test POST_BUILD COMMAND ${ADB} shell mkdir -p /data/local/tmp/${ANDROID_ABI}

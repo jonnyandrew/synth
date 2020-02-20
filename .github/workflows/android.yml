@@ -22,10 +22,8 @@ jobs:
     - name: Android Emulator Runner
       uses: ReactiveCircus/android-emulator-runner@v2.4.0
       with:
-        # API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10
         api-level: 29
-        # custom script to run - e.g. `./gradlew connectedCheck`
-        script: ./gradlew connectedCpptestDebugAndroidTest
+        script: ./gradlew connectedCpptestDebugAndroidTest -PabiFilters=x86
     - name: Build with Gradle
       run: ./gradlew lintCppprodRelease testCppprodRelease build
 

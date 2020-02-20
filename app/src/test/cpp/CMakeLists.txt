@@ -19,17 +19,17 @@ target_include_directories(
         ${GOOGLETEST_ROOT}/include
 )
 
-add_executable(Oscillator_test ./Oscillator_test.cpp)
+add_executable(unit-tests ./Oscillator_test.cpp ./Pitch_test.cpp)
 
 find_program(ADB adb)
 
 target_link_libraries(
-        Oscillator_test
+        unit-tests
         gtest
         synth-engine
 )
 
-add_custom_command(TARGET Oscillator_test POST_BUILD COMMAND ${ADB} shell mkdir -p /data/local/tmp/${ANDROID_ABI}
+add_custom_command(TARGET unit-tests POST_BUILD COMMAND ${ADB} shell mkdir -p /data/local/tmp/${ANDROID_ABI}
         COMMAND ${ADB} push $<TARGET_FILE:synth-engine> /data/local/tmp/${ANDROID_ABI}/
-        COMMAND ${ADB} push $<TARGET_FILE:Oscillator_test> /data/local/tmp/${ANDROID_ABI}/
-        COMMAND ${ADB} shell \"export LD_LIBRARY_PATH=/data/local/tmp/${ANDROID_ABI}\; /data/local/tmp/${ANDROID_ABI}/Oscillator_test\")
+        COMMAND ${ADB} push $<TARGET_FILE:unit-tests> /data/local/tmp/${ANDROID_ABI}/
+        COMMAND ${ADB} shell \"export LD_LIBRARY_PATH=/data/local/tmp/${ANDROID_ABI}\; /data/local/tmp/${ANDROID_ABI}/unit-tests\")

@@ -5,10 +5,13 @@
 #ifndef SYNTH_PITCH_H
 #define SYNTH_PITCH_H
 
+#include <array>
+
 /**
  * Frequencies for pitch constants from 0 to 127
+ * See https://en.wikipedia.org/wiki/Scientific_pitch_notation
  */
-const double_t PITCH_FREQUENCIES[] = {
+const std::array<double_t, 128> PITCH_FREQUENCIES = {
         8.18, // 0
         8.66,
         9.18,

@@ -22,7 +22,7 @@ public:
 
     void stop();
 
-    void playNote(int32_t);
+    void playNote(const int32_t pitch);
 
     void stopNote();
 

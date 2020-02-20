@@ -10,7 +10,7 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
         JNIEnv *env
 ) {
-    std::string version = "0.1.0";
+    const std::string version = "0.1.0";
     return env->NewStringUTF(version.c_str());
 }
 

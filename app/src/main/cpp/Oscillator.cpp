@@ -3,16 +3,16 @@
 #include "Pitch.h"
 #include <math.h>
 
-void Oscillator::setSampleRate(int32_t sampleRate) {
+void Oscillator::setSampleRate(const int32_t sampleRate) {
     sampleRate_ = sampleRate;
 }
 
-void Oscillator::setWaveOn(bool isWaveOn) {
+void Oscillator::setWaveOn(const bool isWaveOn) {
     isWaveOn_.store(isWaveOn);
 }
 
-void Oscillator::render(float *audioData, int32_t numFrames) {
-    double_t amplitude = 1.0;
+void Oscillator::render(float_t *audioData, const int32_t numFrames) {
+    const double_t amplitude = 1.0;
 
     if (!isWaveOn_.load()) phase_ = 0;
 
@@ -21,7 +21,7 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
         if (isWaveOn_.load()) {
 
             // Calculates the next sample value for the sine wave.
-            audioData[i] = (float) (sin(phase_) * amplitude);
+            audioData[i] = static_cast<float_t>(sin(phase_) * amplitude);
 
             // Increments the phase, handling wrap around.
             phase_ += phaseIncrement_;
@@ -34,7 +34,7 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
     }
 }
 
-void Oscillator::setPitch(int32_t pitch) {
-    double_t frequency = PITCH_FREQUENCIES[pitch];
+void Oscillator::setPitch(const int32_t pitch) {
+    const double_t frequency = PITCH_FREQUENCIES[pitch];
     phaseIncrement_ = (TWO_PI * frequency) / static_cast<double_t>(sampleRate_);
 }

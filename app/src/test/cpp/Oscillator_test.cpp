@@ -1,18 +1,15 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <iostream>
+#include <array>
 #include "../../main/cpp/Oscillator.h"
 #include "../../main/cpp/Constants.h"
 
-TEST(DemoTest, ZeroEqualsZero) {
-    EXPECT_EQ(0, 0);
-}
-
 TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
     Oscillator osc;
-    float_t buffer[3];
+    std::array<float_t, 3> buffer;
 
-    osc.render(buffer, 3);
+    osc.render(buffer.data(), buffer.size());
 
     EXPECT_EQ(buffer[0], 0);
     EXPECT_EQ(buffer[1], 0);
@@ -21,13 +18,12 @@ TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
 
 TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
     Oscillator osc;
-    int32_t numSamples = 500;
-    float_t buffer[numSamples];
+    std::array<float_t, 512> buffer;
 
     osc.setSampleRate(12345);
     osc.setPitch(60);
     osc.setWaveOn(true);
-    osc.render(buffer, numSamples);
+    osc.render(buffer.data(), buffer.size());
 
     EXPECT_FLOAT_EQ(buffer[0], 0);
     EXPECT_FLOAT_EQ(buffer[1], 0.132767594256136);

@@ -3,17 +3,14 @@
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+file(GLOB SYNTH_ENGINE_SOURCES ./*.cpp)
 add_library( # Sets the name of the library.
         synth-engine
 
         # Sets the library as a shared library.
         SHARED
 
-        # Provides a relative path to your source file(s).
-        native-lib.cpp
-        AudioEngine.cpp
-        Oscillator.cpp
-        PlayException.cpp
+        ${SYNTH_ENGINE_SOURCES}
         )
 
 # Searches for a specified prebuilt library and stores the path as a

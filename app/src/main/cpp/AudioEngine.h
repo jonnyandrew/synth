@@ -1,35 +1,36 @@
 #ifndef SYNTH_AUDIOENGINE_H
 #define SYNTH_AUDIOENGINE_H
 
-
-#include <atomic>
 #include "Oscillator.h"
 #include "PlayException.h"
+#include "SignalSource.h"
+#include "AudioStream.h"
+#include "EnvelopeControlledAmplifier.h"
 
-class AudioEngine : oboe::AudioStreamCallback {
+namespace synth {
+    class AudioEngine : public SignalSource {
 
-public:
-    AudioEngine(
-            Oscillator &oscillator
-    );
+    public:
+        AudioEngine(
+                Oscillator oscillator1,
+                Oscillator oscillator2,
+                EnvelopeControlledAmplifier envelopeControlledAmplifier
+        );
 
-    oboe::DataCallbackResult onAudioReady(
-            oboe::AudioStream *oboeStream,
-            void *audioData,
-            int32_t numFrames);
+        void playNote(const int32_t pitch);
 
-    void start();
+        void stopNote();
 
-    void stop();
+        void getSignal(
+                float *audioBuffer,
+                const int numFrames
+        );
 
-    void playNote(const int32_t pitch);
-
-    void stopNote();
-
-private:
-    Oscillator *oscillator_;
-    oboe::ManagedStream stream_;
-};
-
+    private:
+        Oscillator oscillator1_;
+        Oscillator oscillator2_;
+        EnvelopeControlledAmplifier envelopeControlledAmplifier_;
+    };
+}
 
 #endif //SYNTH_AUDIOENGINE_H

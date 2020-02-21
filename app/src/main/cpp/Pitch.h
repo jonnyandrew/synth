@@ -5,11 +5,14 @@
 #ifndef SYNTH_PITCH_H
 #define SYNTH_PITCH_H
 
+#include <array>
+
 /**
  * Frequencies for pitch constants from 0 to 127
+ * See https://en.wikipedia.org/wiki/Scientific_pitch_notation
  */
-const float PITCH_FREQUENCIES[] = {
-        8.18,
+const std::array<double_t, 128> PITCH_FREQUENCIES = {
+        8.18, // 0
         8.66,
         9.18,
         9.72,
@@ -19,7 +22,7 @@ const float PITCH_FREQUENCIES[] = {
         12.25,
         12.98,
         13.75,
-        14.57,
+        14.57, // 10
         15.43,
         16.35,
         17.32,
@@ -29,7 +32,7 @@ const float PITCH_FREQUENCIES[] = {
         21.83,
         23.12,
         24.50,
-        25.96,
+        25.96, // 20
         27.50,
         29.14,
         30.87,
@@ -39,7 +42,7 @@ const float PITCH_FREQUENCIES[] = {
         38.89,
         41.20,
         43.65,
-        46.25,
+        46.25, // 30
         49.00,
         51.91,
         55.00,
@@ -49,7 +52,7 @@ const float PITCH_FREQUENCIES[] = {
         69.30,
         73.42,
         77.78,
-        82.41,
+        82.41, // 40
         87.31,
         92.50,
         98.00,
@@ -59,7 +62,7 @@ const float PITCH_FREQUENCIES[] = {
         123.47,
         130.81,
         138.59,
-        146.83,
+        146.83, // 50
         155.56,
         164.81,
         174.61,
@@ -69,7 +72,7 @@ const float PITCH_FREQUENCIES[] = {
         220.00,
         233.08,
         246.94,
-        261.63,
+        261.63, // 60
         277.18,
         293.66,
         311.13,
@@ -79,7 +82,7 @@ const float PITCH_FREQUENCIES[] = {
         392.00,
         415.30,
         440.00,
-        466.16,
+        466.16, // 70
         493.88,
         523.25,
         554.37,
@@ -89,7 +92,7 @@ const float PITCH_FREQUENCIES[] = {
         698.46,
         739.99,
         783.99,
-        830.61,
+        830.61, // 80
         880.00,
         932.33,
         987.77,
@@ -99,7 +102,7 @@ const float PITCH_FREQUENCIES[] = {
         1244.51,
         1318.51,
         1396.91,
-        1479.98,
+        1479.98, // 90
         1567.98,
         1661.22,
         1760.00,
@@ -109,7 +112,7 @@ const float PITCH_FREQUENCIES[] = {
         2217.46,
         2349.32,
         2489.02,
-        2637.02,
+        2637.02, // 100
         2793.83,
         2959.96,
         3135.96,
@@ -119,7 +122,7 @@ const float PITCH_FREQUENCIES[] = {
         3951.07,
         4186.01,
         4434.92,
-        4698.64,
+        4698.64, // 110
         4978.03,
         5274.04,
         5587.65,
@@ -129,7 +132,7 @@ const float PITCH_FREQUENCIES[] = {
         7040.00,
         7458.62,
         7902.13,
-        8372.02,
+        8372.02, // 120
         8869.84,
         9397.27,
         9956.06,

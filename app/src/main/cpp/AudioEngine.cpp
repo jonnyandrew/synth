@@ -23,7 +23,7 @@ void AudioEngine::start() {
             ->setChannelCount(oboe::ChannelCount::Mono)
             ->setCallback(this);
 
-    oboe::Result result = builder.openManagedStream(stream_);
+    const oboe::Result result = builder.openManagedStream(stream_);
 
     if (result != oboe::Result::OK) {
         std::string resultText = oboe::convertToText(result);
@@ -58,7 +58,7 @@ AudioEngine::onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32
     return oboe::DataCallbackResult::Continue;
 }
 
-void AudioEngine::playNote(int32_t pitch) {
+void AudioEngine::playNote(const int32_t pitch) {
     oscillator_->setPitch(pitch);
     oscillator_->setWaveOn(true);
 }

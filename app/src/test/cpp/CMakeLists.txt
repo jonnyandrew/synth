@@ -29,7 +29,14 @@ target_link_libraries(
         synth-engine
 )
 
-add_custom_command(TARGET unit-tests POST_BUILD COMMAND ${ADB} shell mkdir -p /data/local/tmp/${ANDROID_ABI}
-        COMMAND ${ADB} push $<TARGET_FILE:synth-engine> /data/local/tmp/${ANDROID_ABI}/
-        COMMAND ${ADB} push $<TARGET_FILE:unit-tests> /data/local/tmp/${ANDROID_ABI}/
-        COMMAND ${ADB} shell \"export LD_LIBRARY_PATH=/data/local/tmp/${ANDROID_ABI}\; /data/local/tmp/${ANDROID_ABI}/unit-tests\")
+set(TEST_RUNNER ${CMAKE_BINARY_DIR}/cpp_test_runner.sh)
+
+add_custom_command(
+        TARGET unit-tests POST_BUILD
+        COMMAND > ${TEST_RUNNER}
+        COMMAND echo ${ADB} shell mkdir -p /data/local/tmp/${ANDROID_ABI} >> ${TEST_RUNNER}
+        COMMAND echo ${ADB} push $<TARGET_FILE:synth-engine> /data/local/tmp/${ANDROID_ABI}/ >> ${TEST_RUNNER}
+        COMMAND echo ${ADB} push $<TARGET_FILE:unit-tests> /data/local/tmp/${ANDROID_ABI}/ >> ${TEST_RUNNER}
+        COMMAND echo ${ADB} shell LD_LIBRARY_PATH=/data/local/tmp/${ANDROID_ABI} /data/local/tmp/${ANDROID_ABI}/unit-tests >> ${TEST_RUNNER}
+)
+

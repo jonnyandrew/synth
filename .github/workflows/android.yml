@@ -21,15 +21,11 @@ jobs:
         java-version: 1.8
     - name: Lint
       run: ./gradlew lint
-    - name: Unit Test
+    - name: Kotlin Unit Test
       run: ./gradlew test
-    - name: Connected Android Test
+    - name: C++ Unit Test
       uses: ReactiveCircus/android-emulator-runner@v2.4.0
       with:
         api-level: 29
         script: |
-          ./gradlew connectedAndroidTest
-          chmod +x ./app/.cxx/cmake/debug/x86/cpp_test_runner.sh
-          ./app/.cxx/cmake/debug/x86/cpp_test_runner.sh
-
-
+          ./gradlew cppTest

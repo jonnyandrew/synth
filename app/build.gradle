@@ -45,6 +45,21 @@ android {
     }
 }
 
+task cppTest {
+    doLast {
+        exec {
+            workingDir './.cxx/cmake/debug/x86'
+            commandLine 'chmod', '+x', './cpp_test_runner.sh'
+        }
+        exec {
+            workingDir './.cxx/cmake/debug/x86'
+            commandLine './cpp_test_runner.sh'
+        }
+    }
+
+    dependsOn ':app:externalNativeBuildDebug'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

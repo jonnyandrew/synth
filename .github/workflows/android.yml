@@ -28,4 +28,4 @@ jobs:
       with:
         api-level: 29
         script: |
-          ./gradlew cppTest
+          ./gradlew cppTest -Pabi=x86

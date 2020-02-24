@@ -46,13 +46,14 @@ android {
 }
 
 task cppTest {
+    String abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
-            workingDir './.cxx/cmake/debug/x86'
+            workingDir "./.cxx/cmake/debug/$abi"
             commandLine 'chmod', '+x', './cpp_test_runner.sh'
         }
         exec {
-            workingDir './.cxx/cmake/debug/x86'
+            workingDir "./.cxx/cmake/debug/$abi"
             commandLine './cpp_test_runner.sh'
         }
     }

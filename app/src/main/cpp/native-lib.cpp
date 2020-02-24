@@ -2,9 +2,22 @@
 #include <string>
 #include <oboe/Oboe.h>
 #include "AudioEngine.h"
+#include "AudioStream.h"
+#include "Envelope.h"
 
-Oscillator osc;
-AudioEngine audioEngine(osc);
+using namespace synth;
+
+AudioStream stream;
+Oscillator osc1(stream.getSampleRate());
+Oscillator osc2(stream.getSampleRate());
+Envelope envelope = {stream.getSampleRate(), 15, 400, 0.0, 1000};
+EnvelopeControlledAmplifier envelopeControlledAmplifier(envelope);
+
+AudioEngine audioEngine(
+        osc1,
+        osc2,
+        envelopeControlledAmplifier
+);
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
@@ -16,12 +29,12 @@ Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_start() {
-    audioEngine.start();
+    stream.start(audioEngine);
 }
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_stop() {
-    audioEngine.stop();
+    stream.close();
 }
 
 extern "C" JNIEXPORT void JNICALL

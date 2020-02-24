@@ -3,67 +3,48 @@
 #include <android/log.h>
 #include "AudioEngine.h"
 #include "Constants.h"
+#include "AudioStream.h"
+#include "Envelope.h"
+#include "EnvelopeControlledAmplifier.h"
 
-AudioEngine::AudioEngine(
-        Oscillator &oscillator
-) {
-
+synth::AudioEngine::AudioEngine(
+        Oscillator oscillator1,
+        Oscillator oscillator2,
+        EnvelopeControlledAmplifier envelopeControlledAmplifier
+) :
+        oscillator1_(oscillator1),
+        oscillator2_(oscillator2),
+        envelopeControlledAmplifier_(envelopeControlledAmplifier) {
     __android_log_print(ANDROID_LOG_INFO, LOGGER_TAG, "Initializing AudioEngine");
-
-    oscillator_ = &oscillator;
 }
 
-void AudioEngine::start() {
-    oboe::AudioStreamBuilder builder;
-    builder
-            .setDirection(oboe::Direction::Output)
-            ->setPerformanceMode(oboe::PerformanceMode::LowLatency)
-            ->setSharingMode(oboe::SharingMode::Exclusive)
-            ->setFormat(oboe::AudioFormat::Float)
-            ->setChannelCount(oboe::ChannelCount::Mono)
-            ->setCallback(this);
+void synth::AudioEngine::playNote(const int32_t pitch) {
+    oscillator1_.setPitch(pitch);
+    oscillator2_.setPitch(pitch + 4);
+    envelopeControlledAmplifier_.startAttack();
+}
 
-    const oboe::Result result = builder.openManagedStream(stream_);
+void synth::AudioEngine::stopNote() {
+    envelopeControlledAmplifier_.startRelease();
+}
 
-    if (result != oboe::Result::OK) {
-        std::string resultText = oboe::convertToText(result);
+void synth::AudioEngine::getSignal(float *audioBuffer, const int numFrames) {
+    float audio1[numFrames];
+    float audio2[numFrames];
+    oscillator1_.render(audio1, numFrames);
+    oscillator2_.render(audio2, numFrames);
 
-        __android_log_print(
-                ANDROID_LOG_ERROR, LOGGER_TAG,
-                "Failed to create stream. Error: %s",
-                resultText.c_str()
-        );
-
-        throw PlayException(resultText);
+    // mix
+    float mixed[numFrames];
+    for (int i = 0; i < numFrames; i++) {
+        mixed[i] = (audio1[i] + audio2[i]) / 2;
     }
 
-    oscillator_->setSampleRate(stream_->getSampleRate());
+    // apply effects
+    envelopeControlledAmplifier_.getSignal(mixed, numFrames);
 
-    stream_->requestStart();
+    // output
+    for (int i = 0; i < numFrames; i++) {
+        audioBuffer[i] = mixed[i];
+    }
 }
-
-void AudioEngine::stop() {
-    stream_->close();
-}
-
-oboe::DataCallbackResult
-AudioEngine::onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames) {
-    // We requested AudioFormat::Float so we assume we got it.
-    // For production code always check what format
-    // the stream has and cast to the appropriate type.
-    auto *outputData = static_cast<float *>(audioData);
-
-    oscillator_->render(outputData, numFrames);
-
-    return oboe::DataCallbackResult::Continue;
-}
-
-void AudioEngine::playNote(const int32_t pitch) {
-    oscillator_->setPitch(pitch);
-    oscillator_->setWaveOn(true);
-}
-
-void AudioEngine::stopNote() {
-    oscillator_->setWaveOn(false);
-}
-

@@ -1,25 +1,20 @@
 #ifndef SYNTH_OSCILLATOR_H
 #define SYNTH_OSCILLATOR_H
 
-#include <atomic>
-#include <stdint.h>
-#include <math.h>
+namespace synth {
+    class Oscillator {
+    public:
+        Oscillator(const int sampleRate);
 
-class Oscillator {
-public:
-    void setWaveOn(const bool isWaveOn);
+        void setPitch(const int pitch);
 
-    void setPitch(const int32_t pitch);
+        void render(float *audioData, const int numFrames);
 
-    void setSampleRate(const int32_t sampleRate);
-
-    void render(float_t *audioData, const int32_t numFrames);
-
-private:
-    std::atomic<bool> isWaveOn_{false};
-    double_t phase_ = 0.0;
-    double_t phaseIncrement_ = 0.0;
-    int32_t sampleRate_;
-};
+    private:
+        double phase_ = 0.0;
+        double phaseIncrement_ = 0.0;
+        int sampleRate_;
+    };
+}
 
 #endif //SYNTH_OSCILLATOR_H

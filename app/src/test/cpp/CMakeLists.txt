@@ -19,7 +19,15 @@ target_include_directories(
         ${GOOGLETEST_ROOT}/include
 )
 
-add_executable(unit-tests ./Oscillator_test.cpp ./Pitch_test.cpp)
+target_include_directories(
+        gtest
+        PUBLIC
+        ../../main/cpp
+)
+
+file(GLOB TEST_SOURCES ./*.cpp)
+
+add_executable(unit-tests ${TEST_SOURCES})
 
 find_program(ADB adb)
 

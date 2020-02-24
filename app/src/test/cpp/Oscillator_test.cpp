@@ -2,12 +2,14 @@
 #include <memory>
 #include <iostream>
 #include <array>
-#include "../../main/cpp/Oscillator.h"
-#include "../../main/cpp/Constants.h"
+#include "Oscillator.h"
+#include "Constants.h"
+
+using namespace synth;
 
 TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
-    Oscillator osc;
-    std::array<float_t, 3> buffer;
+    Oscillator osc(123);
+    std::array<float, 3> buffer;
 
     osc.render(buffer.data(), buffer.size());
 
@@ -17,12 +19,10 @@ TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
 }
 
 TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
-    Oscillator osc;
-    std::array<float_t, 512> buffer;
+    Oscillator osc(12345);
+    std::array<float, 512> buffer;
 
-    osc.setSampleRate(12345);
     osc.setPitch(60);
-    osc.setWaveOn(true);
     osc.render(buffer.data(), buffer.size());
 
     EXPECT_FLOAT_EQ(buffer[0], 0);

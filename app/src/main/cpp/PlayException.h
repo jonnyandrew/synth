@@ -5,10 +5,12 @@
 #include <exception>
 #include <string>
 
-class PlayException : std::runtime_error {
-public:
-    PlayException(const std::string &string);
-};
+namespace synth {
+    class PlayException : std::runtime_error {
+    public:
+        PlayException(const std::string &string);
+    };
+}
 
 
 #endif //SYNTH_PLAYEXCEPTION_H

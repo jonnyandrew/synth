@@ -2,16 +2,14 @@
 #define SYNTH_ENVELOPE_H
 
 #include "SignalSource.h"
+#include "EnvelopeParameters.h"
 
 namespace synth {
     class Envelope : public SignalSource {
     public:
         Envelope(
                 int sampleRate,
-                float attackTimeMs,
-                float decayTimeMs,
-                float sustainLevel,
-                float releaseTimeMs
+                EnvelopeParameters envelopeParameters
         );
 
         void startAttack();
@@ -22,20 +20,26 @@ namespace synth {
                 float *buffer,
                 const int numFrames
         );
-        float decayLevelIncrement_;
-        float sustainStartTimeMs_;
+
+        void setEnvelopeParameters(EnvelopeParameters envelopeParameters);
+
+        EnvelopeParameters getEnvelopeParameters();
+
     private:
-        float attackTimeMs_;
-        float sustainLevel_;
+        EnvelopeParameters params_;
         double level_ = 0;
         float timeIncrement_;
         float time_;
+        float sustainStartTimeMs_;
         float attackLevelIncrement_;
+        float decayLevelIncrement_;
         float releaseLevelIncrement_;
         /**
          * isTriggering is true during the attack, decay and sustain phases of the curve
          */
         bool isTriggering_ = false;
+
+        void onNewParameters();
     };
 }
 

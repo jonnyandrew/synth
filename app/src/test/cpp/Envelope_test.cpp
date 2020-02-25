@@ -7,7 +7,8 @@
 using namespace synth;
 
 TEST(EnvelopeTest, WhenItIsTheFirstEnvelopeItStartsAfterZero) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 1000> buffer;
 
     envelope.startAttack();
@@ -17,7 +18,8 @@ TEST(EnvelopeTest, WhenItIsTheFirstEnvelopeItStartsAfterZero) {
 }
 
 TEST(EnvelopeTest, WhenAttackIsNotTriggeredItOutputsZeros) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 100> buffer;
 
     envelope.getSignal(buffer.data(), buffer.size());
@@ -28,7 +30,8 @@ TEST(EnvelopeTest, WhenAttackIsNotTriggeredItOutputsZeros) {
 }
 
 TEST(EnvelopeTest, ItCompletesTheAttackAtTheCorrectFrame) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 1000> buffer;
 
     envelope.startAttack();
@@ -39,7 +42,8 @@ TEST(EnvelopeTest, ItCompletesTheAttackAtTheCorrectFrame) {
 }
 
 TEST(EnvelopeTest, TheAttackReachesMaximum) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 1000> buffer;
 
     envelope.startAttack();
@@ -49,7 +53,8 @@ TEST(EnvelopeTest, TheAttackReachesMaximum) {
 }
 
 TEST(EnvelopeTest, ItReachesTheSustainLevelAtTheCorrectFrame) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 1000> buffer;
 
     envelope.startAttack();
@@ -60,7 +65,8 @@ TEST(EnvelopeTest, ItReachesTheSustainLevelAtTheCorrectFrame) {
 }
 
 TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringAttack) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 25> buffer;
 
     envelope.startAttack();
@@ -75,7 +81,8 @@ TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringAttack) {
 }
 
 TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringDecay) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 150> buffer;
 
     envelope.startAttack();
@@ -90,7 +97,8 @@ TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringDecay) {
 }
 
 TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringSustain) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 1000> buffer;
 
     envelope.startAttack();
@@ -106,7 +114,8 @@ TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedDuringSustain) 
 
 
 TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedAfterRelease) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 100> buffer;
 
     envelope.startAttack();
@@ -122,7 +131,8 @@ TEST(EnvelopeTest, ItContinuesFromWhereThePreviousEnvelopeStoppedAfterRelease) {
 }
 
 TEST(EnvelopeTest, WhenAttackIsZeroItStartsDecayImmediately) {
-    Envelope envelope(1000, 0, 100, 0.5, 100);
+    EnvelopeParameters params = {0, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -132,7 +142,8 @@ TEST(EnvelopeTest, WhenAttackIsZeroItStartsDecayImmediately) {
 }
 
 TEST(EnvelopeTest, WhenAttackIsNearZeroItStartsDecayImmediately) {
-    Envelope envelope(1000, 0.0001, 100, 0.5, 100);
+    EnvelopeParameters params = {0.0001, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -142,7 +153,8 @@ TEST(EnvelopeTest, WhenAttackIsNearZeroItStartsDecayImmediately) {
 }
 
 TEST(EnvelopeTest, WhenDecayIsZeroItDecaysStraightToSustain) {
-    Envelope envelope(1000, 5, 0, 0.5, 100);
+    EnvelopeParameters params = {5, 0, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -153,7 +165,8 @@ TEST(EnvelopeTest, WhenDecayIsZeroItDecaysStraightToSustain) {
 }
 
 TEST(EnvelopeTest, WhenDecayIsSmallItDecaysStraightToSustain) {
-    Envelope envelope(1000, 5, 0.5, 0.5, 100);
+    EnvelopeParameters params = {5, 0.5, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -163,7 +176,8 @@ TEST(EnvelopeTest, WhenDecayIsSmallItDecaysStraightToSustain) {
 }
 
 TEST(EnvelopeTest, WhenDecayAndSustainAreZeroItDecaysStraightToZero) {
-    Envelope envelope(1000, 5, 0, 0.0, 100);
+    EnvelopeParameters params = {5, 0, 0.0, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -174,7 +188,8 @@ TEST(EnvelopeTest, WhenDecayAndSustainAreZeroItDecaysStraightToZero) {
 }
 
 TEST(EnvelopeTest, WhenAttackDecayAndReleaseAreZero) {
-    Envelope envelope(1000, 0, 0, 1.0, 0);
+    EnvelopeParameters params = {0, 0, 1.0, 0};
+    Envelope envelope(1000, params);
     std::array<float, 1> buffer;
 
     envelope.startAttack();
@@ -189,7 +204,8 @@ TEST(EnvelopeTest, WhenAttackDecayAndReleaseAreZero) {
 }
 
 TEST(EnvelopeTest, WhenAttackAndDecayAreZeroItDropsToSustainImmediately) {
-    Envelope envelope(1000, 0, 0, 0.1, 0);
+    EnvelopeParameters params = {0, 0, 0.1, 0};
+    Envelope envelope(1000, params);
     std::array<float, 1> buffer;
 
     envelope.startAttack();
@@ -199,7 +215,8 @@ TEST(EnvelopeTest, WhenAttackAndDecayAreZeroItDropsToSustainImmediately) {
 }
 
 TEST(EnvelopeTest, WhenReleaseIsStartedItDropsToZero) {
-    Envelope envelope(1000, 0, 0, 1.0, 10);
+    EnvelopeParameters params = {0, 0, 1.0, 10};
+    Envelope envelope(1000, params);
     std::array<float, 10> buffer;
 
     envelope.startAttack();
@@ -213,7 +230,8 @@ TEST(EnvelopeTest, WhenReleaseIsStartedItDropsToZero) {
 }
 
 TEST(EnvelopeTest, WhenReleaseIsFinishedItBecomesExactlyZero) {
-    Envelope envelope(1000, 0, 0, 1.0, 10);
+    EnvelopeParameters params = {0, 0, 1.0, 10};
+    Envelope envelope(1000, params);
     std::array<float, 100> buffer;
 
     envelope.startAttack();
@@ -225,7 +243,8 @@ TEST(EnvelopeTest, WhenReleaseIsFinishedItBecomesExactlyZero) {
 }
 
 TEST(EnvelopeTest, WhenReleaseIsStartedBeforeDecayIsFinishedThenItDecaysFirst) {
-    Envelope envelope(1000, 10, 10, 0.8, 4);
+    EnvelopeParameters params = {10, 10, 0.8, 4};
+    Envelope envelope(1000, params);
     std::array<float, 30> buffer;
 
     envelope.startAttack();

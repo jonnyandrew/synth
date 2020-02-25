@@ -1,6 +1,9 @@
 package com.flatmapdev.synth.engineData.adapter
 
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
+import com.flatmapdev.synth.engineCore.model.Envelope
+import com.flatmapdev.synth.engineData.mapper.toEnvelope
+import com.flatmapdev.synth.engineData.mapper.toFloatArray
 import com.flatmapdev.synth.engineData.mapper.toPitch
 import com.flatmapdev.synth.jni.NativeSynth
 import com.flatmapdev.synth.keyboardCore.model.Key
@@ -22,4 +25,15 @@ class NativeSynthEngineAdapter @Inject constructor(
     }
 
     override fun stopNote() = nativeSynth.stopNote()
+
+    override fun getAmpEnvelope(): Envelope {
+        return nativeSynth.getAmpEnvelope()
+            .toEnvelope()
+    }
+
+    override fun setAmpEnvelope(envelope: Envelope) {
+        nativeSynth.setAmpEnvelope(
+            envelope.toFloatArray()
+        )
+    }
 }

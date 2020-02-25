@@ -10,6 +10,8 @@ class NativeSynth @Inject constructor() {
     external fun stop()
     external fun playNote(pitch: Int)
     external fun stopNote()
+    external fun getAmpEnvelope(): FloatArray
+    external fun setAmpEnvelope(envelopeAdsr: FloatArray)
 
     companion object {
         init {

@@ -1,5 +1,6 @@
 package com.flatmapdev.synth.engineCore.adapter
 
+import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.keyboardCore.model.Key
 
 interface SynthEngineAdapter {
@@ -8,4 +9,6 @@ interface SynthEngineAdapter {
     fun stop()
     fun playNote(key: Key)
     fun stopNote()
+    fun getAmpEnvelope(): Envelope
+    fun setAmpEnvelope(envelope: Envelope)
 }

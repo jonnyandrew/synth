@@ -4,7 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".mainUi.MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ampEnvelopeControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:contentPadding="8dp"
+        app:layout_constraintBottom_toTopOf="@id/keyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amp envelope"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+            <TextView
+                android:id="@+id/ampEnvelopeControlsAttackTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Attack"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            <SeekBar
+                android:id="@+id/ampEnvelopeControlsAttackSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/ampEnvelopeControlsDecayTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Decay"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            <SeekBar
+                android:id="@+id/ampEnvelopeControlsDecaySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/ampEnvelopeControlsSustain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sustain"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            <SeekBar
+                android:id="@+id/ampEnvelopeControlsSustainSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/ampEnvelopeControlsReleaseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Release"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+            <SeekBar
+                android:id="@+id/ampEnvelopeControlsReleaseSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <com.flatmapdev.synth.mainUi.KeyboardView
         android:id="@+id/keyboard"
@@ -13,7 +86,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ampEnvelopeControls"
         app:numKeys="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

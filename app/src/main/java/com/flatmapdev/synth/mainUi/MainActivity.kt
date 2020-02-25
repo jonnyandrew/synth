@@ -24,13 +24,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         NavigationUI.setupActionBarWithNavController(this, navController)
+    }
 
+    override fun onResume() {
+        super.onResume()
         synthEngineAdapter.start()
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         synthEngineAdapter.stop()
-        super.onDestroy()
+        super.onPause()
     }
 
     override fun onSupportNavigateUp(): Boolean {

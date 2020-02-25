@@ -10,9 +10,11 @@ namespace synth {
     public:
         AudioStream();
 
-        void start(SignalSource &audioSource);
+        void start();
 
         void close();
+
+        void setAudioSource(SignalSource &audioSource);
 
         int getSampleRate();
 

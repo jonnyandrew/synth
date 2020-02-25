@@ -31,14 +31,17 @@ synth::AudioStream::AudioStream() {
     }
 }
 
-void synth::AudioStream::start(SignalSource &audioSource) {
-    audioSource_ = &audioSource;
+void synth::AudioStream::start() {
     oboeStream_->requestStart();
 }
 
 oboe::DataCallbackResult
 synth::AudioStream::onAudioReady(oboe::AudioStream *audioStream, void *audioData,
                                  int32_t numFrames) {
+    if (audioSource_ == nullptr) {
+        return oboe::DataCallbackResult::Continue;
+    }
+
     // We requested AudioFormat::Float so we assume we got it.
     // For production code always check what format
     // the stream has and cast to the appropriate type.
@@ -55,4 +58,8 @@ int synth::AudioStream::getSampleRate() {
 
 void synth::AudioStream::close() {
     oboeStream_->close();
+}
+
+void synth::AudioStream::setAudioSource(synth::SignalSource &audioSource) {
+    audioSource_ = &audioSource;
 }

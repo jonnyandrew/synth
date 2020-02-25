@@ -7,17 +7,8 @@
 
 using namespace synth;
 
-AudioStream stream;
-Oscillator osc1(stream.getSampleRate());
-Oscillator osc2(stream.getSampleRate());
-Envelope envelope = {stream.getSampleRate(), 15, 400, 0.0, 1000};
-EnvelopeControlledAmplifier envelopeControlledAmplifier(envelope);
-
-AudioEngine audioEngine(
-        osc1,
-        osc2,
-        envelopeControlledAmplifier
-);
+std::unique_ptr<AudioStream> stream;
+std::unique_ptr<AudioEngine> audioEngine;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
@@ -29,12 +20,24 @@ Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_start() {
-    stream.start(audioEngine);
+    stream = std::make_unique<AudioStream>();
+    auto sampleRate = stream->getSampleRate();
+    Oscillator osc1(sampleRate);
+    Oscillator osc2(sampleRate);
+    Envelope envelope = {sampleRate, 15, 400, 0.0, 1000};
+    EnvelopeControlledAmplifier envelopeControlledAmplifier(envelope);
+    audioEngine = std::make_unique<AudioEngine>(
+            osc1,
+            osc2,
+            envelopeControlledAmplifier
+    );
+    stream->setAudioSource(*audioEngine);
+    stream->start();
 }
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_stop() {
-    stream.close();
+    stream->close();
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -43,10 +46,10 @@ Java_com_flatmapdev_synth_jni_NativeSynth_playNote(
         jclass cls,
         jint pitch
 ) {
-    audioEngine.playNote(pitch);
+    audioEngine->playNote(pitch);
 }
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_stopNote() {
-    audioEngine.stopNote();
+    audioEngine->stopNote();
 }

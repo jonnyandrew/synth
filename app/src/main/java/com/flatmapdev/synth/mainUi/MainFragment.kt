@@ -17,9 +17,9 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.keyboardCore.model.Key
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_amp_envelope.*
-import javax.inject.Inject
 
 class MainFragment : Fragment(R.layout.fragment_main) {
     @Inject

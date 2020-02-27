@@ -4,13 +4,11 @@ import android.app.Application
 import android.content.pm.PackageManager
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.flatmapdev.synth.deviceData.adapter.AndroidDeviceFeaturesAdapter
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows.shadowOf
-
 
 @RunWith(AndroidJUnit4::class)
 class AndroidDeviceFeaturesAdapterTest {
@@ -31,7 +29,7 @@ class AndroidDeviceFeaturesAdapterTest {
 
         val result = subject.getDeviceFeatures()
 
-        assertTrue(result.isLowLatency)
+        assertThat(result.isLowLatency).isTrue()
     }
 
     @Test
@@ -44,7 +42,7 @@ class AndroidDeviceFeaturesAdapterTest {
 
         val result = subject.getDeviceFeatures()
 
-        assertFalse(result.isLowLatency)
+        assertThat(result.isLowLatency).isFalse()
     }
 
     @Test
@@ -57,7 +55,7 @@ class AndroidDeviceFeaturesAdapterTest {
 
         val result = subject.getDeviceFeatures()
 
-        assertTrue(result.isProLatency)
+        assertThat(result.isProLatency).isTrue()
     }
 
     @Test
@@ -70,6 +68,6 @@ class AndroidDeviceFeaturesAdapterTest {
 
         val result = subject.getDeviceFeatures()
 
-        assertFalse(result.isProLatency)
+        assertThat(result.isProLatency).isFalse()
     }
 }

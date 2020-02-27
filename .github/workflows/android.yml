@@ -21,6 +21,8 @@ jobs:
         java-version: 1.8
     - name: Lint
       run: ./gradlew lint
+    - name: Kotlin Lint
+      run: ./gradlew lintKotlin
     - name: Kotlin Unit Test
       run: ./gradlew test
     - name: C++ Unit Test

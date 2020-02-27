@@ -10,7 +10,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 
-
 class AboutViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()

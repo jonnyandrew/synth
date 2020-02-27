@@ -3,13 +3,11 @@ package com.flatmapdev.synth.mainUi
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.flatmapdev.synth.R
-
 
 /**
  * TODO: document your custom view class.
@@ -108,8 +106,8 @@ class KeyboardView : View {
         }
 
         // If the touch falls in the padding, ignore it
-        if (event.x <= paddingLeft || event.x >= width - paddingRight
-            || event.y < paddingTop || event.y >= height - paddingBottom
+        if (event.x <= paddingLeft || event.x >= width - paddingRight ||
+            event.y < paddingTop || event.y >= height - paddingBottom
         ) {
             return true
         }

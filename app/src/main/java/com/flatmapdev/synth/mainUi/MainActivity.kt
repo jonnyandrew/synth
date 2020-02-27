@@ -10,7 +10,6 @@ import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
 import javax.inject.Inject
 
-
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     @Inject
     lateinit var synthEngineAdapter: SynthEngineAdapter

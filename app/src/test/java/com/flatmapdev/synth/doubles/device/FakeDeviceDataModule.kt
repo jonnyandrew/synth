@@ -5,7 +5,6 @@ import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import dagger.Module
 import dagger.Provides
 
-
 @Module
 class FakeDeviceDataModule(
     private val deviceFeaturesAdapter: StubDeviceFeaturesAdapter = StubDeviceFeaturesAdapter()

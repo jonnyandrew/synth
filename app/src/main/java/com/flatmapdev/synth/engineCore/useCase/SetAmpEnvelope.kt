@@ -10,6 +10,6 @@ class SetAmpEnvelope @Inject constructor(
     private val synthEngineAdapter: SynthEngineAdapter
 ) {
     fun execute(envelope: Envelope) {
-        synthEngineAdapter.setAmpEnvelope(envelope)
+        synthEngineAdapter.ampEnvelope = envelope
     }
 }

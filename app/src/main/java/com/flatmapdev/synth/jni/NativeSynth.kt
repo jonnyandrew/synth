@@ -4,14 +4,14 @@ import com.flatmapdev.synth.shared.scopes.AppScope
 import javax.inject.Inject
 
 @AppScope
-class NativeSynth @Inject constructor() {
-    external fun getVersion(): String
-    external fun start()
-    external fun stop()
-    external fun playNote(pitch: Int)
-    external fun stopNote()
-    external fun getAmpEnvelope(): FloatArray
-    external fun setAmpEnvelope(envelopeAdsr: FloatArray)
+class NativeSynth @Inject constructor() : Synth {
+    external override fun getVersion(): String
+    external override fun start()
+    external override fun stop()
+    external override fun playNote(pitch: Int)
+    external override fun stopNote()
+    external override fun getAmpEnvelope(): FloatArray
+    external override fun setAmpEnvelope(envelopeAdsr: FloatArray)
 
     companion object {
         init {

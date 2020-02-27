@@ -10,6 +10,6 @@ class GetAmpEnvelope @Inject constructor(
     private val synthEngineAdapter: SynthEngineAdapter
 ) {
     fun execute(): Envelope {
-        return synthEngineAdapter.getAmpEnvelope()
+        return synthEngineAdapter.ampEnvelope
     }
 }

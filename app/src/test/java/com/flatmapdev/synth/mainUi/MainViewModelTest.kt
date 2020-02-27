@@ -1,7 +1,7 @@
 package com.flatmapdev.synth.mainUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
@@ -21,20 +21,22 @@ class MainViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
 
-    private lateinit var fakeSynthEngineAdapter: FakeSynthEngineAdapter
+    private lateinit var stubSynthEngineAdapter: StubSynthEngineAdapter
     private lateinit var spyPlayKey: PlayKey
     private lateinit var spyStopKeys: StopKeys
 
     @Before
     fun setUp() {
-        fakeSynthEngineAdapter = FakeSynthEngineAdapter()
-        spyPlayKey = spyk(PlayKey(fakeSynthEngineAdapter))
-        spyStopKeys = spyk(StopKeys(fakeSynthEngineAdapter))
+        stubSynthEngineAdapter = StubSynthEngineAdapter()
+        spyPlayKey = spyk(PlayKey(stubSynthEngineAdapter))
+        spyStopKeys = spyk(StopKeys(stubSynthEngineAdapter))
     }
 
     @Test
     fun `it emits the keyboard`() {
         val subject = createSubject()
+
+        subject.init()
 
         assertThat(subject.keyboard.value)
             .isEqualTo(

@@ -10,8 +10,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
-import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.jni.FakeJniModule
+import com.flatmapdev.synth.doubles.jni.FakeSynth
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
@@ -38,11 +38,11 @@ class MainFragmentTest {
 
     @Test
     fun `when a key is tapped, it sends a signal to the synth engine`() {
-        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
+        val spySynth = spyk(FakeSynth())
         getApp().appComponent = testComponentBuilder
-            .fakeEngineDataModule(
-                FakeEngineDataModule(
-                    synthEngineAdapter = spySynthEngineAdapter
+            .fakeJniModule(
+                FakeJniModule(
+                    synth = spySynth
                 )
             )
             .build()
@@ -51,6 +51,6 @@ class MainFragmentTest {
         onView(withId(R.id.keyboard))
             .perform(click())
 
-        verify { spySynthEngineAdapter.playNote(any()) }
+        verify { spySynth.playNote(any()) }
     }
 }

@@ -9,6 +9,5 @@ interface SynthEngineAdapter {
     fun stop()
     fun playNote(key: Key)
     fun stopNote()
-    fun getAmpEnvelope(): Envelope
-    fun setAmpEnvelope(envelope: Envelope)
+    var ampEnvelope: Envelope
 }

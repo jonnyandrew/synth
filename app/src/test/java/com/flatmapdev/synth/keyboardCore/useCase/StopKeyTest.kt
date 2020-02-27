@@ -1,6 +1,6 @@
 package com.flatmapdev.synth.keyboardCore.useCase
 
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.SpyK
 import io.mockk.verify
@@ -9,7 +9,7 @@ import org.junit.Test
 
 class StopKeyTest {
     @SpyK
-    private var spyEngineAdapter = FakeSynthEngineAdapter()
+    private var spyEngineAdapter = StubSynthEngineAdapter()
 
     @Before
     fun setUp() {

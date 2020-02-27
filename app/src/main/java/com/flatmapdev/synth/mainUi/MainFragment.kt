@@ -18,6 +18,7 @@ import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.keyboardCore.model.Key
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.view_amp_envelope.*
 import javax.inject.Inject
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -95,32 +96,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun setupAmpEnvelopeControls() {
-        fun setAmpEnvelope() {
-            ampEnvelopeViewModel.setAmpEnvelope(
-                Envelope(
-                    ampEnvelopeControlsAttackSeekBar.progress,
-                    ampEnvelopeControlsDecaySeekBar.progress,
-                    ampEnvelopeControlsSustainSeekBar.progress,
-                    ampEnvelopeControlsReleaseSeekBar.progress
-                )
-            )
-        }
-
         val seekBarChangeListener = object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    setAmpEnvelope()
+                    ampEnvelopeViewModel.setAmpEnvelope(
+                        Envelope(
+                            ampEnvelopeControlsAttackSeekBar.progress,
+                            ampEnvelopeControlsDecaySeekBar.progress,
+                            ampEnvelopeControlsSustainSeekBar.progress,
+                            ampEnvelopeControlsReleaseSeekBar.progress
+                        )
+                    )
                 }
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         }
         ampEnvelopeControlsAttackSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
         ampEnvelopeControlsDecaySeekBar.setOnSeekBarChangeListener(seekBarChangeListener)

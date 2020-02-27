@@ -17,7 +17,7 @@ class DefaultSynthEngineAdapterTest {
         val synth = FakeSynth(version = "345.678")
         val subject = DefaultSynthEngineAdapter(synth)
 
-        val result = subject.getVersion()
+        val result = subject.version
 
         assertThat(result).isEqualTo("345.678")
     }

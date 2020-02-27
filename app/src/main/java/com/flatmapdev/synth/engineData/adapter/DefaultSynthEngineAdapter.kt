@@ -12,7 +12,7 @@ import javax.inject.Inject
 class DefaultSynthEngineAdapter @Inject constructor(
     private val synth: Synth
 ) : SynthEngineAdapter {
-    override fun getVersion() = synth.getVersion()
+    override val version get() = synth.getVersion()
 
     override fun start() = synth.start()
 

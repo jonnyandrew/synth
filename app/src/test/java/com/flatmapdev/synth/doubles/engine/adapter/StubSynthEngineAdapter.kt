@@ -5,10 +5,9 @@ import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.keyboardCore.model.Key
 
 class StubSynthEngineAdapter(
-    private val version: String = "123"
+    override val version: String = "123",
+    override var ampEnvelope: Envelope = Envelope(1, 2, 3, 4)
 ) : SynthEngineAdapter {
-
-    override fun getVersion() = version
 
     override fun start() {}
 
@@ -17,6 +16,4 @@ class StubSynthEngineAdapter(
     override fun playNote(key: Key) {}
 
     override fun stopNote() {}
-
-    override var ampEnvelope: Envelope = Envelope(1, 2, 3, 4)
 }

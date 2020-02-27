@@ -13,11 +13,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 
-
 class AmpEnvelopeViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
-
 
     private lateinit var stubSynthEngineAdapter: StubSynthEngineAdapter
     private lateinit var getAmpEnvelope: GetAmpEnvelope

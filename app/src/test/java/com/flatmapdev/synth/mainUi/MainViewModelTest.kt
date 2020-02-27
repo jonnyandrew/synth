@@ -15,11 +15,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 
-
 class MainViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
-
 
     private lateinit var stubSynthEngineAdapter: StubSynthEngineAdapter
     private lateinit var spyPlayKey: PlayKey

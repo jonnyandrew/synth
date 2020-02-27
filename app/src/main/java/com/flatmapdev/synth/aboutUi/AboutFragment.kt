@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
-import kotlinx.android.synthetic.main.fragment_about.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment : Fragment(R.layout.fragment_about) {
     @Inject

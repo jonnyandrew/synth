@@ -4,9 +4,9 @@ import com.flatmapdev.synth.engineCore.model.AmpEnvelopeConfig.ATTACK_MAX_MS
 import com.flatmapdev.synth.engineCore.model.AmpEnvelopeConfig.DECAY_MAX_MS
 import com.flatmapdev.synth.engineCore.model.AmpEnvelopeConfig.RELEASE_MAX_MS
 import com.flatmapdev.synth.engineCore.model.Envelope
+import java.lang.IndexOutOfBoundsException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.lang.IndexOutOfBoundsException
 
 class EnvelopeFloatArrayMapperTest {
     @Test

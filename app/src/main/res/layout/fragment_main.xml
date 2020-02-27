@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     tools:context=".mainUi.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ampEnvelopeControls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:contentPadding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/keyboard"
+        app:layout_constraintBottom_toTopOf="@id/keyboardContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,15 +22,24 @@
         <include layout="@layout/view_amp_envelope" />
     </androidx.cardview.widget.CardView>
 
-
-    <com.flatmapdev.synth.mainUi.KeyboardView
-        android:id="@+id/keyboard"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/keyboardContainer"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ampEnvelopeControls"
-        app:numKeys="10" />
+        app:layout_constraintTop_toBottomOf="@id/ampEnvelopeControls">
+
+        <com.flatmapdev.synth.mainUi.KeyboardView
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:numKeys="10" />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

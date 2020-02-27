@@ -20,7 +20,7 @@ class KeyboardView : View {
     private var curKeyDown: Int? = null
 
     private var contentWidth = width - paddingLeft - paddingRight
-    private var keyWidth = contentWidth / numKeys
+    private var keyWidth: Float = contentWidth.toFloat() / numKeys
 
     var keyTouchListener: ((Int?) -> Unit)? = null
 
@@ -33,12 +33,12 @@ class KeyboardView : View {
 
     private val keyAPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.CYAN
+        color = context.getColor(R.color.keyAColor)
     }
 
     private val keyBPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.MAGENTA
+        color = context.getColor(R.color.keyBColor)
     }
 
     constructor(context: Context) : super(context) {
@@ -73,7 +73,7 @@ class KeyboardView : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         contentWidth = width - paddingLeft - paddingRight
-        keyWidth = contentWidth / numKeys
+        keyWidth = contentWidth.toFloat() / numKeys
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -87,8 +87,8 @@ class KeyboardView : View {
                 keyBPaint
             }
 
-            val left = paddingLeft + (keyIndex * keyWidth).toFloat()
-            val right = left + keyWidth - 1
+            val left = paddingLeft + keyIndex * keyWidth
+            val right = left + keyWidth
             val bottom = (height - paddingBottom).toFloat()
             val top = paddingTop.toFloat()
 

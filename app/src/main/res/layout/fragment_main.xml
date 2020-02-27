@@ -4,7 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".mainUi.MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ampEnvelopeControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:contentPadding="8dp"
+        app:layout_constraintBottom_toTopOf="@id/keyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/view_amp_envelope" />
+    </androidx.cardview.widget.CardView>
+
 
     <com.flatmapdev.synth.mainUi.KeyboardView
         android:id="@+id/keyboard"
@@ -13,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ampEnvelopeControls"
         app:numKeys="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

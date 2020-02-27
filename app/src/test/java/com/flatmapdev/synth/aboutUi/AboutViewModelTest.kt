@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.deviceCore.useCase.GetDeviceFeatures
 import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +20,7 @@ class AboutViewModelTest {
         val version = "1.26.4-alpha4"
         val subject = AboutViewModel(
             GetDeviceFeatures(StubDeviceFeaturesAdapter()),
-            FakeSynthEngineAdapter(version = version)
+            StubSynthEngineAdapter(version = version)
         )
 
         assertThat(subject.engineVersion.value)
@@ -39,7 +39,7 @@ class AboutViewModelTest {
                     deviceFeatures = deviceFeatures
                 )
             ),
-            FakeSynthEngineAdapter()
+            StubSynthEngineAdapter()
         )
 
         assertThat(subject.deviceFeatures.value)

@@ -12,8 +12,8 @@ import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.device.FakeDeviceDataModule
 import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
-import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.jni.FakeJniModule
+import com.flatmapdev.synth.doubles.jni.FakeSynth
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,9 +29,9 @@ class AboutFragmentTest {
 
     @Test
     fun `it shows the engine version`() {
-        testComponentBuilder.fakeEngineDataModule(
-            FakeEngineDataModule(
-                FakeSynthEngineAdapter(
+        testComponentBuilder.fakeJniModule(
+            FakeJniModule(
+                synth = FakeSynth(
                     version = "1.2.345"
                 )
             )

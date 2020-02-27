@@ -8,7 +8,8 @@
 using namespace synth;
 
 TEST(EnvelopeControlledAmplifierTest, AmplifierProducesPower4Curve) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> audioBuffer;
     audioBuffer.fill(1.0);
     EnvelopeControlledAmplifier subject(envelope);
@@ -22,7 +23,8 @@ TEST(EnvelopeControlledAmplifierTest, AmplifierProducesPower4Curve) {
 }
 
 TEST(EnvelopeTest, AmplifierDoesNotAmplifySilentAudio) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> audioBuffer;
     // Silent audio
     audioBuffer.fill(0);
@@ -37,7 +39,8 @@ TEST(EnvelopeTest, AmplifierDoesNotAmplifySilentAudio) {
 }
 
 TEST(EnvelopeTest, AmplifierDoesNotAmplifyIfStartAttackNotCalled) {
-    Envelope envelope(1000, 100, 100, 0.5, 100);
+    EnvelopeParameters params = {100, 100, 0.5, 100};
+    Envelope envelope(1000, params);
     std::array<float, 10> audioBuffer;
     audioBuffer.fill(1.0);
     EnvelopeControlledAmplifier subject(envelope);
@@ -50,7 +53,8 @@ TEST(EnvelopeTest, AmplifierDoesNotAmplifyIfStartAttackNotCalled) {
 }
 
 TEST(EnvelopeTest, AmplifierReleasesTheEnvelopeIfStartReleaseCalled) {
-    Envelope envelope(1000, 10, 0, 0.5, 0);
+    EnvelopeParameters params = {10, 0, 0.5, 0};
+    Envelope envelope(1000, params);
     std::array<float, 100> audioBuffer;
     audioBuffer.fill(1.0);
     EnvelopeControlledAmplifier subject(envelope);

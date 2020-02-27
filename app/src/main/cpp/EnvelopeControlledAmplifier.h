@@ -10,7 +10,7 @@ namespace synth {
 
     public:
         EnvelopeControlledAmplifier(
-                Envelope envelope
+                Envelope &envelope
         );
 
         void startAttack();
@@ -23,7 +23,7 @@ namespace synth {
         );
 
     private:
-        Envelope envelope_;
+        Envelope *envelope_;
     };
 }
 

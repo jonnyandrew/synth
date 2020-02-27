@@ -6,7 +6,8 @@
 #include <oboe/Oboe.h>
 #include <android/log.h>
 
-synth::AudioStream::AudioStream() {
+synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
+        : audioSource_(&audioSource) {
     oboe::AudioStreamBuilder builder;
     builder
             .setDirection(oboe::Direction::Output)
@@ -29,9 +30,6 @@ synth::AudioStream::AudioStream() {
 
         throw PlayException(resultText);
     }
-}
-
-void synth::AudioStream::start() {
     oboeStream_->requestStart();
 }
 
@@ -53,13 +51,18 @@ synth::AudioStream::onAudioReady(oboe::AudioStream *audioStream, void *audioData
 }
 
 int synth::AudioStream::getSampleRate() {
-    return oboeStream_->getSampleRate();
+    if (sampleRate_ == 0) {
+        oboe::ManagedStream tmpStream;
+        oboe::AudioStreamBuilder().openManagedStream(tmpStream);
+        sampleRate_ = tmpStream->getSampleRate();
+        tmpStream->close();
+    }
+
+    return sampleRate_;
 }
 
 void synth::AudioStream::close() {
     oboeStream_->close();
 }
 
-void synth::AudioStream::setAudioSource(synth::SignalSource &audioSource) {
-    audioSource_ = &audioSource;
-}
+int synth::AudioStream::sampleRate_;

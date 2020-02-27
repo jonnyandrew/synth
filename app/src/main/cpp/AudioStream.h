@@ -8,15 +8,11 @@
 namespace synth {
     class AudioStream : oboe::AudioStreamCallback {
     public:
-        AudioStream();
-
-        void start();
+        AudioStream(SignalSource &audioSource);
 
         void close();
 
-        void setAudioSource(SignalSource &audioSource);
-
-        int getSampleRate();
+        static int getSampleRate();
 
         oboe::DataCallbackResult onAudioReady(
                 oboe::AudioStream *oboeStream,
@@ -27,6 +23,8 @@ namespace synth {
         oboe::ManagedStream oboeStream_;
 
         SignalSource *audioSource_;
+
+        static int sampleRate_;
     };
 };
 #endif //SYNTH_AUDIOSTREAM_H

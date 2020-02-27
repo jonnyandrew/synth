@@ -23,7 +23,7 @@ class AboutViewModel(
 
     init {
         _deviceFeatures.value = getDeviceFeatures.execute()
-        _engineVersion.value = synthEngineAdapter.getVersion()
+        _engineVersion.value = synthEngineAdapter.version
     }
 
     @Reusable

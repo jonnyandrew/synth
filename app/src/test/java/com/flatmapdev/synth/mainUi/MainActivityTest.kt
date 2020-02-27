@@ -2,17 +2,12 @@ package com.flatmapdev.synth.mainUi
 
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
-import com.flatmapdev.synth.doubles.engine.FakeEngineDataModule
-import com.flatmapdev.synth.doubles.engine.adapter.FakeSynthEngineAdapter
+import com.flatmapdev.synth.doubles.jni.FakeJniModule
+import com.flatmapdev.synth.doubles.jni.FakeSynth
 import io.mockk.spyk
 import io.mockk.verify
 import io.mockk.verifyOrder
@@ -32,11 +27,11 @@ class MainActivityTest {
 
     @Test
     fun `it starts the synth engine`() {
-        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
+        val spySynth = spyk(FakeSynth())
         getApp().appComponent = testComponentBuilder
-            .fakeEngineDataModule(
-                FakeEngineDataModule(
-                    synthEngineAdapter = spySynthEngineAdapter
+            .fakeJniModule(
+                FakeJniModule(
+                    synth = spySynth
                 )
             )
             .build()
@@ -44,16 +39,16 @@ class MainActivityTest {
 
         onView(isDisplayed())
 
-        verify { spySynthEngineAdapter.start() }
+        verify { spySynth.start() }
     }
 
     @Test
     fun `when it is destroyed, it stops the synth engine`() {
-        val spySynthEngineAdapter = spyk(FakeSynthEngineAdapter())
+        val spySynth = spyk(FakeSynth())
         getApp().appComponent = testComponentBuilder
-            .fakeEngineDataModule(
-                FakeEngineDataModule(
-                    synthEngineAdapter = spySynthEngineAdapter
+            .fakeJniModule(
+                FakeJniModule(
+                    synth = spySynth
                 )
             )
             .build()
@@ -62,9 +57,9 @@ class MainActivityTest {
         scenario.recreate()
 
         verifyOrder {
-            spySynthEngineAdapter.start()
-            spySynthEngineAdapter.stop()
-            spySynthEngineAdapter.start()
+            spySynth.start()
+            spySynth.stop()
+            spySynth.start()
         }
     }
 }

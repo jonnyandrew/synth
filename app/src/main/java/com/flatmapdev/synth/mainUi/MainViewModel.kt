@@ -12,7 +12,7 @@ import dagger.Reusable
 import javax.inject.Inject
 
 class MainViewModel(
-    getKeyboard: GetKeyboard,
+    private val getKeyboard: GetKeyboard,
     private val playKey: PlayKey,
     private val stopKeys: StopKeys
 ) : ViewModel() {
@@ -20,7 +20,7 @@ class MainViewModel(
     private val _keyboard = MutableLiveData<List<Key>>()
     val keyboard: LiveData<List<Key>> = _keyboard
 
-    init {
+    fun init() {
         _keyboard.value = getKeyboard.execute()
     }
 

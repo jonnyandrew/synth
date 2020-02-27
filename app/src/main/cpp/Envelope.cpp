@@ -4,23 +4,16 @@
 
 synth::Envelope::Envelope(
         int sampleRate,
-        float attackTimeMs,
-        float decayTimeMs,
-        float sustainLevel,
-        float releaseTimeMs) {
-    attackTimeMs_ = attackTimeMs;
-    sustainLevel_ = sustainLevel;
-    timeIncrement_ = (1000.0f / sampleRate);
-    sustainStartTimeMs_ = attackTimeMs + decayTimeMs;
-    attackLevelIncrement_ = 1.0f / (attackTimeMs / timeIncrement_);
-    decayLevelIncrement_ = (sustainLevel - 1.0f) / (decayTimeMs / timeIncrement_);
-    releaseLevelIncrement_ = (0.0f - sustainLevel) / (releaseTimeMs / timeIncrement_);
+        EnvelopeParameters envelopeParameters
+) : params_(envelopeParameters),
+    timeIncrement_(1000.0f / sampleRate) {
+    onNewParameters();
 }
 
 void synth::Envelope::startAttack() {
     time_ = 0;
     isTriggering_ = true;
-    if(attackTimeMs_ < timeIncrement_) {
+    if (params_.attackTimeMs < timeIncrement_) {
         level_ = 1.0f;
     }
 }
@@ -35,24 +28,42 @@ void synth::Envelope::getSignal(float *buffer, const int numFrames) {
         time_ += timeIncrement_;
         if (!isTriggering_) {
             // If the release is started before the decay is complete then decay first
-            if(level_ > sustainLevel_) {
+            if (level_ > params_.sustainLevel) {
                 level_ += decayLevelIncrement_;
             } else {
                 level_ += releaseLevelIncrement_;
             }
 
-            if(level_ < 0.0f) level_ = 0.0f;
-        } else if (time_ <= attackTimeMs_) {
+            if (level_ < 0.0f) level_ = 0.0f;
+        } else if (time_ <= params_.attackTimeMs) {
             level_ += attackLevelIncrement_;
-            if(level_ > 1) level_ = 1;
+            if (level_ > 1) level_ = 1;
         } else if (time_ <= sustainStartTimeMs_) {
             level_ += decayLevelIncrement_;
-            if(level_ < sustainLevel_) level_ = sustainLevel_;
+            if (level_ < params_.sustainLevel)
+                level_ = params_.sustainLevel;
         } else {
-            level_ = sustainLevel_;
+            level_ = params_.sustainLevel;
         }
 
         // Set the current frame of the buffer
         buffer[i] = static_cast<float>(level_);
     }
 }
+
+void synth::Envelope::setEnvelopeParameters(synth::EnvelopeParameters envelopeParameters) {
+    params_ = envelopeParameters;
+    onNewParameters();
+}
+
+synth::EnvelopeParameters synth::Envelope::getEnvelopeParameters() { return params_; }
+
+void synth::Envelope::onNewParameters() {
+    sustainStartTimeMs_ = params_.attackTimeMs + params_.decayTimeMs;
+    attackLevelIncrement_ = 1.0f / (params_.attackTimeMs / timeIncrement_);
+    decayLevelIncrement_ = (params_.sustainLevel - 1.0f) /
+                           (params_.decayTimeMs / timeIncrement_);
+    releaseLevelIncrement_ = (0.0f - params_.sustainLevel) /
+                             (params_.releaseTimeMs / timeIncrement_);
+}
+

@@ -47,6 +47,12 @@ android {
             includeAndroidResources = true
         }
     }
+    lintOptions {
+        abortOnError true
+        textReport true
+        textOutput 'stdout'
+        xmlReport false
+    }
 }
 
 task cppTest {
@@ -79,12 +85,12 @@ dependencies {
 
     kaptTest 'com.google.dagger:dagger-compiler:2.26'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.assertj:assertj-core:1.7.1'
+    testImplementation 'org.assertj:assertj-core:3.12.2'
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
-    testImplementation 'androidx.fragment:fragment-testing:1.2.1'
+    testImplementation 'androidx.fragment:fragment-testing:1.2.2'
     // Must build with androidx.fragment:fragment-testing so that we can run release flavor unit
     // tests on the CI. But this should be changed from implementation to testImplementation when
     // its possible to do so.

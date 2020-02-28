@@ -25,3 +25,32 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// Workaround for Robolectric issue https://github.com/robolectric/robolectric/pull/5432#issuecomment-576458990
+String autoServiceVersion = "1.0-rc6"
+allprojects {
+    configurations.all { configuration ->
+        configuration.resolutionStrategy {
+            // Force latest versions of auto-service so we can perform appropriate dependency
+            // substitution below.
+            force "com.google.auto.service:auto-service:$autoServiceVersion"
+            force "com.google.auto.service:auto-service-annotations:$autoServiceVersion"
+
+            // Robolectric ships with a hard dependency on auto-service
+            // https://github.com/robolectric/robolectric/issues/5245
+            // PR pending: https://github.com/robolectric/robolectric/pull/5432
+            String lowercaseName = configuration.name.toLowerCase(Locale.US)
+            if (!lowercaseName.contains("compileonly")
+                    && !lowercaseName.contains("kapt")
+                    && !lowercaseName.contains("annotationprocessor")) {
+                eachDependency { DependencyResolveDetails details ->
+                    if (details.requested.group == 'com.google.auto.service') {
+                        // Change the name to auto-service-annotations
+                        // We can't tell Gradle to just ignore this dependency, but this works for our needs
+                        details.useTarget group: details.requested.group, name: 'auto-service-annotations', version: autoServiceVersion
+                    }
+                }
+            }
+        }
+    }
+}

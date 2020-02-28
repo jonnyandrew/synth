@@ -3,7 +3,7 @@ package com.flatmapdev.synth.mainUi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
@@ -15,7 +15,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var synthEngineAdapter: SynthEngineAdapter
 
     private val navController: NavController
-        get() = findNavController(R.id.navHostFragmentContainer)
+        get() {
+            val navHostFragment = supportFragmentManager.findFragmentById(
+                R.id.navHostFragmentContainer
+            ) as NavHostFragment
+            return navHostFragment.navController
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as App).appComponent.inject(this)

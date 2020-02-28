@@ -2,7 +2,7 @@ package com.flatmapdev.synth.deviceCore.useCase
 
 import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
-import junit.framework.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class GetDeviceFeaturesTest {
@@ -18,6 +18,6 @@ class GetDeviceFeaturesTest {
 
         val result = subject.execute()
 
-        assertEquals(deviceFeatures, result)
+        assertThat(deviceFeatures).isEqualTo(result)
     }
 }

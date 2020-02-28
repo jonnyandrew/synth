@@ -20,11 +20,11 @@ jobs:
       with:
         java-version: 1.8
     - name: Lint
-      run: ./gradlew lint
+      run: ./gradlew lintRelease
     - name: Kotlin Lint
       run: ./gradlew lintKotlin
     - name: Kotlin Unit Test
-      run: ./gradlew test
+      run: ./gradlew testRelease
     - name: C++ Unit Test
       uses: ReactiveCircus/android-emulator-runner@v2.4.0
       with:

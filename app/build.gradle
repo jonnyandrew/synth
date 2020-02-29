@@ -72,6 +72,22 @@ task cppTest {
     dependsOn ':app:externalNativeBuildDebug'
 }
 
+task cppLint {
+    String abi = project.getProperties().getOrDefault('abi', 'x86')
+    doLast {
+        exec {
+            workingDir "./.cxx/cmake/debug/$abi"
+            commandLine 'chmod', '+x', './cpp_lint_runner.sh'
+        }
+        exec {
+            workingDir "./.cxx/cmake/debug/$abi"
+            commandLine './cpp_lint_runner.sh'
+        }
+    }
+
+    dependsOn ':app:externalNativeBuildDebug'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

@@ -18,7 +18,7 @@ namespace synth {
         void startRelease();
 
         void getSignal(
-                std::vector<float> &audioBuffer
+                std::vector<float> &buffer
         ) override;
 
     private:

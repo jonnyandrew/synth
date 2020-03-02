@@ -6,6 +6,8 @@ class FakeSynth(
     private val version: String = "1.0.0",
     private var ampEnvelope: FloatArray = floatArrayOf(0f, 2f, 10f, 4f)
 ) : Synth {
+    override fun initialize() {}
+
     override fun getVersion(): String = version
 
     override fun start() {}

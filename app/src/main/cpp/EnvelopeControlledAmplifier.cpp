@@ -19,7 +19,8 @@ void synth::EnvelopeControlledAmplifier::getSignal(
         // which is on a linear scale, to an exponential curve.
         // Use x^4 as an approximation of an exponential curve
         // which also conveniently passes through x,y = 0,0 and 1,1
-        audioBuffer[i] *= pow(envelopeBuffer[i], 4.0f);
+        const auto exponent = 4.0F;
+        audioBuffer[i] *= pow(envelopeBuffer[i], exponent);
     }
 }
 

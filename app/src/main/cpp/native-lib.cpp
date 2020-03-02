@@ -15,8 +15,12 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
     Oscillator osc1(AudioStream::getSampleRate());
     Oscillator osc2(AudioStream::getSampleRate());
+    const auto attack = 100.0F;
+    const auto decay = 100.0F;
+    const auto sustain = 0.3F;
+    const auto release = 4000.0F;
     EnvelopeParameters defaultEnvelopeParameters =
-            {100.0f, 100.0f, 0.3f, 4000.0f};
+            {attack, decay, sustain, release};
     ampEnvelope = std::make_unique<Envelope>(
             AudioStream::getSampleRate(),
             defaultEnvelopeParameters

@@ -35,7 +35,7 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
 
 
 auto synth::AudioStream::onAudioReady(
-        oboe::AudioStream *audioStream,
+        oboe::AudioStream *oboeStream,
         void *audioData,
         int32_t numFrames
 ) -> oboe::DataCallbackResult {

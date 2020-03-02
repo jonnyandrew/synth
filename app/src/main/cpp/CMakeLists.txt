@@ -1,53 +1,75 @@
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
-
 file(GLOB SYNTH_ENGINE_SOURCES ./*.cpp)
-add_library( # Sets the name of the library.
+
+add_library(
         synth-engine
-
-        # Sets the library as a shared library.
         SHARED
-
         ${SYNTH_ENGINE_SOURCES}
-        )
-
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
-
-find_library( # Sets the name of the path variable.
-        log-lib
-
-        # Specifies the name of the NDK library that
-        # you want CMake to locate.
-        log)
-
-# Set the path to the Oboe directory.
-set(OBOE_DIR ./oboe)
-
-# Add the Oboe library as a subdirectory in your project.
-# add_subdirectory tells CMake to look in this directory to
-# compile oboe source files using oboe's CMake file.
-# ./oboe specifies where the compiled binaries will be stored
-add_subdirectory(${OBOE_DIR} ./oboe)
-
-# Specify the path to the Oboe header files.
-# This allows targets compiled with this CMake (application code)
-# to see public Oboe headers, in order to access its API.
-include_directories(${OBOE_DIR}/include)
-
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in this
-# build script, prebuilt third-party libraries, or system libraries.
-target_link_libraries( # Specifies the target library.
+)
+target_link_libraries(
         synth-engine
         oboe
+        ${log-lib}
+)
 
-        # Links the target library to the log library
-        # included in the NDK.
-        ${log-lib})
+find_program(CLANG_TIDY clang-tidy)
+
+set(CLANG_TIDY_CHECKS
+        "*,\
+android-*,\
+-bugprone-bool-pointer-implicit-conversion,\
+-cert-env33-c,\
+-cert-dcl50-cpp,\
+-cert-dcl59-cpp,\
+-cppcoreguidelines-no-malloc,\
+-cppcoreguidelines-owning-memory,\
+-cppcoreguidelines-pro-bounds-array-to-pointer-decay,\
+-cppcoreguidelines-pro-bounds-constant-array-index,\
+-cppcoreguidelines-pro-bounds-pointer-arithmetic,\
+-cppcoreguidelines-pro-type-const-cast,\
+-cppcoreguidelines-pro-type-cstyle-cast,\
+-cppcoreguidelines-pro-type-reinterpret-cast,\
+-cppcoreguidelines-pro-type-union-access,\
+-cppcoreguidelines-pro-type-vararg,\
+-cppcoreguidelines-special-member-functions,\
+-fuchsia-*,\
+-google-*,\
+google-default-arguments,\
+google-explicit-constructor,\
+google-runtime-member-string-references,\
+google-runtime-operator,\
+-hicpp-braces-around-statements,\
+-hicpp-named-parameter,\
+-hicpp-no-array-decay,\
+-hicpp-no-assembler,\
+-hicpp-no-malloc,\
+-hicpp-function-size,\
+-hicpp-special-member-functions,\
+-hicpp-vararg,\
+-llvm-*,\
+-objc-*,\
+-readability-else-after-return,\
+-readability-implicit-bool-conversion,\
+-readability-named-parameter,\
+-readability-simplify-boolean-expr,\
+-readability-braces-around-statements,\
+-readability-identifier-naming,\
+-readability-function-size,\
+-readability-redundant-member-init,\
+-misc-bool-pointer-implicit-conversion,\
+-misc-definitions-in-headers,\
+-misc-unused-alias-decls,\
+-misc-unused-parameters,\
+-misc-unused-using-decls,\
+-modernize-use-using,\
+-modernize-use-default-member-init,\
+-clang-diagnostic-*,\
+-clang-analyzer-*")
+
+set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)
+
+add_custom_command(
+        TARGET synth-engine POST_BUILD
+        COMMAND > ${LINT_RUNNER}
+        COMMAND echo ${CLANG_TIDY} -p=${CMAKE_BINARY_DIR} -warnings-as-errors=${CLANG_TIDY_CHECKS} -checks=${CLANG_TIDY_CHECKS} ${SYNTH_ENGINE_SOURCES} ${TEST_SOURCES} >> ${LINT_RUNNER}
+)
 

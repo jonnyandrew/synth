@@ -10,12 +10,11 @@ using namespace synth;
 TEST(EnvelopeControlledAmplifierTest, AmplifierProducesPower4Curve) {
     EnvelopeParameters params = {100, 100, 0.5, 100};
     Envelope envelope(1000, params);
-    std::array<float, 10> audioBuffer;
-    audioBuffer.fill(1.0);
+    std::vector<float> audioBuffer(10, 1.0F);
     EnvelopeControlledAmplifier subject(envelope);
 
     subject.startAttack();
-    subject.getSignal(audioBuffer.data(), audioBuffer.size());
+    subject.getSignal(audioBuffer);
 
     for(int i = 0; i < 10; i++) {
         EXPECT_FLOAT_EQ(audioBuffer[i], pow((i + 1.0) / 100.0, 4));
@@ -25,13 +24,12 @@ TEST(EnvelopeControlledAmplifierTest, AmplifierProducesPower4Curve) {
 TEST(EnvelopeTest, AmplifierDoesNotAmplifySilentAudio) {
     EnvelopeParameters params = {100, 100, 0.5, 100};
     Envelope envelope(1000, params);
-    std::array<float, 10> audioBuffer;
     // Silent audio
-    audioBuffer.fill(0);
+    std::vector<float> audioBuffer(10, 0);
     EnvelopeControlledAmplifier subject(envelope);
 
     subject.startAttack();
-    subject.getSignal(audioBuffer.data(), audioBuffer.size());
+    subject.getSignal(audioBuffer);
 
     for(int i = 0; i < 10; i++) {
         EXPECT_FLOAT_EQ(audioBuffer[i], 0);
@@ -41,11 +39,10 @@ TEST(EnvelopeTest, AmplifierDoesNotAmplifySilentAudio) {
 TEST(EnvelopeTest, AmplifierDoesNotAmplifyIfStartAttackNotCalled) {
     EnvelopeParameters params = {100, 100, 0.5, 100};
     Envelope envelope(1000, params);
-    std::array<float, 10> audioBuffer;
-    audioBuffer.fill(1.0);
+    std::vector<float> audioBuffer(10, 1.0F);
     EnvelopeControlledAmplifier subject(envelope);
 
-    subject.getSignal(audioBuffer.data(), audioBuffer.size());
+    subject.getSignal(audioBuffer);
 
     for(int i = 0; i < 10; i++) {
         EXPECT_FLOAT_EQ(audioBuffer[i], 0);
@@ -55,18 +52,17 @@ TEST(EnvelopeTest, AmplifierDoesNotAmplifyIfStartAttackNotCalled) {
 TEST(EnvelopeTest, AmplifierReleasesTheEnvelopeIfStartReleaseCalled) {
     EnvelopeParameters params = {10, 0, 0.5, 0};
     Envelope envelope(1000, params);
-    std::array<float, 100> audioBuffer;
-    audioBuffer.fill(1.0);
+    std::vector<float> audioBuffer(1, 1.0F);
     EnvelopeControlledAmplifier subject(envelope);
 
     subject.startAttack();
-    subject.getSignal(audioBuffer.data(), 1);
+    subject.getSignal(audioBuffer);
 
     // Expect that the audio was started
     EXPECT_GT(audioBuffer[0], 0);
 
     subject.startRelease();
-    subject.getSignal(audioBuffer.data(), 9);
+    subject.getSignal(audioBuffer);
 
     // Expect that the attack was stopped and audio drops to silent
     // According to this envelope

@@ -19,10 +19,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Lint
-      run: ./gradlew lintRelease
+    - name: Add clang-tidy to path
+      run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
+    - name: C++ Lint
+      run: ./gradlew cppLint
     - name: Kotlin Lint
       run: ./gradlew lintKotlin
+    - name: Android Lint
+      run: ./gradlew lintRelease
     - name: Kotlin Unit Test
       run: ./gradlew testRelease
     - name: C++ Unit Test

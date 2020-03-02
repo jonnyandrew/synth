@@ -22,9 +22,8 @@ namespace synth {
         void stopNote();
 
         void getSignal(
-                float *audioBuffer,
-                const int numFrames
-        );
+                std::vector<float> &buffer
+        ) override;
 
     private:
         Oscillator oscillator1_;

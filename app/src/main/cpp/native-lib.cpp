@@ -7,26 +7,36 @@
 
 using namespace synth;
 
-Oscillator osc1(AudioStream::getSampleRate());
-Oscillator osc2(AudioStream::getSampleRate());
-std::unique_ptr<AudioStream> stream;
-EnvelopeParameters defaultEnvelopeParameters =
-        {100.0f, 100.0f, 0.3f, 4000.0f};
-std::unique_ptr<Envelope> ampEnvelope = std::make_unique<Envelope>(
-        AudioStream::getSampleRate(),
-        defaultEnvelopeParameters
-);
-EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
-std::unique_ptr<AudioEngine> audioEngine = std::make_unique<AudioEngine>(
-        osc1,
-        osc2,
-        envelopeControlledAmplifier
-);
+static std::unique_ptr<AudioStream> stream;
+static std::unique_ptr<Envelope> ampEnvelope;
+static std::unique_ptr<AudioEngine> audioEngine;
 
-extern "C" JNIEXPORT jstring JNICALL
+extern "C" JNIEXPORT void JNICALL
+Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
+    Oscillator osc1(AudioStream::getSampleRate());
+    Oscillator osc2(AudioStream::getSampleRate());
+    const auto attack = 100.0F;
+    const auto decay = 100.0F;
+    const auto sustain = 0.3F;
+    const auto release = 4000.0F;
+    EnvelopeParameters defaultEnvelopeParameters =
+            {attack, decay, sustain, release};
+    ampEnvelope = std::make_unique<Envelope>(
+            AudioStream::getSampleRate(),
+            defaultEnvelopeParameters
+    );
+    EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
+    audioEngine = std::make_unique<AudioEngine>(
+            osc1,
+            osc2,
+            envelopeControlledAmplifier
+    );
+}
+
+extern "C" JNIEXPORT auto JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
         JNIEnv *env
-) {
+) -> jstring {
     const std::string version = "0.1.0";
     return env->NewStringUTF(version.c_str());
 }
@@ -55,11 +65,11 @@ Java_com_flatmapdev_synth_jni_NativeSynth_stopNote() {
     audioEngine->stopNote();
 }
 
-extern "C" JNIEXPORT jfloatArray JNICALL
+extern "C" JNIEXPORT JNICALL auto
 Java_com_flatmapdev_synth_jni_NativeSynth_getAmpEnvelope(
         JNIEnv *env,
         jclass cls
-) {
+) -> jfloatArray {
     jfloatArray result;
     result = env->NewFloatArray(4);
     EnvelopeParameters envelopeParameters = ampEnvelope->getEnvelopeParameters();
@@ -79,7 +89,7 @@ Java_com_flatmapdev_synth_jni_NativeSynth_setAmpEnvelope(
         jclass cls,
         jfloatArray jEnvelopeAdsr
 ) {
-    float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, 0);
+    float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, nullptr);
     EnvelopeParameters envelopeParameters = {
             envelopeAdsr[0],
             envelopeAdsr[1],

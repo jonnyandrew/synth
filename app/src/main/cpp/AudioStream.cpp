@@ -33,24 +33,26 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
     oboeStream_->requestStart();
 }
 
-oboe::DataCallbackResult
-synth::AudioStream::onAudioReady(oboe::AudioStream *audioStream, void *audioData,
-                                 int32_t numFrames) {
+
+auto synth::AudioStream::onAudioReady(
+        oboe::AudioStream *oboeStream,
+        void *audioData,
+        int32_t numFrames
+) -> oboe::DataCallbackResult {
     if (audioSource_ == nullptr) {
         return oboe::DataCallbackResult::Continue;
     }
 
-    // We requested AudioFormat::Float so we assume we got it.
-    // For production code always check what format
-    // the stream has and cast to the appropriate type.
-    auto *outputData = static_cast<float *>(audioData);
+    std::vector<float> buffer(static_cast<size_t>(numFrames));
 
-    audioSource_->getSignal(outputData, numFrames);
+    audioSource_->getSignal(buffer);
+
+    std::copy(buffer.begin(), buffer.end(), static_cast<float *>(audioData));
 
     return oboe::DataCallbackResult::Continue;
 }
 
-int synth::AudioStream::getSampleRate() {
+auto synth::AudioStream::getSampleRate() -> int {
     if (sampleRate_ == 0) {
         oboe::ManagedStream tmpStream;
         oboe::AudioStreamBuilder().openManagedStream(tmpStream);

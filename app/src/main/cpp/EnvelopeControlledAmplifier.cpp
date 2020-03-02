@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "EnvelopeControlledAmplifier.h"
 
 synth::EnvelopeControlledAmplifier::EnvelopeControlledAmplifier(
@@ -6,12 +6,12 @@ synth::EnvelopeControlledAmplifier::EnvelopeControlledAmplifier(
 ) : envelope_(&envelope) {}
 
 void synth::EnvelopeControlledAmplifier::getSignal(
-        float *audioBuffer,
-        const int numFrames
+        std::vector<float> &buffer
 ) {
-    float envelopeBuffer[numFrames];
+    const size_t numFrames = buffer.size();
+    std::vector<float> envelopeBuffer(numFrames);
 
-    envelope_->getSignal(envelopeBuffer, numFrames);
+    envelope_->getSignal(envelopeBuffer);
 
     for (int i = 0; i < numFrames; i++) {
         // The human ear perceives an exponential scale of volume
@@ -19,7 +19,8 @@ void synth::EnvelopeControlledAmplifier::getSignal(
         // which is on a linear scale, to an exponential curve.
         // Use x^4 as an approximation of an exponential curve
         // which also conveniently passes through x,y = 0,0 and 1,1
-        audioBuffer[i] *= pow(envelopeBuffer[i], 4.0f);
+        const auto exponent = 4.0F;
+        buffer[i] *= pow(envelopeBuffer[i], exponent);
     }
 }
 

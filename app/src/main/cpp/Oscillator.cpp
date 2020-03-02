@@ -1,7 +1,7 @@
 #include "Oscillator.h"
 #include "Constants.h"
 #include "Pitch.h"
-#include <math.h>
+#include <cmath>
 
 synth::Oscillator::Oscillator(const int sampleRate) {
     assert(sampleRate > 0);

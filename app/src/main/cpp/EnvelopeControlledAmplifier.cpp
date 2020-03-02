@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "EnvelopeControlledAmplifier.h"
 
 synth::EnvelopeControlledAmplifier::EnvelopeControlledAmplifier(

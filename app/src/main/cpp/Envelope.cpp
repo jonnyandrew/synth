@@ -6,8 +6,34 @@ synth::Envelope::Envelope(
         int sampleRate,
         EnvelopeParameters envelopeParameters
 ) : params_(envelopeParameters),
-    timeIncrement_(MS_PER_S / sampleRate) {
-    onNewParameters();
+    timeIncrement_(MS_PER_S / static_cast<float>(sampleRate)),
+    sustainStartTimeMs_(
+            calcSustainStartTimeMs_(
+                    envelopeParameters.attackTimeMs,
+                    envelopeParameters.decayTimeMs
+            )
+    ),
+    attackLevelIncrement_(
+            calcAttackLevelIncrement_(
+                    envelopeParameters.attackTimeMs,
+                    timeIncrement_
+            )
+    ),
+    decayLevelIncrement_(
+            calcDecayLevelIncrement_(
+                    envelopeParameters.sustainLevel,
+                    envelopeParameters.decayTimeMs,
+                    timeIncrement_
+            )
+    ),
+    releaseLevelIncrement_(
+            calcReleaseLevelIncrement_(
+                    envelopeParameters.sustainLevel,
+                    envelopeParameters.releaseTimeMs,
+                    timeIncrement_
+            )
+    ) {
+
 }
 
 void synth::Envelope::startAttack() {
@@ -52,20 +78,47 @@ void synth::Envelope::getSignal(float *buffer, const int numFrames) {
 }
 
 void synth::Envelope::setEnvelopeParameters(synth::EnvelopeParameters envelopeParameters) {
+    // Calculate new values
+    auto sustainStartTimeMs = calcSustainStartTimeMs_(envelopeParameters.attackTimeMs,
+                                                      envelopeParameters.decayTimeMs);
+    auto attackLevelIncrement = calcAttackLevelIncrement_(envelopeParameters.attackTimeMs,
+                                                          timeIncrement_);
+    auto decayLevelIncrement = calcDecayLevelIncrement_(envelopeParameters.sustainLevel,
+                                                        envelopeParameters.decayTimeMs,
+                                                        timeIncrement_);
+    auto releaseLevelIncrement = calcReleaseLevelIncrement_(envelopeParameters.sustainLevel,
+                                                            envelopeParameters.releaseTimeMs,
+                                                            timeIncrement_);
+
+    // Set values
     params_ = envelopeParameters;
-    onNewParameters();
+    sustainStartTimeMs_ = sustainStartTimeMs;
+    attackLevelIncrement_ = attackLevelIncrement;
+    decayLevelIncrement_ = decayLevelIncrement;
+    releaseLevelIncrement_ = releaseLevelIncrement;
 }
 
 auto synth::Envelope::getEnvelopeParameters() -> synth::EnvelopeParameters {
     return params_;
 }
 
-void synth::Envelope::onNewParameters() {
-    sustainStartTimeMs_ = params_.attackTimeMs + params_.decayTimeMs;
-    attackLevelIncrement_ = MAX_LEVEL / (params_.attackTimeMs / timeIncrement_);
-    decayLevelIncrement_ = (params_.sustainLevel - MAX_LEVEL) /
-                           (params_.decayTimeMs / timeIncrement_);
-    releaseLevelIncrement_ = (MIN_LEVEL - params_.sustainLevel) /
-                             (params_.releaseTimeMs / timeIncrement_);
+auto synth::Envelope::calcSustainStartTimeMs_(float attackTimeMs, float decayTimeMs) -> float {
+    return attackTimeMs + decayTimeMs;
+}
+
+auto synth::Envelope::calcAttackLevelIncrement_(float attackTimeMs, float timeIncrement) -> float {
+    return MAX_LEVEL / (attackTimeMs / timeIncrement);
+}
+
+auto synth::Envelope::calcDecayLevelIncrement_(float sustainLevel, float decayTimeMs,
+                                               float timeIncrement) -> float {
+    return (sustainLevel - MAX_LEVEL) /
+           (decayTimeMs / timeIncrement);
+}
+
+auto synth::Envelope::calcReleaseLevelIncrement_(float sustainLevel, float releaseTimeMs,
+                                                 float timeIncrement) -> float {
+    return (MIN_LEVEL - sustainLevel) /
+           (releaseTimeMs / timeIncrement);
 }
 

@@ -27,9 +27,9 @@ namespace synth {
 
     private:
         EnvelopeParameters params_;
-        double level_ = 0;
+        double level_{0};
         float timeIncrement_;
-        float time_;
+        float time_{0};
         float sustainStartTimeMs_;
         float attackLevelIncrement_;
         float decayLevelIncrement_;
@@ -37,9 +37,12 @@ namespace synth {
         /**
          * isTriggering is true during the attack, decay and sustain phases of the curve
          */
-        bool isTriggering_ = false;
+        bool isTriggering_{false};
 
-        void onNewParameters();
+        float calcSustainStartTimeMs_(float attackTimeMs, float decayTimeMs);
+        float calcAttackLevelIncrement_(float attackTimeMs, float timeIncrement);
+        float calcDecayLevelIncrement_(float sustainLevel, float decayTimeMs, float timeIncrement);
+        float calcReleaseLevelIncrement_(float sustainLevel, float releaseTimeMs, float timeIncrement);
     };
 }
 

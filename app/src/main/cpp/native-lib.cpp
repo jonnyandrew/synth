@@ -29,10 +29,10 @@ Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
     );
 }
 
-extern "C" JNIEXPORT jstring JNICALL
+extern "C" JNIEXPORT auto JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
         JNIEnv *env
-) {
+) -> jstring {
     const std::string version = "0.1.0";
     return env->NewStringUTF(version.c_str());
 }
@@ -61,11 +61,11 @@ Java_com_flatmapdev_synth_jni_NativeSynth_stopNote() {
     audioEngine->stopNote();
 }
 
-extern "C" JNIEXPORT jfloatArray JNICALL
+extern "C" JNIEXPORT JNICALL auto
 Java_com_flatmapdev_synth_jni_NativeSynth_getAmpEnvelope(
         JNIEnv *env,
         jclass cls
-) {
+) -> jfloatArray {
     jfloatArray result;
     result = env->NewFloatArray(4);
     EnvelopeParameters envelopeParameters = ampEnvelope->getEnvelopeParameters();

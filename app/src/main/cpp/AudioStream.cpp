@@ -33,9 +33,12 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
     oboeStream_->requestStart();
 }
 
-oboe::DataCallbackResult
-synth::AudioStream::onAudioReady(oboe::AudioStream *audioStream, void *audioData,
-                                 int32_t numFrames) {
+
+auto synth::AudioStream::onAudioReady(
+        oboe::AudioStream *audioStream,
+        void *audioData,
+        int32_t numFrames
+) -> oboe::DataCallbackResult {
     if (audioSource_ == nullptr) {
         return oboe::DataCallbackResult::Continue;
     }
@@ -50,7 +53,7 @@ synth::AudioStream::onAudioReady(oboe::AudioStream *audioStream, void *audioData
     return oboe::DataCallbackResult::Continue;
 }
 
-int synth::AudioStream::getSampleRate() {
+auto synth::AudioStream::getSampleRate() -> int {
     if (sampleRate_ == 0) {
         oboe::ManagedStream tmpStream;
         oboe::AudioStreamBuilder().openManagedStream(tmpStream);

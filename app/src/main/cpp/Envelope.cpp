@@ -56,7 +56,9 @@ void synth::Envelope::setEnvelopeParameters(synth::EnvelopeParameters envelopePa
     onNewParameters();
 }
 
-synth::EnvelopeParameters synth::Envelope::getEnvelopeParameters() { return params_; }
+auto synth::Envelope::getEnvelopeParameters() -> synth::EnvelopeParameters {
+    return params_;
+}
 
 void synth::Envelope::onNewParameters() {
     sustainStartTimeMs_ = params_.attackTimeMs + params_.decayTimeMs;

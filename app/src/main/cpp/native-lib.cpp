@@ -85,7 +85,7 @@ Java_com_flatmapdev_synth_jni_NativeSynth_setAmpEnvelope(
         jclass cls,
         jfloatArray jEnvelopeAdsr
 ) {
-    float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, 0);
+    float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, nullptr);
     EnvelopeParameters envelopeParameters = {
             envelopeAdsr[0],
             envelopeAdsr[1],

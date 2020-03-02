@@ -1,5 +1,5 @@
-#include <cmath>
 #include "EnvelopeControlledAmplifier.h"
+#include <cmath>
 
 synth::EnvelopeControlledAmplifier::EnvelopeControlledAmplifier(
         Envelope &envelope

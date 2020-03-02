@@ -15,7 +15,7 @@ void synth::Oscillator::render(std::vector<float> &audioData, const int numFrame
 
         // Increments the phase, handling wrap around.
         phase_ += phaseIncrement_;
-        if (phase_ > TWO_PI) phase_ -= TWO_PI;
+        if (phase_ > TWO_PI) { phase_ -= TWO_PI; }
     }
 }
 

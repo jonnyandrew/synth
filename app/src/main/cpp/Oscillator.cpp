@@ -8,7 +8,7 @@ synth::Oscillator::Oscillator(const int sampleRate) {
     sampleRate_ = sampleRate;
 }
 
-void synth::Oscillator::render(float *audioData, const int numFrames) {
+void synth::Oscillator::render(std::vector<float> &audioData, const int numFrames) {
     for (int i = 0; i < numFrames; i++) {
         // Calculates the next sample value for the sine wave.
         audioData[i] = static_cast<float>(sin(phase_));

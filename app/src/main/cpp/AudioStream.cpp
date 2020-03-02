@@ -43,12 +43,11 @@ auto synth::AudioStream::onAudioReady(
         return oboe::DataCallbackResult::Continue;
     }
 
-    // We requested AudioFormat::Float so we assume we got it.
-    // For production code always check what format
-    // the stream has and cast to the appropriate type.
-    auto *outputData = static_cast<float *>(audioData);
+    std::vector<float> buffer(static_cast<size_t>(numFrames));
 
-    audioSource_->getSignal(outputData, numFrames);
+    audioSource_->getSignal(buffer);
+
+    std::copy(buffer.begin(), buffer.end(), static_cast<float *>(audioData));
 
     return oboe::DataCallbackResult::Continue;
 }

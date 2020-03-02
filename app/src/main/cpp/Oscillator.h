@@ -1,6 +1,8 @@
 #ifndef SYNTH_OSCILLATOR_H
 #define SYNTH_OSCILLATOR_H
 
+#include <vector>
+
 namespace synth {
     class Oscillator {
     public:
@@ -8,7 +10,7 @@ namespace synth {
 
         void setPitch(const int pitch);
 
-        void render(float *audioData, const int numFrames);
+        void render(std::vector<float> &audioData, const int numFrames);
 
     private:
         double phase_ = 0.0;

@@ -1,6 +1,7 @@
 #ifndef SYNTH_ENVELOPE_H
 #define SYNTH_ENVELOPE_H
 
+#include <vector>
 #include "SignalSource.h"
 #include "EnvelopeParameters.h"
 
@@ -17,9 +18,8 @@ namespace synth {
         void startRelease();
 
         void getSignal(
-                float *buffer,
-                const int numFrames
-        );
+                std::vector<float> &buffer
+        ) override;
 
         void setEnvelopeParameters(EnvelopeParameters envelopeParameters);
 

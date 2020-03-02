@@ -48,7 +48,8 @@ void synth::Envelope::startRelease() {
     isTriggering_ = false;
 }
 
-void synth::Envelope::getSignal(float *buffer, const int numFrames) {
+void synth::Envelope::getSignal(std::vector<float> &buffer) {
+    int numFrames = buffer.size();
     for (int i = 0; i < numFrames; i++) {
         // Increment the time and level
         time_ += timeIncrement_;

@@ -7,8 +7,7 @@ namespace synth {
         virtual ~SignalSource() = default;
 
         virtual void getSignal(
-                float *buffer,
-                const int numFrames
+                std::vector<float> &buffer
         ) = 0;
     };
 }

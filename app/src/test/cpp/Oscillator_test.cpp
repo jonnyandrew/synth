@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <iostream>
-#include <array>
+#include <vector>
 #include "Oscillator.h"
 #include "Constants.h"
 
@@ -9,9 +9,9 @@ using namespace synth;
 
 TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
     Oscillator osc(123);
-    std::array<float, 3> buffer;
+    std::vector<float> buffer(3);
 
-    osc.render(buffer.data(), buffer.size());
+    osc.render(buffer, buffer.size());
 
     EXPECT_EQ(buffer[0], 0);
     EXPECT_EQ(buffer[1], 0);
@@ -20,10 +20,10 @@ TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
 
 TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
     Oscillator osc(12345);
-    std::array<float, 512> buffer;
+    std::vector<float> buffer(512);
 
     osc.setPitch(60);
-    osc.render(buffer.data(), buffer.size());
+    osc.render(buffer, buffer.size());
 
     EXPECT_FLOAT_EQ(buffer[0], 0);
     EXPECT_FLOAT_EQ(buffer[1], 0.132767594256136);

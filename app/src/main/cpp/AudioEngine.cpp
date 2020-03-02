@@ -28,20 +28,21 @@ void synth::AudioEngine::stopNote() {
     envelopeControlledAmplifier_.startRelease();
 }
 
-void synth::AudioEngine::getSignal(float *audioBuffer, const int numFrames) {
-    float audio1[numFrames];
-    float audio2[numFrames];
+void synth::AudioEngine::getSignal(std::vector<float> &audioBuffer) {
+    const size_t numFrames = audioBuffer.size();
+    std::vector<float> audio1(numFrames, 0);
+    std::vector<float> audio2(numFrames);
     oscillator1_.render(audio1, numFrames);
     oscillator2_.render(audio2, numFrames);
 
     // mix
-    float mixed[numFrames];
+    std::vector<float> mixed(numFrames);
     for (int i = 0; i < numFrames; i++) {
         mixed[i] = (audio1[i] + audio2[i]) / 2;
     }
 
     // apply effects
-    envelopeControlledAmplifier_.getSignal(mixed, numFrames);
+    envelopeControlledAmplifier_.getSignal(mixed);
 
     // output
     for (int i = 0; i < numFrames; i++) {

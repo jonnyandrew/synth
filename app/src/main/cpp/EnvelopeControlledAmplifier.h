@@ -18,9 +18,8 @@ namespace synth {
         void startRelease();
 
         void getSignal(
-                float *audioBuffer,
-                const int numFrames
-        );
+                std::vector<float> &audioBuffer
+        ) override;
 
     private:
         Envelope *envelope_;

@@ -5,6 +5,11 @@ import javax.inject.Inject
 
 @AppScope
 class NativeSynth @Inject constructor() : Synth {
+    init {
+        initialize()
+    }
+
+    external override fun initialize()
     external override fun getVersion(): String
     external override fun start()
     external override fun stop()

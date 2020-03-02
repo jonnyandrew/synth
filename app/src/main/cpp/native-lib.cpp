@@ -7,21 +7,27 @@
 
 using namespace synth;
 
-Oscillator osc1(AudioStream::getSampleRate());
-Oscillator osc2(AudioStream::getSampleRate());
-std::unique_ptr<AudioStream> stream;
-EnvelopeParameters defaultEnvelopeParameters =
-        {100.0f, 100.0f, 0.3f, 4000.0f};
-std::unique_ptr<Envelope> ampEnvelope = std::make_unique<Envelope>(
-        AudioStream::getSampleRate(),
-        defaultEnvelopeParameters
-);
-EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
-std::unique_ptr<AudioEngine> audioEngine = std::make_unique<AudioEngine>(
-        osc1,
-        osc2,
-        envelopeControlledAmplifier
-);
+static std::unique_ptr<AudioStream> stream;
+static std::unique_ptr<Envelope> ampEnvelope;
+static std::unique_ptr<AudioEngine> audioEngine;
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
+    Oscillator osc1(AudioStream::getSampleRate());
+    Oscillator osc2(AudioStream::getSampleRate());
+    EnvelopeParameters defaultEnvelopeParameters =
+            {100.0f, 100.0f, 0.3f, 4000.0f};
+    ampEnvelope = std::make_unique<Envelope>(
+            AudioStream::getSampleRate(),
+            defaultEnvelopeParameters
+    );
+    EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
+    audioEngine = std::make_unique<AudioEngine>(
+            osc1,
+            osc2,
+            envelopeControlledAmplifier
+    );
+}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(

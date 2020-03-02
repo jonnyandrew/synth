@@ -14,7 +14,7 @@ synth::AudioEngine::AudioEngine(
 ) :
         oscillator1_(oscillator1),
         oscillator2_(oscillator2),
-        envelopeControlledAmplifier_(envelopeControlledAmplifier) {
+        envelopeControlledAmplifier_(std::move(envelopeControlledAmplifier)) {
     __android_log_print(ANDROID_LOG_INFO, LOGGER_TAG, "Initializing AudioEngine");
 }
 

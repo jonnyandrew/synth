@@ -1,6 +1,7 @@
 package com.flatmapdev.synth.jni
 
 interface Synth {
+    fun initialize()
     fun getVersion(): String
     fun start()
     fun stop()

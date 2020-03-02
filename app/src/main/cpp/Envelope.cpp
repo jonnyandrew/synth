@@ -1,6 +1,6 @@
-#include <android/log.h>
 #include "Envelope.h"
 #include "Constants.h"
+#include <android/log.h>
 
 synth::Envelope::Envelope(
         int sampleRate,
@@ -61,14 +61,15 @@ void synth::Envelope::getSignal(std::vector<float> &buffer) {
                 level_ += releaseLevelIncrement_;
             }
 
-            if (level_ < MIN_LEVEL) level_ = MIN_LEVEL;
+            if (level_ < MIN_LEVEL) { level_ = MIN_LEVEL; }
         } else if (time_ <= params_.attackTimeMs) {
             level_ += attackLevelIncrement_;
-            if (level_ > MAX_LEVEL) level_ = MAX_LEVEL;
+            if (level_ > MAX_LEVEL) { level_ = MAX_LEVEL; }
         } else if (time_ <= sustainStartTimeMs_) {
             level_ += decayLevelIncrement_;
-            if (level_ < params_.sustainLevel)
+            if (level_ < params_.sustainLevel) {
                 level_ = params_.sustainLevel;
+            }
         } else {
             level_ = params_.sustainLevel;
         }

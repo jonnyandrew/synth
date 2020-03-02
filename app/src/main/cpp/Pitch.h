@@ -8,7 +8,7 @@ namespace synth {
  * Frequencies for pitch constants from 0 to 127
  * See https://en.wikipedia.org/wiki/Scientific_pitch_notation
  */
-    const std::array<double, 128> PITCH_FREQUENCIES = {
+    const std::vector<double> PITCH_FREQUENCIES = {
             8.18, // 0
             8.66,
             9.18,

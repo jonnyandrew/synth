@@ -1,11 +1,11 @@
-#include <oboe/AudioStream.h>
-#include <oboe/Oboe.h>
-#include <android/log.h>
 #include "AudioEngine.h"
-#include "Constants.h"
 #include "AudioStream.h"
+#include "Constants.h"
 #include "Envelope.h"
 #include "EnvelopeControlledAmplifier.h"
+#include <android/log.h>
+#include <oboe/AudioStream.h>
+#include <oboe/Oboe.h>
 
 synth::AudioEngine::AudioEngine(
         Oscillator oscillator1,

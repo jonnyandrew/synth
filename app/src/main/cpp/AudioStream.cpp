@@ -1,10 +1,10 @@
 #include "AudioStream.h"
+#include "AudioEngine.h"
 #include "Constants.h"
 #include "PlayException.h"
-#include "AudioEngine.h"
+#include <android/log.h>
 #include <oboe/AudioStream.h>
 #include <oboe/Oboe.h>
-#include <android/log.h>
 
 synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
         : audioSource_(&audioSource) {
@@ -35,7 +35,7 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
 
 
 auto synth::AudioStream::onAudioReady(
-        oboe::AudioStream *oboeStream,
+        oboe::AudioStream */* oboeStream */,
         void *audioData,
         int32_t numFrames
 ) -> oboe::DataCallbackResult {

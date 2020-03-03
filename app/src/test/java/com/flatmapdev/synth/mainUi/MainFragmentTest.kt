@@ -39,7 +39,6 @@ class MainFragmentTest {
         launchFragmentInContainer<MainFragment>()
 
         onView(withId(R.id.keyboard))
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
@@ -56,7 +55,6 @@ class MainFragmentTest {
         launchFragmentInContainer<MainFragment>()
 
         onView(withId(R.id.keyboard))
-            .perform(scrollTo())
             .perform(click())
 
         verify { spySynth.playNote(any()) }
@@ -72,10 +70,18 @@ class MainFragmentTest {
             .build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withId(R.id.ampEnvelopeControlsAttackSeekBar)).perform(click())
-        onView(withId(R.id.ampEnvelopeControlsDecaySeekBar)).perform(click())
-        onView(withId(R.id.ampEnvelopeControlsSustainSeekBar)).perform(click())
-        onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar)).perform(click())
+        onView(withId(R.id.ampEnvelopeControlsAttackSeekBar))
+            .perform(scrollTo())
+            .perform(click())
+        onView(withId(R.id.ampEnvelopeControlsDecaySeekBar))
+            .perform(scrollTo())
+            .perform(click())
+        onView(withId(R.id.ampEnvelopeControlsSustainSeekBar))
+            .perform(scrollTo())
+            .perform(click())
+        onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar))
+            .perform(scrollTo())
+            .perform(click())
 
         verify(exactly = 4) {
             spySynth.setAmpEnvelope(any())
@@ -87,7 +93,9 @@ class MainFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withText(R.string.amp_envelope_title)).check(matches(isDisplayed()))
+        onView(withText(R.string.amp_envelope_title))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -95,8 +103,12 @@ class MainFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withText(R.string.amp_envelope_attack)).check(matches(isDisplayed()))
-        onView(withId(R.id.ampEnvelopeControlsAttackSeekBar)).check(matches(isDisplayed()))
+        onView(withText(R.string.amp_envelope_attack))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.ampEnvelopeControlsAttackSeekBar))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -104,8 +116,12 @@ class MainFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withText(R.string.amp_envelope_decay)).check(matches(isDisplayed()))
-        onView(withId(R.id.ampEnvelopeControlsDecaySeekBar)).check(matches(isDisplayed()))
+        onView(withText(R.string.amp_envelope_decay))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.ampEnvelopeControlsDecaySeekBar))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -113,8 +129,12 @@ class MainFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withText(R.string.amp_envelope_sustain)).check(matches(isDisplayed()))
-        onView(withId(R.id.ampEnvelopeControlsSustainSeekBar)).check(matches(isDisplayed()))
+        onView(withText(R.string.amp_envelope_sustain))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.ampEnvelopeControlsSustainSeekBar))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -122,8 +142,12 @@ class MainFragmentTest {
         getApp().appComponent = testComponentBuilder.build()
         launchFragmentInContainer<MainFragment>()
 
-        onView(withText(R.string.amp_envelope_sustain)).check(matches(isDisplayed()))
-        onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar)).check(matches(isDisplayed()))
+        onView(withText(R.string.amp_envelope_sustain))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test

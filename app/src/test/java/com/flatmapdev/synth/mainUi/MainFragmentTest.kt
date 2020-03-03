@@ -3,6 +3,7 @@ package com.flatmapdev.synth.mainUi
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
@@ -22,10 +23,8 @@ import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(qualifiers = "xxhdpi")
 class MainFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
 
@@ -40,6 +39,7 @@ class MainFragmentTest {
         launchFragmentInContainer<MainFragment>()
 
         onView(withId(R.id.keyboard))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
@@ -56,6 +56,7 @@ class MainFragmentTest {
         launchFragmentInContainer<MainFragment>()
 
         onView(withId(R.id.keyboard))
+            .perform(scrollTo())
             .perform(click())
 
         verify { spySynth.playNote(any()) }
@@ -137,18 +138,16 @@ class MainFragmentTest {
                 withText(expectedString)
             )
         )
-            .check(
-                matches(isDisplayed())
-            )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
         onView(
             allOf(
                 isDescendantOfA(withId(R.id.osc1Controls)),
                 withId(R.id.oscControlsPitchSeekBar)
             )
         )
-            .check(
-                matches(isDisplayed())
-            )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -163,18 +162,16 @@ class MainFragmentTest {
                 withText(expectedString)
             )
         )
-            .check(
-                matches(isDisplayed())
-            )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
         onView(
             allOf(
                 isDescendantOfA(withId(R.id.osc2Controls)),
                 withId(R.id.oscControlsPitchSeekBar)
             )
         )
-            .check(
-                matches(isDisplayed())
-            )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -192,7 +189,9 @@ class MainFragmentTest {
                 isDescendantOfA(withId(R.id.osc1Controls)),
                 withId(R.id.oscControlsPitchSeekBar)
             )
-        ).perform(swipeRight())
+        )
+            .perform(scrollTo())
+            .perform(swipeRight())
 
         verify(atLeast = 1) {
             spySynthOscillator.setOscillator(any())
@@ -215,6 +214,7 @@ class MainFragmentTest {
                 withId(R.id.oscControlsPitchSeekBar)
             )
         )
+            .perform(scrollTo())
             .perform(swipeRight())
 
         verify(atLeast = 1) {

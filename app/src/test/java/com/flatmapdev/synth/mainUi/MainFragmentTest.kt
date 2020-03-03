@@ -3,7 +3,9 @@ package com.flatmapdev.synth.mainUi
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -13,13 +15,17 @@ import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
 import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.doubles.jni.FakeSynthOscillator
 import io.mockk.spyk
 import io.mockk.verify
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(qualifiers = "xxhdpi")
 class MainFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
 
@@ -117,5 +123,102 @@ class MainFragmentTest {
 
         onView(withText(R.string.amp_envelope_sustain)).check(matches(isDisplayed()))
         onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun `it displays the oscillator 1 control`() {
+        getApp().appComponent = testComponentBuilder.build()
+        launchFragmentInContainer<MainFragment>()
+        val expectedString = getApp().getString(R.string.osc_title, 1)
+
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc1Controls)),
+                withText(expectedString)
+            )
+        )
+            .check(
+                matches(isDisplayed())
+            )
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc1Controls)),
+                withId(R.id.oscControlsPitchSeekBar)
+            )
+        )
+            .check(
+                matches(isDisplayed())
+            )
+    }
+
+    @Test
+    fun `it displays the oscillator 2 control`() {
+        getApp().appComponent = testComponentBuilder.build()
+        launchFragmentInContainer<MainFragment>()
+        val expectedString = getApp().getString(R.string.osc_title, 2)
+
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc2Controls)),
+                withText(expectedString)
+            )
+        )
+            .check(
+                matches(isDisplayed())
+            )
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc2Controls)),
+                withId(R.id.oscControlsPitchSeekBar)
+            )
+        )
+            .check(
+                matches(isDisplayed())
+            )
+    }
+
+    @Test
+    fun `when a oscillator 1 pitch is changed, it sends the new oscillator config to the synth engine`() {
+        val spySynthOscillator = spyk(FakeSynthOscillator())
+        getApp().appComponent = testComponentBuilder
+            .fakeJniModule(
+                FakeJniModule(synthOscillator1 = spySynthOscillator)
+            )
+            .build()
+        launchFragmentInContainer<MainFragment>()
+
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc1Controls)),
+                withId(R.id.oscControlsPitchSeekBar)
+            )
+        ).perform(swipeRight())
+
+        verify(atLeast = 1) {
+            spySynthOscillator.setOscillator(any())
+        }
+    }
+
+    @Test
+    fun `when a oscillator 2 pitch is changed, it sends the new oscillator config to the synth engine`() {
+        val spySynthOscillator = spyk(FakeSynthOscillator())
+        getApp().appComponent = testComponentBuilder
+            .fakeJniModule(
+                FakeJniModule(synthOscillator2 = spySynthOscillator)
+            )
+            .build()
+        launchFragmentInContainer<MainFragment>()
+
+        onView(
+            allOf(
+                isDescendantOfA(withId(R.id.osc2Controls)),
+                withId(R.id.oscControlsPitchSeekBar)
+            )
+        )
+            .perform(swipeRight())
+
+        verify(atLeast = 1) {
+            spySynthOscillator.setOscillator(any())
+        }
     }
 }

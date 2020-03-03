@@ -9,6 +9,8 @@
     <string name="amp_envelope_decay">Delay</string>
     <string name="amp_envelope_sustain">Sustain</string>
     <string name="amp_envelope_release">Release</string>
+    <string name="osc_title">Oscillator %1$d</string>
+    <string name="osc_pitch_offset">Pitch</string>
     <string name="menu_main_about">About</string>
     <string name="about_title">About</string>
 </resources>

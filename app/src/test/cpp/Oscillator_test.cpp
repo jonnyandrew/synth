@@ -2,20 +2,20 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <Pitch.h>
 #include "Oscillator.h"
 #include "Constants.h"
 
 using namespace synth;
 
-TEST(RenderTest, WhenWaveIsOffItRendersZeros) {
+TEST(RenderTest, WhenConfigurationIsDefaultItRendersSomething) {
     Oscillator osc(123);
     std::vector<float> buffer(3);
 
     osc.render(buffer, buffer.size());
 
-    EXPECT_EQ(buffer[0], 0);
-    EXPECT_EQ(buffer[1], 0);
-    EXPECT_EQ(buffer[2], 0);
+    EXPECT_NE(buffer[1], 0);
+    EXPECT_NE(buffer[2], 0);
 }
 
 TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
@@ -25,6 +25,7 @@ TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
     osc.setPitch(60);
     osc.render(buffer, buffer.size());
 
+    // Expect middle C sine wave
     EXPECT_FLOAT_EQ(buffer[0], 0);
     EXPECT_FLOAT_EQ(buffer[1], 0.132767594256136);
     EXPECT_FLOAT_EQ(buffer[12], 0.999631923345008);
@@ -36,3 +37,29 @@ TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
     EXPECT_FLOAT_EQ(buffer[499], -0.45625422286755);
 }
 
+TEST(RenderTest, WhenPitchOffsetIsSetItChangesThePitch) {
+    Oscillator osc(12345);
+    osc.setPitch(21);
+    osc.setPitchOffset(22);
+    const auto result = osc.getFrequency();
+
+    EXPECT_EQ(result, PITCH_FREQUENCIES[43]);
+}
+
+TEST(RenderTest, WhenPitchOffsetIsTooLargeItClampsTheOffset) {
+    Oscillator osc(12345);
+    osc.setPitch(60);
+    osc.setPitchOffset(100);
+    const auto result = osc.getFrequency();
+
+    EXPECT_EQ(result, PITCH_FREQUENCIES[127]);
+}
+
+TEST(RenderTest, WhenPitchOffsetIsTooSmallItClampsTheOffset) {
+    Oscillator osc(12345);
+    osc.setPitch(60);
+    osc.setPitchOffset(-100);
+    const auto result = osc.getFrequency();
+
+    EXPECT_EQ(result, PITCH_FREQUENCIES[0]);
+}

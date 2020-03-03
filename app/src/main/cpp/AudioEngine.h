@@ -12,8 +12,8 @@ namespace synth {
 
     public:
         AudioEngine(
-                Oscillator oscillator1,
-                Oscillator oscillator2,
+                Oscillator &oscillator1,
+                Oscillator &oscillator2,
                 EnvelopeControlledAmplifier envelopeControlledAmplifier
         );
 
@@ -26,8 +26,8 @@ namespace synth {
         ) override;
 
     private:
-        Oscillator oscillator1_;
-        Oscillator oscillator2_;
+        Oscillator *oscillator1_;
+        Oscillator *oscillator2_;
         EnvelopeControlledAmplifier envelopeControlledAmplifier_;
     };
 }

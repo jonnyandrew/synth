@@ -17,24 +17,32 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.keyboardCore.model.Key
+import com.flatmapdev.synth.oscillatorCore.model.Oscillator
+import com.flatmapdev.synth.shared.ui.util.getProgressFromMiddle
+import com.flatmapdev.synth.shared.ui.util.setProgressFromMiddle
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_amp_envelope.*
+import kotlinx.android.synthetic.main.view_osc.view.*
 
 class MainFragment : Fragment(R.layout.fragment_main) {
     @Inject
     lateinit var mainViewModelFactory: MainViewModel.Factory
     @Inject
     lateinit var ampEnvelopeViewModelFactory: AmpEnvelopeViewModel.Factory
+    @Inject
+    lateinit var oscillatorViewModelFactory: OscillatorViewModel.Factory
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var ampEnvelopeViewModel: AmpEnvelopeViewModel
+    private lateinit var oscillatorViewModel: OscillatorViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context.applicationContext as App).appComponent.inject(this)
         mainViewModel = ViewModelProvider(this, mainViewModelFactory).get()
         ampEnvelopeViewModel = ViewModelProvider(this, ampEnvelopeViewModelFactory).get()
+        oscillatorViewModel = ViewModelProvider(this, oscillatorViewModelFactory).get()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +56,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.init()
         ampEnvelopeViewModel.init()
+        oscillatorViewModel.init()
         mainViewModel.keyboard.observe(viewLifecycleOwner, Observer { keys ->
             setUpKeyboard(keys)
         })
@@ -56,7 +65,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             setAmpEnvelopeValues(envelope)
         })
 
+        oscillatorViewModel.oscillator1.observe(viewLifecycleOwner, Observer {
+            osc1Controls.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
+        })
+
+        oscillatorViewModel.oscillator2.observe(viewLifecycleOwner, Observer {
+            osc2Controls.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
+        })
+
         setupAmpEnvelopeControls()
+        setUpOscillatorControls()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -118,5 +136,37 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         ampEnvelopeControlsDecaySeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
         ampEnvelopeControlsSustainSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
         ampEnvelopeControlsReleaseSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+    }
+
+    private fun setUpOscillatorControls() {
+        osc1Controls.oscControlsTitle.text = getString(R.string.osc_title, 1)
+        osc1Controls.oscControlsPitchSeekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    oscillatorViewModel.setOscillator1(
+                        Oscillator(seekBar.getProgressFromMiddle())
+                    )
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        osc2Controls.oscControlsTitle.text = getString(R.string.osc_title, 2)
+        osc2Controls.oscControlsPitchSeekBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        oscillatorViewModel.setOscillator2(
+                            Oscillator(seekBar.getProgressFromMiddle())
+                        )
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            }
+        )
     }
 }

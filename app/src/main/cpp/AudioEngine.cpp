@@ -20,7 +20,7 @@ synth::AudioEngine::AudioEngine(
 
 void synth::AudioEngine::playNote(const int32_t pitch) {
     oscillator1_->setPitch(pitch);
-    oscillator2_->setPitch(pitch + 4);
+    oscillator2_->setPitch(pitch);
     envelopeControlledAmplifier_.startAttack();
 }
 

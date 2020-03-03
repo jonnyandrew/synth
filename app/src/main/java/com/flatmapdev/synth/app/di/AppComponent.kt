@@ -7,6 +7,7 @@ import com.flatmapdev.synth.engineData.EngineDataModule
 import com.flatmapdev.synth.jni.JniModule
 import com.flatmapdev.synth.mainUi.MainActivity
 import com.flatmapdev.synth.mainUi.MainFragment
+import com.flatmapdev.synth.oscillatorData.OscillatorDataModule
 import com.flatmapdev.synth.shared.scopes.AppScope
 import dagger.BindsInstance
 import dagger.Component
@@ -15,7 +16,8 @@ import dagger.Component
     modules = [
         DeviceDataModule::class,
         EngineDataModule::class,
-        JniModule::class
+        JniModule::class,
+        OscillatorDataModule::class
     ]
 )
 @AppScope

@@ -10,12 +10,22 @@ namespace synth {
 
         void setPitch(const int pitch);
 
+        void setPitchOffset(const int pitchOffset);
+
+        int getPitchOffset();
+
+        double getFrequency();
+
         void render(std::vector<float> &audioData, const int numFrames);
 
     private:
-        double phase_ = 0.0;
-        double phaseIncrement_ = 0.0;
         int sampleRate_;
+        int pitch_;
+        int pitchOffset_;
+        double frequency_;
+        double phase_{0.0};
+
+        double calcFrequency(int pitch, int pitchOffset);
     };
 }
 

@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.synthUi
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,9 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import com.flatmapdev.synth.R
 
-/**
- * TODO: document your custom view class.
- */
 class KeyboardView : View {
 
     private var _numKeys = DEFAULT_NUM_KEYS

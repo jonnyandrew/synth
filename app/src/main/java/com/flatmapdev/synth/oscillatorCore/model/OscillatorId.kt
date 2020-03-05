@@ -1,5 +1,7 @@
 package com.flatmapdev.synth.oscillatorCore.model
 
-enum class OscillatorId {
-    Osc1, Osc2
+enum class OscillatorId(
+    val number: Int
+) {
+    Osc1(1), Osc2(2)
 }

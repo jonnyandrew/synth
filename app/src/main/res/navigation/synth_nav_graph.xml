@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/synth_nav_graph"
+    app:startDestination="@id/controlPanelFragment">
+
+    <fragment
+        android:id="@+id/controlPanelFragment"
+        android:name="com.flatmapdev.synth.controlPanelUi.ControlPanelFragment"
+        android:label="@string/control_panel_title"
+        tools:layout="@layout/fragment_control_panel">
+        <action
+            android:id="@+id/action_controlPanelFragment_to_oscillatorFragment"
+            app:destination="@id/oscillatorFragment" />
+        <action
+            android:id="@+id/action_controlPanelFragment_to_ampEnvelopeFragment"
+            app:destination="@id/ampEnvelopeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/oscillatorFragment"
+        android:name="com.flatmapdev.synth.oscillatorUi.OscillatorFragment"
+        tools:layout="@layout/fragment_oscillator">
+        <argument
+            android:name="oscillatorId"
+            app:argType="com.flatmapdev.synth.oscillatorCore.model.OscillatorId" />
+    </fragment>
+    <fragment
+        android:id="@+id/ampEnvelopeFragment"
+        android:name="com.flatmapdev.synth.ampEnvelopeUi.AmpEnvelopeFragment"
+        android:label="@string/amp_envelope_title"
+        tools:layout="@layout/fragment_amp_envelope" />
+</navigation>

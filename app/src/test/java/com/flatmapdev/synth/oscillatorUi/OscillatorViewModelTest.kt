@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.oscillatorUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.oscillator.adapter.FakeOscillatorAdapter
@@ -30,16 +30,16 @@ class OscillatorViewModelTest {
     }
 
     @Test
-    fun `it emits the the oscillators`() {
+    fun `it emits the the oscillator`() {
         val oscillator = createOscillator(-4)
         fakeOscillator1Adapter = FakeOscillatorAdapter(
             oscillator = oscillator
         )
         val subject = createSubject()
 
-        subject.init()
+        subject.init(OscillatorId.Osc1)
 
-        assertThat(subject.oscillator1.value)
+        assertThat(subject.oscillator.value)
             .isEqualTo(oscillator)
     }
 
@@ -48,11 +48,9 @@ class OscillatorViewModelTest {
         val oscillator = createOscillator(4)
         val subject = createSubject()
 
-        subject.setOscillator1(oscillator)
-        subject.setOscillator2(oscillator)
+        subject.setOscillator(OscillatorId.Osc2, oscillator)
 
         verifyAll {
-            spySetOscillator.execute(OscillatorId.Osc1, oscillator)
             spySetOscillator.execute(OscillatorId.Osc2, oscillator)
         }
     }

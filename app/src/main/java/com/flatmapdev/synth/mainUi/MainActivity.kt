@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val navController: NavController
         get() {
             val navHostFragment = supportFragmentManager.findFragmentById(
-                R.id.navHostFragmentContainer
+                R.id.mainNavHostFragmentContainer
             ) as NavHostFragment
             return navHostFragment.navController
         }
@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp() ||
+                super.onSupportNavigateUp()
     }
 }

@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.ampEnvelopeUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter

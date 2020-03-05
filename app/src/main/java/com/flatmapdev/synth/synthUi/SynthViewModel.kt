@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.synthUi
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import dagger.Reusable
 import javax.inject.Inject
 
-class MainViewModel(
+class SynthViewModel(
     private val getKeyboard: GetKeyboard,
     private val playKey: PlayKey,
     private val stopKeys: StopKeys
@@ -39,9 +39,9 @@ class MainViewModel(
         private val stopKeys: StopKeys
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return if (modelClass.isAssignableFrom(SynthViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                MainViewModel(
+                SynthViewModel(
                     getKeyboard,
                     playKey,
                     stopKeys

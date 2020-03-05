@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.ampEnvelopeUi
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

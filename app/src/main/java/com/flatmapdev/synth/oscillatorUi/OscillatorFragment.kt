@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
-import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.Oscillator
+import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.getProgressFromMiddle
 import com.flatmapdev.synth.shared.ui.util.setProgressFromMiddle
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition = Fade(Fade.MODE_OUT)
+        applyTransitions()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

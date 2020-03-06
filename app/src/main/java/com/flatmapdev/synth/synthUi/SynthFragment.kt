@@ -15,10 +15,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.keyboardCore.model.Key
+import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_synth.*
 
@@ -45,7 +45,7 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        exitTransition = Fade(Fade.MODE_OUT)
+        applyTransitions()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

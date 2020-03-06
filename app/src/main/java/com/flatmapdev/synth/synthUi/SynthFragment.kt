@@ -19,8 +19,8 @@ import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.keyboardCore.model.Key
-import kotlinx.android.synthetic.main.fragment_synth.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_synth.*
 
 class SynthFragment : Fragment(R.layout.fragment_synth) {
     @Inject

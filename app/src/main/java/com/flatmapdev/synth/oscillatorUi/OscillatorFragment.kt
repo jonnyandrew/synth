@@ -16,8 +16,8 @@ import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.Oscillator
 import com.flatmapdev.synth.shared.ui.util.getProgressFromMiddle
 import com.flatmapdev.synth.shared.ui.util.setProgressFromMiddle
-import kotlinx.android.synthetic.main.fragment_oscillator.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_oscillator.*
 
 class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
     @Inject

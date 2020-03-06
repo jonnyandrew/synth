@@ -12,8 +12,8 @@ import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.model.Envelope
-import kotlinx.android.synthetic.main.fragment_amp_envelope.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_amp_envelope.*
 
 class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
     @Inject

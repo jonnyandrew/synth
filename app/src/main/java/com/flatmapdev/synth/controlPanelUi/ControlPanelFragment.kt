@@ -11,8 +11,8 @@ import androidx.transition.Fade
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
-import kotlinx.android.synthetic.main.fragment_control_panel.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_control_panel.*
 
 class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
     @Inject

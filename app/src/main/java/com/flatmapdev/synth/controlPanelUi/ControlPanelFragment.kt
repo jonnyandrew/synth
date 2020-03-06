@@ -11,8 +11,8 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_control_panel.*
+import javax.inject.Inject
 
 class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
     @Inject
@@ -40,6 +40,8 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
 
         osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
         osc2Controls.setOnClickListener { navigateToOscillator2() }
+
+        keyboardControls.setOnClickListener { navigateToKeyboard() }
     }
 
     private fun navigateToAmpEnvelope() {
@@ -62,6 +64,12 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
             ControlPanelFragmentDirections.actionControlPanelFragmentToOscillatorFragment(
                 OscillatorId.Osc2
             )
+        )
+    }
+
+    private fun navigateToKeyboard() {
+        findNavController().navigate(
+            ControlPanelFragmentDirections.actionControlPanelFragmentToKeyboardFragment()
         )
     }
 }

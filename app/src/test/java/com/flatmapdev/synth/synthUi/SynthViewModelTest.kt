@@ -2,9 +2,11 @@ package com.flatmapdev.synth.synthUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
+import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
+import com.flatmapdev.synth.keyboardCore.useCase.GetScale
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import io.mockk.spyk
@@ -79,7 +81,7 @@ class SynthViewModelTest {
 
     private fun createSubject(): SynthViewModel {
         return SynthViewModel(
-            GetKeyboard(),
+            GetKeyboard(GetScale(FakeScaleAdapter())),
             spyPlayKey,
             spyStopKeys
         )

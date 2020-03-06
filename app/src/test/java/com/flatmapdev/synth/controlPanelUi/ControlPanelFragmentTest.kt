@@ -43,4 +43,11 @@ class ControlPanelFragmentTest {
         onView(withText(getApp().getString(R.string.osc_title, 2)))
             .check(matches(isDisplayed()))
     }
+
+    @Test
+    fun `it displays keyboard`() {
+        launchFragmentInContainer<ControlPanelFragment>()
+        onView(withText(R.string.keyboard_title))
+            .check(matches(isDisplayed()))
+    }
 }

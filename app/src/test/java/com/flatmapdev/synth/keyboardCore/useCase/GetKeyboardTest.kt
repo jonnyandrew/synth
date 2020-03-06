@@ -1,5 +1,6 @@
 package com.flatmapdev.synth.keyboardCore.useCase
 
+import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.keyboardCore.model.Note
 import org.assertj.core.api.Assertions.assertThat
@@ -9,7 +10,8 @@ class GetKeyboardTest {
 
     @Test
     fun `it gets the expected keys`() {
-        val subject = GetKeyboard()
+        val getScale = GetScale(FakeScaleAdapter())
+        val subject = GetKeyboard(getScale)
 
         val result = subject.execute()
 

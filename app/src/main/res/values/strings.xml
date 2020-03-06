@@ -12,6 +12,25 @@
     <string name="amp_envelope_release">Release</string>
     <string name="osc_title">Oscillator %1$d</string>
     <string name="osc_pitch_offset">Pitch</string>
+    <string name="keyboard_title">Keyboard</string>
+    <string name="keyboard_scale">Scale</string>
+    <string name="keyboard_scale_tonic">Tonic</string>
+    <string name="keyboard_scale_type">Scale type</string>
+    <string name="scale_type_major">Major</string>
+    <string name="scale_type_minor">Minor</string>
+    <string name="scale_type_pentatonic">Pentatonic</string>
+    <string name="note_a">A</string>
+    <string name="note_a_sharp_b_flat">A&#9839; / B&#9837;</string>
+    <string name="note_b">B</string>
+    <string name="note_c">C</string>
+    <string name="note_c_sharp_d_flat">C&#9839; / D&#9837;</string>
+    <string name="note_d">D</string>
+    <string name="note_d_sharp_e_flat">D&#9839; / E&#9837;</string>
+    <string name="note_e">E</string>
+    <string name="note_f">F</string>
+    <string name="note_f_sharp_g_flat">F&#9839; / G&#9837;</string>
+    <string name="note_g">G</string>
+    <string name="note_g_sharp_a_flat">G&#9839; / A&#9837;</string>
     <string name="menu_main_about">About</string>
     <string name="about_title">About</string>
 </resources>

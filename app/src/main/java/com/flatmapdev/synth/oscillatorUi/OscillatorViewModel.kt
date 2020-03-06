@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.oscillatorUi
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,23 +15,15 @@ class OscillatorViewModel(
     private val getOscillator: GetOscillator,
     private val setOscillator: SetOscillator
 ) : ViewModel() {
+    private val _oscillator = MutableLiveData<Oscillator>()
+    val oscillator: LiveData<Oscillator> = _oscillator
 
-    private val _oscillator1 = MutableLiveData<Oscillator>()
-    val oscillator1: LiveData<Oscillator> = _oscillator1
-    private val _oscillator2 = MutableLiveData<Oscillator>()
-    val oscillator2: LiveData<Oscillator> = _oscillator2
-
-    fun setOscillator1(oscillator: Oscillator) {
-        setOscillator.execute(OscillatorId.Osc1, oscillator)
+    fun init(oscillatorId: OscillatorId) {
+        _oscillator.value = getOscillator.execute(oscillatorId)
     }
 
-    fun setOscillator2(oscillator: Oscillator) {
-        setOscillator.execute(OscillatorId.Osc2, oscillator)
-    }
-
-    fun init() {
-        _oscillator1.value = getOscillator.execute(OscillatorId.Osc1)
-        _oscillator2.value = getOscillator.execute(OscillatorId.Osc2)
+    fun setOscillator(oscillatorId: OscillatorId, oscillator: Oscillator) {
+        setOscillator.execute(oscillatorId, oscillator)
     }
 
     @Reusable

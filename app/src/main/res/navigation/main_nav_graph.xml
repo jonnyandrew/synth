@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/mainFragment">
-
+    app:startDestination="@id/synthFragment">
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.flatmapdev.synth.mainUi.MainFragment"
-        android:label="@string/main_title"
-        tools:layout="@layout/fragment_main">
+        android:id="@+id/synthFragment"
+        android:name="com.flatmapdev.synth.synthUi.SynthFragment"
+        android:label="@string/synth_title"
+        tools:layout="@layout/fragment_synth" >
         <action
-            android:id="@+id/action_mainFragment_to_aboutFragment"
+            android:id="@+id/action_synthFragment_to_aboutFragment"
             app:destination="@id/aboutFragment" />
     </fragment>
     <fragment

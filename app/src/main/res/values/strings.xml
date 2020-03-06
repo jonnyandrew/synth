@@ -3,7 +3,8 @@
     <string name="app_engine_version">Engine version: %1$s</string>
     <string name="device_features_supports_low_latency">Supports low latency: %1$s</string>
     <string name="device_features_supports_pro_latency">Supports pro latency: %1$s</string>
-    <string name="main_title">Synth</string>
+    <string name="synth_title">Synth</string>
+    <string name="control_panel_title">Synth</string>
     <string name="amp_envelope_title">Amp envelope</string>
     <string name="amp_envelope_attack">Attack</string>
     <string name="amp_envelope_decay">Delay</string>

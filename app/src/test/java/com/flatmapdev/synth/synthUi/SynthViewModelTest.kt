@@ -1,4 +1,4 @@
-package com.flatmapdev.synth.mainUi
+package com.flatmapdev.synth.synthUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
@@ -15,7 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 
-class MainViewModelTest {
+class SynthViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
@@ -77,8 +77,8 @@ class MainViewModelTest {
         verify { spyStopKeys.execute() }
     }
 
-    private fun createSubject(): MainViewModel {
-        return MainViewModel(
+    private fun createSubject(): SynthViewModel {
+        return SynthViewModel(
             GetKeyboard(),
             spyPlayKey,
             spyStopKeys

@@ -11,7 +11,7 @@ fun Note.toUiString() = when (this) {
     Note.D -> R.string.note_d
     Note.D_SHARP_E_FLAT -> R.string.note_d_sharp_e_flat
     Note.E -> R.string.note_e
-    Note.F -> R.string.note_e
+    Note.F -> R.string.note_f
     Note.F_SHARP_G_FLAT -> R.string.note_f_sharp_g_flat
     Note.G -> R.string.note_g
     Note.G_SHARP_A_FLAT -> R.string.note_g_sharp_a_flat

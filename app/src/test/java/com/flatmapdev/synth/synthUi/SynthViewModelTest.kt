@@ -1,6 +1,7 @@
 package com.flatmapdev.synth.synthUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
 import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
@@ -9,9 +10,15 @@ import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.GetScale
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
+import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.assertj.core.api.Assertions.assertThat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,43 +28,38 @@ class SynthViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
+    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+
     private lateinit var stubSynthEngineAdapter: StubSynthEngineAdapter
     private lateinit var spyPlayKey: PlayKey
     private lateinit var spyStopKeys: StopKeys
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(testCoroutineDispatcher)
         stubSynthEngineAdapter = StubSynthEngineAdapter()
         spyPlayKey = spyk(PlayKey(stubSynthEngineAdapter))
         spyStopKeys = spyk(StopKeys(stubSynthEngineAdapter))
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testCoroutineDispatcher.cleanupTestCoroutines()
+    }
+
     @Test
-    fun `it emits the keyboard`() {
+    fun `it emits the keyboard`() = runBlockingTest {
         val subject = createSubject()
+        val testObserver = mockk<Observer<List<Key>>>(relaxed = true)
 
         subject.init()
+        subject.keyboard
+            .observeForever(testObserver)
 
-        assertThat(subject.keyboard.value)
-            .isEqualTo(
-                listOf(
-                    Key(Note.C, 3),
-                    Key(Note.D, 3),
-                    Key(Note.E, 3),
-                    Key(Note.F, 3),
-                    Key(Note.G, 3),
-                    Key(Note.A, 3),
-                    Key(Note.B, 3),
-                    Key(Note.C, 4),
-                    Key(Note.D, 4),
-                    Key(Note.E, 4),
-                    Key(Note.F, 4),
-                    Key(Note.G, 4),
-                    Key(Note.A, 4),
-                    Key(Note.B, 4),
-                    Key(Note.C, 5)
-                )
-            )
+        verify(exactly = 1) {
+            testObserver.onChanged(any())
+        }
     }
 
     @Test

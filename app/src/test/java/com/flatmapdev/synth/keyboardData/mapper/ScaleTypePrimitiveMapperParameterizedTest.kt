@@ -19,8 +19,8 @@ class ScaleTypePrimitiveMapperParameterizedTest(
                 arrayOf(
                     it, when (it) {
                         ScaleType.Major -> "MAJOR"
-                        ScaleType.Minor -> "MINOR"
-                        ScaleType.Pentatonic -> "PENTATONIC"
+                        ScaleType.HarmonicMinor -> "HARMONIC_MINOR"
+                        ScaleType.MinorPentatonic -> "MINOR_PENTATONIC"
                     }
                 )
             }.toTypedArray()

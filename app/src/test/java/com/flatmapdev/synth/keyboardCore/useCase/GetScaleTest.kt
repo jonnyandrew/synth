@@ -11,7 +11,7 @@ import org.junit.Test
 class GetScaleTest {
     @Test
     fun `when there is a stored scale, it gets the scale`() = runBlockingTest {
-        val scale = Scale(Note.C, ScaleType.Minor)
+        val scale = Scale(Note.C, ScaleType.HarmonicMinor)
         val scaleAdapter = FakeScaleAdapter(scale = scale)
         val subject = GetScale(scaleAdapter)
 
@@ -29,7 +29,7 @@ class GetScaleTest {
         subject.execute()
             .test(this)
             .assertValues(
-                Scale(Note.C, ScaleType.Pentatonic)
+                Scale(Note.C, ScaleType.MinorPentatonic)
             )
             .finish()
     }

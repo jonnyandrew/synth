@@ -20,16 +20,21 @@ class SharedPreferencesScaleAdapter @Inject constructor(
     @Named(SHARED_PREFERENCES_NAME)
     val sharedPreferences: SharedPreferences
 ) : ScaleAdapter {
+//    @UseExperimental(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+//    @ExperimentalCoroutinesApi
     private val keyChanged = callbackFlow {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> offer(key) }
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 
+//    @ExperimentalCoroutinesApi
     override fun getScale(): Flow<Scale?> {
+//        @UseExperimental(ExperimentalCoroutinesApi::class)
         return keyChanged
             // Emit something to start with even if no key is changed
-            .map { Unit }.onStart { emit(Unit) }
+            .map { Unit }
+            .onStart { emit(Unit) }
             .map {
                 val scaleType =
                     sharedPreferences.getString(SHARED_PREFERENCES_KEY_SCALE_TYPE, null)?.let(

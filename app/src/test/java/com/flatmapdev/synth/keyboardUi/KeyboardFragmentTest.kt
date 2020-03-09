@@ -113,7 +113,7 @@ class KeyboardFragmentTest {
 
         verifyOrder {
             spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.Major))
-            spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.Minor))
+            spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.HarmonicMinor))
         }
     }
 }

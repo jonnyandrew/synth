@@ -21,6 +21,6 @@ class GetScale @Inject constructor(
     }
 
     companion object {
-        val DEFAULT_SCALE = Scale(Note.C, ScaleType.Pentatonic)
+        val DEFAULT_SCALE = Scale(Note.C, ScaleType.MinorPentatonic)
     }
 }

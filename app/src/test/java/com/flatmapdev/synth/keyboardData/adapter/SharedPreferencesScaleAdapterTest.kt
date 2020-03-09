@@ -51,9 +51,9 @@ class SharedPreferencesScaleAdapterTest {
     fun `it retrieves data stored in a potentially old format 1`() = runBlockingTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "C_SHARP_D_FLAT")
-            putString("ScaleType", "PENTATONIC")
+            putString("ScaleType", "MINOR_PENTATONIC")
         }
-        val scale = Scale(Note.C_SHARP_D_FLAT, ScaleType.Pentatonic)
+        val scale = Scale(Note.C_SHARP_D_FLAT, ScaleType.MinorPentatonic)
         val subject = createSubject()
 
         subject.getScale()

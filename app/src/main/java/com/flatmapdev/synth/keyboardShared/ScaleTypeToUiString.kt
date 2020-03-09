@@ -7,6 +7,6 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
 @StringRes
 fun ScaleType.toUiString() = when (this) {
     ScaleType.Major -> R.string.scale_type_major
-    ScaleType.Minor -> R.string.scale_type_minor
-    ScaleType.Pentatonic -> R.string.scale_type_pentatonic
+    ScaleType.HarmonicMinor -> R.string.scale_type_minor
+    ScaleType.MinorPentatonic -> R.string.scale_type_pentatonic
 }

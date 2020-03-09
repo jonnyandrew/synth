@@ -11,7 +11,7 @@ import org.junit.Test
 class SetScaleTest {
     @Test
     fun `it sets the scale`() {
-        val scale = Scale(Note.G_SHARP_A_FLAT, ScaleType.Pentatonic)
+        val scale = Scale(Note.G_SHARP_A_FLAT, ScaleType.MinorPentatonic)
         val spyScaleAdapter = spyk(FakeScaleAdapter(scale = scale))
         val subject = SetScale(spyScaleAdapter)
 

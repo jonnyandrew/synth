@@ -8,18 +8,18 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
  * change if the domain model code changes.
  */
 private const val MAJOR = "MAJOR"
-private const val MINOR = "MINOR"
-private const val PENTATONIC = "PENTATONIC"
+private const val HARMONIC_MINOR = "HARMONIC_MINOR"
+private const val MINOR_PENTATONIC = "MINOR_PENTATONIC"
 
 internal fun ScaleType.toSharedPreferencesString(): String = when (this) {
     ScaleType.Major -> MAJOR
-    ScaleType.Minor -> MINOR
-    ScaleType.Pentatonic -> PENTATONIC
+    ScaleType.HarmonicMinor -> HARMONIC_MINOR
+    ScaleType.MinorPentatonic -> MINOR_PENTATONIC
 }
 
 internal fun parseScaleTypeFromSharedPreferencesString(value: String): ScaleType = when (value) {
     MAJOR -> ScaleType.Major
-    MINOR -> ScaleType.Minor
-    PENTATONIC -> ScaleType.Pentatonic
+    HARMONIC_MINOR -> ScaleType.HarmonicMinor
+    MINOR_PENTATONIC -> ScaleType.MinorPentatonic
     else -> throw IllegalArgumentException("Unknown scale type: $value")
 }

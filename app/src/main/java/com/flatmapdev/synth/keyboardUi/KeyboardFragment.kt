@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.keyboardCore.model.Note
@@ -37,6 +39,7 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        NavigationUI.setupWithNavController(toolbar, findNavController())
         viewModel.init()
         viewModel.scale.observe(viewLifecycleOwner, Observer {
             scaleTonic.setText(getString(it.tonic.toUiString()), false)

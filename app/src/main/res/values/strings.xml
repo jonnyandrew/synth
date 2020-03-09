@@ -17,8 +17,8 @@
     <string name="keyboard_scale_tonic">Tonic</string>
     <string name="keyboard_scale_type">Scale type</string>
     <string name="scale_type_major">Major</string>
-    <string name="scale_type_minor">Minor</string>
-    <string name="scale_type_pentatonic">Pentatonic</string>
+    <string name="scale_type_harmonic_minor">Harmonic minor</string>
+    <string name="scale_type_minor_pentatonic">Minor pentatonic</string>
     <string name="note_a">A</string>
     <string name="note_a_sharp_b_flat">A&#9839; / B&#9837;</string>
     <string name="note_b">B</string>

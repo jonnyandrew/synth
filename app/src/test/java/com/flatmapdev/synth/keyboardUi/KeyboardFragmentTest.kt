@@ -105,7 +105,7 @@ class KeyboardFragmentTest {
             onView(withId(R.id.scaleTypeLayout)).perform(skipTextInputLayoutAnimations())
             assertThat(fragment.view?.findViewById<AutoCompleteTextView>(R.id.scaleType)?.isPopupShowing)
                 .isTrue()
-            onData(equalTo(getApp().getString(R.string.scale_type_minor)))
+            onData(equalTo(getApp().getString(R.string.scale_type_harmonic_minor)))
                 .inRoot(isPlatformPopup())
                 .perform(click());
         }

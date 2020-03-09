@@ -13,7 +13,6 @@
     <string name="osc_title">Oscillator %1$d</string>
     <string name="osc_pitch_offset">Pitch</string>
     <string name="keyboard_title">Keyboard</string>
-    <string name="keyboard_scale">Scale</string>
     <string name="keyboard_scale_tonic">Tonic</string>
     <string name="keyboard_scale_type">Scale type</string>
     <string name="scale_type_major">Major</string>

@@ -7,7 +7,8 @@ import kotlinx.coroutines.launch
 import org.assertj.core.api.Assertions.assertThat
 
 class TestCollector<T>(
-    scope: CoroutineScope, flow: Flow<T>
+    scope: CoroutineScope,
+    flow: Flow<T>
 ) {
     private val values = mutableListOf<T>()
 

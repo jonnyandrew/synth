@@ -29,7 +29,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class KeyboardFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
@@ -99,7 +98,7 @@ class KeyboardFragmentTest {
                 .isTrue()
             onData(equalTo(getApp().getString(R.string.note_c_sharp_d_flat)))
                 .inRoot(isPlatformPopup())
-                .perform(click());
+                .perform(click())
 
             onView(withId(R.id.scaleTypeLayout)).perform(click())
             onView(withId(R.id.scaleTypeLayout)).perform(skipTextInputLayoutAnimations())
@@ -107,9 +106,8 @@ class KeyboardFragmentTest {
                 .isTrue()
             onData(equalTo(getApp().getString(R.string.scale_type_harmonic_minor)))
                 .inRoot(isPlatformPopup())
-                .perform(click());
+                .perform(click())
         }
-
 
         verifyOrder {
             spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.Major))

@@ -5,10 +5,10 @@ import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import dagger.Reusable
+import java.util.Collections
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.*
-import javax.inject.Inject
 
 @Reusable
 class GetKeyboard @Inject constructor(

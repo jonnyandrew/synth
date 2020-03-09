@@ -15,9 +15,8 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.keyboardShared.toUiString
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.setDropDownItems
-import kotlinx.android.synthetic.main.fragment_keyboard.*
 import javax.inject.Inject
-
+import kotlinx.android.synthetic.main.fragment_keyboard.*
 
 class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
     @Inject
@@ -46,14 +45,20 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
 
         scaleTonic.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 viewModel.setScaleTonic(Note.values()[position])
             }
         }
         scaleType.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 viewModel.setScaleType(ScaleType.values()[position])
             }

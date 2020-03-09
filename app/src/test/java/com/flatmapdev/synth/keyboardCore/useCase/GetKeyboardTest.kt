@@ -29,7 +29,6 @@ class GetKeyboardTest(
             .test(this)
             .assertValues(keys)
             .finish()
-
     }
 
     companion object {

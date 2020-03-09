@@ -10,9 +10,9 @@ import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import dagger.Reusable
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class SynthViewModel(
     private val getKeyboard: GetKeyboard,

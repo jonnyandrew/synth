@@ -11,9 +11,9 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.keyboardCore.useCase.GetScale
 import com.flatmapdev.synth.keyboardCore.useCase.SetScale
 import dagger.Reusable
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class KeyboardViewModel(
     private val getScale: GetScale,

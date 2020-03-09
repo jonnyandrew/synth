@@ -29,7 +29,6 @@ class SharedPreferencesScaleAdapterTest {
             .test(this)
             .assertValues(null)
             .finish()
-
     }
 
     @Test
@@ -101,7 +100,6 @@ class SharedPreferencesScaleAdapterTest {
             .test(this)
             .assertValues(null)
             .finish()
-
     }
 
     private fun createSubject(): SharedPreferencesScaleAdapter {

@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import dagger.Reusable
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SynthViewModel(
     private val getKeyboard: GetKeyboard,
@@ -21,7 +24,10 @@ class SynthViewModel(
     val keyboard: LiveData<List<Key>> = _keyboard
 
     fun init() {
-        _keyboard.value = getKeyboard.execute()
+        viewModelScope.launch {
+            getKeyboard.execute()
+                .collect { _keyboard.value = it }
+        }
     }
 
     fun playKey(key: Key) {

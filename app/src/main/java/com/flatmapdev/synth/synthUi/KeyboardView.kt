@@ -15,7 +15,7 @@ class KeyboardView : View {
     private var curKeyDown: Int? = null
 
     private var contentWidth = width - paddingLeft - paddingRight
-    private var keyWidth: Float = contentWidth.toFloat() / numKeys
+    private val keyWidth: Float get() = contentWidth.toFloat() / numKeys
 
     var keyTouchListener: ((Int?) -> Unit)? = null
 
@@ -68,7 +68,6 @@ class KeyboardView : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         contentWidth = width - paddingLeft - paddingRight
-        keyWidth = contentWidth.toFloat() / numKeys
     }
 
     override fun onDraw(canvas: Canvas) {

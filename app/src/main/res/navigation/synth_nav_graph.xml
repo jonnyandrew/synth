@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_controlPanelFragment_to_ampEnvelopeFragment"
             app:destination="@id/ampEnvelopeFragment" />
+        <action
+            android:id="@+id/action_controlPanelFragment_to_keyboardFragment"
+            app:destination="@id/keyboardFragment" />
     </fragment>
     <fragment
         android:id="@+id/oscillatorFragment"
@@ -30,4 +33,10 @@
         android:name="com.flatmapdev.synth.ampEnvelopeUi.AmpEnvelopeFragment"
         android:label="@string/amp_envelope_title"
         tools:layout="@layout/fragment_amp_envelope" />
+    <fragment
+        android:id="@+id/keyboardFragment"
+        android:name="com.flatmapdev.synth.keyboardUi.KeyboardFragment"
+        android:label="@string/keyboard_title"
+        tools:layout="@layout/fragment_keyboard"
+        />
 </navigation>

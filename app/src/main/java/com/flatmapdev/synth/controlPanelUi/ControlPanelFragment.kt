@@ -40,6 +40,8 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
 
         osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
         osc2Controls.setOnClickListener { navigateToOscillator2() }
+
+        keyboardControls.setOnClickListener { navigateToKeyboard() }
     }
 
     private fun navigateToAmpEnvelope() {
@@ -62,6 +64,12 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
             ControlPanelFragmentDirections.actionControlPanelFragmentToOscillatorFragment(
                 OscillatorId.Osc2
             )
+        )
+    }
+
+    private fun navigateToKeyboard() {
+        findNavController().navigate(
+            ControlPanelFragmentDirections.actionControlPanelFragmentToKeyboardFragment()
         )
     }
 }

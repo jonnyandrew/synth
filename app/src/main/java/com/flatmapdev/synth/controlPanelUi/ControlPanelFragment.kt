@@ -2,9 +2,6 @@ package com.flatmapdev.synth.controlPanelUi
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -16,7 +13,6 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
-import com.flatmapdev.synth.synthUi.SynthFragmentDirections
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_control_panel.*
 
@@ -83,27 +79,6 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
     private fun navigateToKeyboard() {
         findNavController().navigate(
             ControlPanelFragmentDirections.actionControlPanelFragmentToKeyboardFragment()
-        )
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.about -> {
-                navigateToAbout()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun navigateToAbout() {
-        parentFragment?.findNavController()?.navigate(
-            SynthFragmentDirections.actionSynthFragmentToAboutFragment()
         )
     }
 }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.adapter.SynthEngineAdapter
@@ -26,8 +25,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         (applicationContext as App).appComponent.inject(this)
 
         super.onCreate(savedInstanceState)
-
-        NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
     override fun onResume() {

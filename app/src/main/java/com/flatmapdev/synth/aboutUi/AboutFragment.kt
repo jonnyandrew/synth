@@ -6,6 +6,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
@@ -30,7 +32,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        NavigationUI.setupWithNavController(toolbar, findNavController())
         viewModel.engineVersion.observe(viewLifecycleOwner, Observer { value ->
             engineVersion.text = getString(
                 R.string.app_engine_version, value

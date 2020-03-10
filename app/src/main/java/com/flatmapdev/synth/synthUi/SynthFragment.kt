@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +13,6 @@ import androidx.lifecycle.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.keyboardCore.model.Key
@@ -50,10 +48,7 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as? AppCompatActivity)?.let { appCompatActivity ->
-            NavigationUI.setupActionBarWithNavController(appCompatActivity, navController)
-        }
-
+        setHasOptionsMenu(true)
         /**
          * This statement is a workaround for a bug which occurs while testing this
          * Fragment inside a FragmentScenario (i.e. launchFragmentInContainer<SynthFragment>()).

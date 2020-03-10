@@ -1,7 +1,7 @@
 package com.flatmapdev.synth.keyboardUi
 
 import android.widget.AutoCompleteTextView
-import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -19,6 +19,8 @@ import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
+import com.flatmapdev.synth.utils.NavControllerFragmentFactory
+import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import com.flatmapdev.synth.utils.skipTextInputLayoutAnimations
 import com.flatmapdev.synth.utils.textInputLayoutwithItemHint
 import io.mockk.spyk
@@ -32,33 +34,35 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class KeyboardFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
-
     @Before
     fun setUp() {
         testComponentBuilder = DaggerTestAppComponent.builder()
     }
 
     @Test
-    fun `it displays the keyboard scale tonic control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<KeyboardFragment>()
+    fun `it displays the title`() {
+        launch()
+        onView(withText(R.string.keyboard_title))
+            .check(matches(isDisplayed()))
+    }
 
+    @Test
+    fun `it displays the keyboard scale tonic control`() {
+        launch()
         onView(withId(R.id.scaleTonicLayout))
             .check(matches(textInputLayoutwithItemHint(getApp().getString(R.string.keyboard_scale_tonic))))
     }
 
     @Test
     fun `it displays the keyboard scale type control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<KeyboardFragment>()
-
+        launch()
         onView(withId(R.id.scaleTypeLayout))
             .check(matches(textInputLayoutwithItemHint(getApp().getString(R.string.keyboard_scale_type))))
     }
 
     @Test
     fun `it displays the current scale`() {
-        getApp().appComponent = testComponentBuilder
+        testComponentBuilder = testComponentBuilder
             .fakeKeyboardDataModule(
                 FakeKeyboardDataModule(
                     scaleAdapter = FakeScaleAdapter(
@@ -66,9 +70,7 @@ class KeyboardFragmentTest {
                     )
                 )
             )
-            .build()
-        launchFragmentInContainer<KeyboardFragment>()
-
+        launch()
         onView(withText(R.string.note_g))
             .check(matches(isDisplayed()))
         onView(withText(R.string.scale_type_major))
@@ -82,15 +84,13 @@ class KeyboardFragmentTest {
                 Scale(Note.F, ScaleType.Major)
             )
         )
-        getApp().appComponent = testComponentBuilder
+        testComponentBuilder = testComponentBuilder
             .fakeKeyboardDataModule(
                 FakeKeyboardDataModule(
                     scaleAdapter = spyScaleAdapter
                 )
             )
-            .build()
-        val scenario = launchFragmentInContainer<KeyboardFragment>()
-
+        val scenario = launch()
         scenario.onFragment { fragment ->
             onView(withId(R.id.scaleTonicLayout)).perform(click())
             onView(withId(R.id.scaleTonicLayout)).perform(skipTextInputLayoutAnimations())
@@ -113,5 +113,17 @@ class KeyboardFragmentTest {
             spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.Major))
             spyScaleAdapter.storeScale(Scale(Note.C_SHARP_D_FLAT, ScaleType.HarmonicMinor))
         }
+    }
+
+    private fun launch(): FragmentScenario<KeyboardFragment> {
+        val fragmentFactory = NavControllerFragmentFactory(
+            navGraph = R.navigation.synth_nav_graph,
+            destinationId = R.id.keyboardFragment
+        )
+
+        getApp().appComponent = testComponentBuilder.build()
+        return launchAndSetUpFragment(
+            fragmentFactory = fragmentFactory
+        )
     }
 }

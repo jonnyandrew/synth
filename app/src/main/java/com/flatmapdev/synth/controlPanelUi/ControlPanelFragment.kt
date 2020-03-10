@@ -3,10 +3,12 @@ package com.flatmapdev.synth.controlPanelUi
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
@@ -31,17 +33,24 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
         applyTransitions()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ampEnvelopeControls.setOnClickListener { navigateToAmpEnvelope() }
+        NavigationUI.setupWithNavController(toolbar, findNavController())
+
+        ampEnvelopeTitle.setOnClickListener { navigateToAmpEnvelope() }
 
         osc1Title.text = getString(R.string.osc_title, OscillatorId.Osc1.number)
-        osc1Controls.setOnClickListener { navigateToOscillator1() }
+        osc1Title.setOnClickListener { navigateToOscillator1() }
 
         osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
-        osc2Controls.setOnClickListener { navigateToOscillator2() }
+        osc2Title.setOnClickListener { navigateToOscillator2() }
 
-        keyboardControls.setOnClickListener { navigateToKeyboard() }
+        keyboardTitle.setOnClickListener { navigateToKeyboard() }
     }
 
     private fun navigateToAmpEnvelope() {

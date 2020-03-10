@@ -4,12 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.oscillatorCore.model.Oscillator
@@ -38,14 +39,10 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
         applyTransitions()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (activity as? AppCompatActivity)?.supportActionBar
-            ?.title = getString(R.string.osc_title, args.oscillatorId.number)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        NavigationUI.setupWithNavController(toolbar, findNavController())
+        toolbar.title = getString(R.string.osc_title, args.oscillatorId.number)
         oscillatorViewModel.init(args.oscillatorId)
         oscillatorViewModel.oscillator.observe(viewLifecycleOwner, Observer {
             oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
@@ -55,7 +52,6 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
     }
 
     private fun setUpOscillatorControls() {
-        oscControlsTitle.text = getString(R.string.osc_title, args.oscillatorId.number)
         oscControlsPitchSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {

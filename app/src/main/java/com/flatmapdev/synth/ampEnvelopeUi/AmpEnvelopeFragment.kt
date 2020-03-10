@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.engineCore.model.Envelope
@@ -36,6 +38,7 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        NavigationUI.setupWithNavController(toolbar, findNavController())
         ampEnvelopeViewModel.init()
         ampEnvelopeViewModel.ampEnvelope.observe(viewLifecycleOwner, Observer { envelope ->
             setAmpEnvelopeValues(envelope)

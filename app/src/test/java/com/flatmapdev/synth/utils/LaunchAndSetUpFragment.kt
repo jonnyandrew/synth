@@ -19,4 +19,3 @@ inline fun <reified F : Fragment> launchAndSetUpFragment(
         fragmentFactory
     )
 }
-

@@ -1,6 +1,5 @@
 package com.flatmapdev.synth.ampEnvelopeUi
 
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -13,6 +12,8 @@ import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
 import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.utils.NavControllerFragmentFactory
+import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
@@ -31,12 +32,11 @@ class AmpEnvelopeFragmentTest {
     @Test
     fun `when a amp envelope is changed, it sends the new envelope to the synth engine`() {
         val spySynth = spyk(FakeSynth())
-        getApp().appComponent = testComponentBuilder
+        testComponentBuilder
             .fakeJniModule(
                 FakeJniModule(synth = spySynth)
             )
-            .build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
+        launch()
 
         onView(withId(R.id.ampEnvelopeControlsAttackSeekBar))
             .perform(click())
@@ -54,8 +54,7 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `it displays the amp envelope title`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
+        launch()
 
         onView(withText(R.string.amp_envelope_title))
             .check(matches(isDisplayed()))
@@ -63,8 +62,7 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `it displays the amp envelope attack control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
+        launch()
 
         onView(withText(R.string.amp_envelope_attack))
             .check(matches(isDisplayed()))
@@ -74,8 +72,7 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `it displays the amp envelope decay control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
+        launch()
 
         onView(withText(R.string.amp_envelope_decay))
             .check(matches(isDisplayed()))
@@ -85,9 +82,7 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `it displays the amp envelope sustain control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
-
+        launch()
         onView(withText(R.string.amp_envelope_sustain))
             .check(matches(isDisplayed()))
         onView(withId(R.id.ampEnvelopeControlsSustainSeekBar))
@@ -96,12 +91,23 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `it displays the amp envelope release control`() {
-        getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<AmpEnvelopeFragment>()
+        launch()
 
         onView(withText(R.string.amp_envelope_sustain))
             .check(matches(isDisplayed()))
         onView(withId(R.id.ampEnvelopeControlsReleaseSeekBar))
             .check(matches(isDisplayed()))
+    }
+
+    private fun launch() {
+        val fragmentFactory = NavControllerFragmentFactory(
+            R.navigation.synth_nav_graph,
+            R.id.ampEnvelopeFragment
+        )
+
+        getApp().appComponent = testComponentBuilder.build()
+        launchAndSetUpFragment<AmpEnvelopeFragment>(
+            fragmentFactory = fragmentFactory
+        )
     }
 }

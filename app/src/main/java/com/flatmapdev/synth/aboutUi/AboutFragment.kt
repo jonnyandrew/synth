@@ -11,8 +11,8 @@ import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_about.*
+import javax.inject.Inject
 
 class AboutFragment : Fragment(R.layout.fragment_about) {
     @Inject

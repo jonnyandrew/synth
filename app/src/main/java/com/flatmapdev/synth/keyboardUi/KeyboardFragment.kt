@@ -17,8 +17,8 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.keyboardShared.toUiString
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.setDropDownItems
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_keyboard.*
+import javax.inject.Inject
 
 class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
     @Inject

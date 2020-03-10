@@ -12,6 +12,7 @@ import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
 import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
@@ -30,7 +31,7 @@ class SynthFragmentTest {
     @Test
     fun `it shows the keyboard`() {
         getApp().appComponent = testComponentBuilder.build()
-        launchFragmentInContainer<SynthFragment>()
+        launchAndSetUpFragment<SynthFragment>()
 
         onView(withId(R.id.keyboard))
             .check(matches(isDisplayed()))
@@ -46,7 +47,7 @@ class SynthFragmentTest {
                 )
             )
             .build()
-        launchFragmentInContainer<SynthFragment>()
+        launchAndSetUpFragment<SynthFragment>()
 
         onView(withId(R.id.keyboard))
             .perform(click())

@@ -13,7 +13,7 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
-        app:title="@string/osc_title" />
+        app:title="@string/synth_title" />
 
     <ScrollView
         android:id="@+id/controls"
@@ -44,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:padding="16dp"
-                android:text="@string/osc_title"
-                android:textAppearance="?attr/textAppearanceSubtitle1" />
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="@string/osc_title" />
 
             <TextView
                 android:id="@+id/osc2Title"
@@ -53,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:padding="16dp"
-                android:text="@string/osc_title"
-                android:textAppearance="?attr/textAppearanceSubtitle1" />
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="@string/osc_title" />
 
             <TextView
                 android:id="@+id/keyboardTitle"

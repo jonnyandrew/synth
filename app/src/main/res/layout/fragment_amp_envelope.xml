@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/osc_title" />
+        app:title="@string/amp_envelope_title" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ampEnvelopeControls"

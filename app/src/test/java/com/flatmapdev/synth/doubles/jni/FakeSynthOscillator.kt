@@ -14,4 +14,6 @@ class FakeSynthOscillator(
     override fun setOscillator(oscillator: Oscillator) {
         this.oscillator = oscillator
     }
+
+    override fun setWaveform(type: Int) { }
 }

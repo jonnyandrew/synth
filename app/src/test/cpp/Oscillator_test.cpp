@@ -3,13 +3,16 @@
 #include <iostream>
 #include <vector>
 #include <Pitch.h>
+#include <SineWaveform.h>
 #include "Oscillator.h"
 #include "Constants.h"
 
 using namespace synth;
 
-TEST(RenderTest, WhenConfigurationIsDefaultItRendersSomething) {
-    Oscillator osc(123);
+TEST(OscillatorTest, WhenConfigurationIsDefaultItRendersSomething) {
+    auto sineWaveform = std::make_unique<SineWaveform>();
+
+    Oscillator osc(123, std::move(sineWaveform));
     std::vector<float> buffer(3);
 
     osc.render(buffer, buffer.size());
@@ -18,8 +21,10 @@ TEST(RenderTest, WhenConfigurationIsDefaultItRendersSomething) {
     EXPECT_NE(buffer[2], 0);
 }
 
-TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
-    Oscillator osc(12345);
+TEST(OscillatorTest, WhenWaveIsOnItRendersAWaveForm) {
+    auto sineWaveform = std::make_unique<SineWaveform>();
+
+    Oscillator osc(12345, std::move(sineWaveform));
     std::vector<float> buffer(512);
 
     osc.setPitch(60);
@@ -37,8 +42,10 @@ TEST(RenderTest, WhenWaveIsOnItRendersAWaveForm) {
     EXPECT_FLOAT_EQ(buffer[499], -0.45625422286755);
 }
 
-TEST(RenderTest, WhenPitchOffsetIsSetItChangesThePitch) {
-    Oscillator osc(12345);
+TEST(OscillatorTest, WhenPitchOffsetIsSetItChangesThePitch) {
+    auto sineWaveform = std::make_unique<SineWaveform>();
+
+    Oscillator osc(12345, std::move(sineWaveform));
     osc.setPitch(21);
     osc.setPitchOffset(22);
     const auto result = osc.getFrequency();
@@ -46,8 +53,10 @@ TEST(RenderTest, WhenPitchOffsetIsSetItChangesThePitch) {
     EXPECT_EQ(result, PITCH_FREQUENCIES[43]);
 }
 
-TEST(RenderTest, WhenPitchOffsetIsTooLargeItClampsTheOffset) {
-    Oscillator osc(12345);
+TEST(OscillatorTest, WhenPitchOffsetIsTooLargeItClampsTheOffset) {
+    auto sineWaveform = std::make_unique<SineWaveform>();
+
+    Oscillator osc(12345, std::move(sineWaveform));
     osc.setPitch(60);
     osc.setPitchOffset(100);
     const auto result = osc.getFrequency();
@@ -55,8 +64,10 @@ TEST(RenderTest, WhenPitchOffsetIsTooLargeItClampsTheOffset) {
     EXPECT_EQ(result, PITCH_FREQUENCIES[127]);
 }
 
-TEST(RenderTest, WhenPitchOffsetIsTooSmallItClampsTheOffset) {
-    Oscillator osc(12345);
+TEST(OscillatorTest, WhenPitchOffsetIsTooSmallItClampsTheOffset) {
+    auto sineWaveform = std::make_unique<SineWaveform>();
+
+    Oscillator osc(12345, std::move(sineWaveform));
     osc.setPitch(60);
     osc.setPitchOffset(-100);
     const auto result = osc.getFrequency();

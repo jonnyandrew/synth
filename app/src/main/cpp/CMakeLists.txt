@@ -28,7 +28,7 @@ set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)
 
 add_custom_command(
         TARGET synth-engine POST_BUILD
-        COMMAND > ${LINT_RUNNER}
-        COMMAND echo ${CLANG_TIDY} -p=${CMAKE_BINARY_DIR} -warnings-as-errors=${CLANG_TIDY_CHECKS} -checks=${CLANG_TIDY_CHECKS} ${SYNTH_ENGINE_SOURCES} ${TEST_SOURCES} >> ${LINT_RUNNER}
+        VERBATIM COMMAND > ${LINT_RUNNER}
+        VERBATIM COMMAND echo ${CLANG_TIDY} \"\$@\" -p=${CMAKE_BINARY_DIR} -warnings-as-errors=${CLANG_TIDY_CHECKS} -checks=${CLANG_TIDY_CHECKS} ${SYNTH_ENGINE_SOURCES} ${TEST_SOURCES} >> ${LINT_RUNNER}
 )
 

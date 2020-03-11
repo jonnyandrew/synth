@@ -1,12 +1,37 @@
 #include "AudioEngine.h"
 #include "AudioStream.h"
 #include "Envelope.h"
+#include "NoiseWaveform.h"
 #include "Oscillator.h"
+#include "SineWaveform.h"
+#include "SquareWaveform.h"
+#include "TriangleWaveform.h"
 #include <jni.h>
 #include <oboe/Oboe.h>
 #include <string>
 
 namespace synth {
+    auto createWaveform(int type) -> std::unique_ptr<Waveform> {
+        std::unique_ptr<Waveform> waveform;
+        switch (type) {
+            case 0:
+                waveform = std::make_unique<SineWaveform>();
+                break;
+            case 1:
+                waveform = std::make_unique<TriangleWaveform>();
+                break;
+            case 2:
+                waveform = std::make_unique<SquareWaveform>();
+                break;
+            case 3:
+                waveform = std::make_unique<NoiseWaveform>();
+                break;
+            default:
+                throw std::invalid_argument("No such waveform for type " + std::to_string(type));
+        }
+        return std::move(waveform);
+    }
+
     extern "C" {
 
     static std::unique_ptr<AudioStream> stream;
@@ -17,8 +42,10 @@ namespace synth {
 
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
-        osc1 = std::make_unique<Oscillator>(AudioStream::getSampleRate());
-        osc2 = std::make_unique<Oscillator>(AudioStream::getSampleRate());
+        auto waveform1 = std::make_unique<SineWaveform>();
+        osc1 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform1));
+        auto waveform2 = std::make_unique<SineWaveform>();
+        osc2 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform2));
         constexpr auto attack = 100.0F;
         constexpr auto decay = 100.0F;
         constexpr auto sustain = 0.3F;
@@ -161,6 +188,26 @@ namespace synth {
         jfieldID fid = env->GetFieldID(cls, "pitchOffset", "I");
         jint pitchOffset = env->GetIntField(jOscillator, fid);
         osc2->setPitchOffset(pitchOffset);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_FirstNativeSynthOscillator_setWaveform(
+            JNIEnv */*env*/,
+            jobject/* cls */,
+            jint waveformType
+    ) -> void {
+        auto waveform = createWaveform(waveformType);
+        osc1->setWaveform(std::move(waveform));
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_SecondNativeSynthOscillator_setWaveform(
+            JNIEnv */*env*/,
+            jobject/* cls */,
+            jint waveformType
+    ) -> void {
+        auto waveform = createWaveform(waveformType);
+        osc2->setWaveform(std::move(waveform));
     }
 
     } // extern "C"

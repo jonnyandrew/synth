@@ -2,11 +2,15 @@
 #define SYNTH_OSCILLATOR_H
 
 #include <vector>
+#include "Waveform.h"
 
 namespace synth {
     class Oscillator {
     public:
-        Oscillator(const int sampleRate);
+        Oscillator(
+                const int sampleRate,
+                std::unique_ptr<Waveform> waveform
+        );
 
         void setPitch(const int pitch);
 
@@ -16,6 +20,8 @@ namespace synth {
 
         double getFrequency();
 
+        void setWaveform(std::unique_ptr<Waveform> waveform);
+
         void render(std::vector<float> &audioData, const int numFrames);
 
     private:
@@ -24,6 +30,7 @@ namespace synth {
         int pitchOffset_;
         double frequency_;
         double phase_{0.0};
+        std::unique_ptr<Waveform> waveform_;
 
         double calcFrequency(int pitch, int pitchOffset);
     };

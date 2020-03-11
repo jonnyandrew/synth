@@ -8,6 +8,7 @@ import javax.inject.Inject
 class SecondNativeSynthOscillator @Inject constructor() : SynthOscillator {
     external override fun getOscillator(): Oscillator
     external override fun setOscillator(oscillator: Oscillator)
+    external override fun setWaveform(type: Int)
 
     companion object {
         init {

@@ -4,6 +4,8 @@
 #include <cassert>
 #include <cmath>
 
+synth::SineWaveform::SineWaveform(int label) : Waveform(label) {}
+
 auto synth::SineWaveform::generate(
         const double phase
 ) -> float {

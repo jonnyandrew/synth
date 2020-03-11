@@ -1,5 +1,18 @@
-file(GLOB SYNTH_ENGINE_SOURCES ./*.cpp)
 
+file(GLOB SYNTH_ENGINE_SOURCES
+        AudioEngine.cpp
+        AudioStream.cpp
+        Envelope.cpp
+        EnvelopeControlledAmplifier.cpp
+        native-lib.cpp
+        NoiseWaveform.cpp
+        Oscillator.cpp
+        PlayException.cpp
+        SineWaveform.cpp
+        SquareWaveform.cpp
+        TriangleWaveform.cpp
+        Waveform.cpp
+        )
 add_library(
         synth-engine
         SHARED
@@ -29,6 +42,6 @@ set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)
 add_custom_command(
         TARGET synth-engine POST_BUILD
         VERBATIM COMMAND > ${LINT_RUNNER}
-        VERBATIM COMMAND echo ${CLANG_TIDY} \"\$@\" -p=${CMAKE_BINARY_DIR} -warnings-as-errors=${CLANG_TIDY_CHECKS} -checks=${CLANG_TIDY_CHECKS} ${SYNTH_ENGINE_SOURCES} ${TEST_SOURCES} >> ${LINT_RUNNER}
+        VERBATIM COMMAND echo ${CLANG_TIDY} \"\$@\" -p=${CMAKE_BINARY_DIR} -warnings-as-errors=${CLANG_TIDY_CHECKS} -checks=${CLANG_TIDY_CHECKS} ${SYNTH_ENGINE_SOURCES} >> ${LINT_RUNNER}
 )
 

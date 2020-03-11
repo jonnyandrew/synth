@@ -31,10 +31,3 @@ TEST(TriangleWaveformTest, ItHasCorrectMidPoints) {
     EXPECT_FLOAT_EQ(triangleWaveform.generate(PI * 1.75), -0.5);
     EXPECT_FLOAT_EQ(triangleWaveform.generate(PI * 1.875), -0.25);
 }
-
-TEST(TriangleWaveformTest, ItBehavesOutsideBoundaries) {
-    TriangleWaveform triangleWaveform;
-
-    EXPECT_DEATH(triangleWaveform.generate(-PI * 0.125), "");
-    EXPECT_DEATH(triangleWaveform.generate(PI * 2.125), "");
-}

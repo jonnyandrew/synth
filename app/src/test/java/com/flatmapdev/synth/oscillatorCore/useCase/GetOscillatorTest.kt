@@ -1,8 +1,8 @@
 package com.flatmapdev.synth.oscillatorCore.useCase
 
 import com.flatmapdev.synth.doubles.oscillator.adapter.FakeOscillatorAdapter
+import com.flatmapdev.synth.doubles.oscillator.model.createOscillator
 import com.flatmapdev.synth.oscillatorCore.adapter.OscillatorAdapter
-import com.flatmapdev.synth.oscillatorCore.model.Oscillator
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -11,7 +11,7 @@ class GetOscillatorTest {
     lateinit var oscillatorAdapters: Map<OscillatorId, OscillatorAdapter>
     @Test
     fun `it returns an oscillator from the adapter`() {
-        val oscillator = Oscillator(2)
+        val oscillator = createOscillator(-12)
         oscillatorAdapters = mapOf(
             OscillatorId.Osc1 to
                     FakeOscillatorAdapter(

@@ -22,10 +22,8 @@ void synth::Oscillator::render(std::vector<float> &audioData, const int numFrame
     const auto phaseIncrement =
             (TWO_PI * frequency_) / static_cast<double>(sampleRate_);
     for (int i = 0; i < numFrames; i++) {
-        // Calculates the next sample value for the sine wave.
         audioData[i] = waveform_->generate(phase_);
 
-        // Increments the phase, handling wrap around.
         phase_ += phaseIncrement;
         if (phase_ > TWO_PI) { phase_ -= TWO_PI; }
     }
@@ -58,5 +56,9 @@ auto synth::Oscillator::getFrequency() -> double {
 
 void synth::Oscillator::setWaveform(std::unique_ptr<synth::Waveform> waveform) {
     waveform_ = std::move(waveform);
+}
+
+auto synth::Oscillator::getWaveform() -> synth::Waveform & {
+    return *waveform_;
 }
 

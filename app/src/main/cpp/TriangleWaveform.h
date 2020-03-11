@@ -6,7 +6,9 @@
 namespace synth {
     class TriangleWaveform : public Waveform {
     public:
-        virtual float generate(const double phase) override;
+        TriangleWaveform(int label = -1);
+
+        float generate(const double phase) override;
     };
 }
 

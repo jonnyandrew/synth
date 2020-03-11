@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.oscillator.adapter.FakeOscillatorAdapter
 import com.flatmapdev.synth.doubles.oscillator.model.createOscillator
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
+import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorCore.useCase.GetOscillator
 import com.flatmapdev.synth.oscillatorCore.useCase.SetOscillator
 import io.mockk.spyk
@@ -51,7 +52,19 @@ class OscillatorViewModelTest {
         subject.setOscillator(OscillatorId.Osc2, oscillator)
 
         verifyAll {
-            spySetOscillator.execute(OscillatorId.Osc2, oscillator)
+            spySetOscillator.setOscillator(OscillatorId.Osc2, oscillator)
+        }
+    }
+
+    @Test
+    fun `setWaveform should call the use case`() {
+        val waveform = Waveform.Triangle
+        val subject = createSubject()
+
+        subject.setWaveform(OscillatorId.Osc2, waveform)
+
+        verifyAll {
+            spySetOscillator.setWaveform(OscillatorId.Osc2, waveform)
         }
     }
 

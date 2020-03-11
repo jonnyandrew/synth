@@ -6,6 +6,8 @@
 namespace synth {
     class SineWaveform : public Waveform {
     public:
+        SineWaveform(int label = -1);
+
         float generate(const double phase) override;
     };
 }

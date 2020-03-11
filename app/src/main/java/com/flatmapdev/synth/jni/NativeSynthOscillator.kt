@@ -1,16 +1,17 @@
 package com.flatmapdev.synth.jni
 
-import com.flatmapdev.synth.oscillatorCore.model.Oscillator
+import com.flatmapdev.synth.oscillatorData.model.OscillatorData
 import com.flatmapdev.synth.shared.scopes.AppScope
 import javax.inject.Inject
 
 @AppScope
 class NativeSynthOscillator @Inject constructor(
+    @Suppress("unused")
     private val oscillatorId: Int
 ) : SynthOscillator {
-    external override fun getOscillator(): Oscillator
-    external override fun setOscillator(oscillator: Oscillator)
-    external override fun setWaveform(type: Int)
+    external override fun getOscillator(): OscillatorData
+    external override fun setOscillator(oscillator: OscillatorData)
+    external override fun setWaveform(waveform: Int)
 
     companion object {
         init {

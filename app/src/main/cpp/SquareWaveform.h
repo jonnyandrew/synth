@@ -6,6 +6,8 @@
 namespace synth {
     class SquareWaveform : public Waveform {
     public:
+        SquareWaveform(int label = -1);
+
         float generate(double phase) override;
     };
 }

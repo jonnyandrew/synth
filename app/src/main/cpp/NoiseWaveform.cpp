@@ -2,6 +2,8 @@
 
 #include <random>
 
+synth::NoiseWaveform::NoiseWaveform(int label) : Waveform(label) {}
+
 auto synth::NoiseWaveform::generate(
         const double /*phase*/
 ) -> float {

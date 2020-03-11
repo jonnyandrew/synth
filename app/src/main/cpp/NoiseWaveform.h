@@ -6,6 +6,8 @@
 namespace synth {
     class NoiseWaveform : public Waveform {
     public:
+        NoiseWaveform(int label);
+
         float generate(const double phase) override;
     };
 }

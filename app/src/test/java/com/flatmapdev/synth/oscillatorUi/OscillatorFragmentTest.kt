@@ -1,8 +1,13 @@
 package com.flatmapdev.synth.oscillatorUi
 
+import android.widget.AutoCompleteTextView
+import androidx.fragment.app.testing.FragmentScenario
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -12,11 +17,16 @@ import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
 import com.flatmapdev.synth.doubles.jni.FakeSynthOscillator
+import com.flatmapdev.synth.jni.SynthOscillator
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
+import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.utils.NavControllerFragmentFactory
 import com.flatmapdev.synth.utils.launchAndSetUpFragment
+import com.flatmapdev.synth.utils.skipTextInputLayoutAnimations
 import io.mockk.spyk
 import io.mockk.verify
+import org.assertj.core.api.Assertions
+import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,9 +34,15 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class OscillatorFragmentTest {
     private lateinit var testComponentBuilder: DaggerTestAppComponent.Builder
+    private lateinit var spySynthOscillator: SynthOscillator
+
     @Before
     fun setUp() {
+        spySynthOscillator = spyk(FakeSynthOscillator())
         testComponentBuilder = DaggerTestAppComponent.builder()
+            .fakeJniModule(
+                FakeJniModule(synthOscillator1 = spySynthOscillator)
+            )
     }
 
     @Test
@@ -43,12 +59,6 @@ class OscillatorFragmentTest {
 
     @Test
     fun `when the oscillator pitch is changed, it sends the new oscillator config to the synth engine`() {
-        val spySynthOscillator = spyk(FakeSynthOscillator())
-        testComponentBuilder = testComponentBuilder
-            .fakeJniModule(
-                FakeJniModule(synthOscillator1 = spySynthOscillator)
-            )
-
         launch()
 
         onView(withId(R.id.oscControlsPitchSeekBar))
@@ -61,10 +71,13 @@ class OscillatorFragmentTest {
 
     @Test
     fun `when the oscillator pitch is changed, it doesn't update the wrong oscillator in the engine`() {
-        val spySynthOscillator = spyk(FakeSynthOscillator())
+        val wrongSynthOscillator = spyk(FakeSynthOscillator())
         testComponentBuilder = testComponentBuilder
             .fakeJniModule(
-                FakeJniModule(synthOscillator2 = spySynthOscillator)
+                FakeJniModule(
+                    synthOscillator1 = spySynthOscillator,
+                    synthOscillator2 = wrongSynthOscillator
+                )
             )
         launch()
 
@@ -72,18 +85,36 @@ class OscillatorFragmentTest {
             .perform(swipeRight())
 
         verify(inverse = true) {
-            spySynthOscillator.setOscillator(any())
+            wrongSynthOscillator.setOscillator(any())
         }
     }
 
-    private fun launch() {
+    @Test
+    fun `when the oscillator waveform is changed, it sends the new waveform to the synth engine`() {
+        val scenario = launch()
+        scenario.onFragment { fragment ->
+            onView(withId(R.id.waveformLayout)).perform(ViewActions.click())
+            onView(withId(R.id.waveformLayout)).perform(skipTextInputLayoutAnimations())
+            Assertions.assertThat(fragment.view?.findViewById<AutoCompleteTextView>(R.id.waveform)?.isPopupShowing)
+                .isTrue()
+            onData(CoreMatchers.equalTo(getApp().getString(R.string.waveform_triangle)))
+                .inRoot(RootMatchers.isPlatformPopup())
+                .perform(ViewActions.click())
+        }
+
+        verify {
+            spySynthOscillator.setWaveform(Waveform.Triangle.ordinal)
+        }
+    }
+
+    private fun launch(): FragmentScenario<OscillatorFragment> {
         val fragmentFactory = NavControllerFragmentFactory(
             R.navigation.synth_nav_graph,
             R.id.oscillatorFragment
         )
 
         getApp().appComponent = testComponentBuilder.build()
-        launchAndSetUpFragment<OscillatorFragment>(
+        return launchAndSetUpFragment(
             OscillatorFragmentArgs(OscillatorId.Osc1).toBundle(),
             fragmentFactory = fragmentFactory
         )

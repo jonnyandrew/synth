@@ -17,20 +17,27 @@ namespace synth {
     static std::unique_ptr<Oscillator> osc1;
     static std::unique_ptr<Oscillator> osc2;
 
-    auto createWaveform(int type) -> std::unique_ptr<Waveform> {
+    enum WaveformType {
+        Sine,
+        Triangle,
+        Square,
+        Noise
+    };
+
+    auto createWaveform(WaveformType type) -> std::unique_ptr<Waveform> {
         std::unique_ptr<Waveform> waveform;
         switch (type) {
-            case 0:
-                waveform = std::make_unique<SineWaveform>();
+            case WaveformType::Sine:
+                waveform = std::make_unique<SineWaveform>(type);
                 break;
-            case 1:
-                waveform = std::make_unique<TriangleWaveform>();
+            case WaveformType::Triangle:
+                waveform = std::make_unique<TriangleWaveform>(type);
                 break;
-            case 2:
-                waveform = std::make_unique<SquareWaveform>();
+            case WaveformType::Square:
+                waveform = std::make_unique<SquareWaveform>(type);
                 break;
-            case 3:
-                waveform = std::make_unique<NoiseWaveform>();
+            case WaveformType::Noise:
+                waveform = std::make_unique<NoiseWaveform>(type);
                 break;
             default:
                 throw std::invalid_argument("No such waveform for type " + std::to_string(type));
@@ -44,27 +51,30 @@ namespace synth {
     ) -> Oscillator & {
         jclass cls = env->GetObjectClass(nativeSynthOscillator);
         jfieldID field = env->GetFieldID(cls, "oscillatorId", "I");
-        if (field == NULL) {
-            /* Handle error */;
-        }
         int oscillatorId = env->GetIntField(nativeSynthOscillator, field);
 
-        if (oscillatorId == 0) {
-            return *osc1;
-        } else if (oscillatorId == 1) {
-            return *osc2;
-        } else {
-            throw std::invalid_argument("No oscillator" + std::to_string(oscillatorId));
+        Oscillator *osc;
+        switch (oscillatorId) {
+            case 0:
+                osc = osc1.get();
+                break;
+            case 1:
+                osc = osc2.get();
+                break;
+            default:
+                throw std::invalid_argument("No oscillator " + std::to_string(oscillatorId));
         }
+
+        return *osc;
     }
 
     extern "C" {
 
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
-        auto waveform1 = std::make_unique<SineWaveform>();
+        auto waveform1 = createWaveform(WaveformType::Sine);
         osc1 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform1));
-        auto waveform2 = std::make_unique<SineWaveform>();
+        auto waveform2 = createWaveform(WaveformType::Sine);
         osc2 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform2));
         constexpr auto attack = 100.0F;
         constexpr auto decay = 100.0F;
@@ -149,24 +159,20 @@ namespace synth {
         };
         ampEnvelope->setEnvelopeParameters(envelopeParameters);
     }
-
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
             JNIEnv *env,
             jobject obj
     ) -> jobject {
         Oscillator &osc = getOscillatorFromId(env, obj);
-        // Get the class we wish to return an instance of
-        jclass clazz = env->FindClass("com/flatmapdev/synth/oscillatorCore/model/Oscillator");
-
-        // Get the method id of an empty constructor in clazz
-        jmethodID constructor = env->GetMethodID(clazz, "<init>", "(I)V");
-
-        // Create an instance of clazz
-        jobject result = env->NewObject(clazz, constructor, osc.getPitchOffset());
-
-        // return object
-        return result;
+        jclass oscillatorClass = env->FindClass(
+                "com/flatmapdev/synth/oscillatorData/model/OscillatorData");
+        jmethodID oscillatorConstructor = env->GetMethodID(oscillatorClass, "<init>", "(II)V");
+        auto waveformType = static_cast<WaveformType>(osc.getWaveform().getLabel());
+        return env->NewObject(oscillatorClass, oscillatorConstructor,
+                              osc.getPitchOffset(),
+                              static_cast<jint>(waveformType)
+        );
     }
 
     JNIEXPORT auto JNICALL
@@ -186,9 +192,10 @@ namespace synth {
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setWaveform(
             JNIEnv *env,
             jobject obj,
-            jint waveformType
+            jint waveformTypeInt
     ) -> void {
         Oscillator &osc = getOscillatorFromId(env, obj);
+        auto waveformType = static_cast<WaveformType>(waveformTypeInt);
         auto waveform = createWaveform(waveformType);
         osc.setWaveform(std::move(waveform));
     }

@@ -22,6 +22,8 @@ namespace synth {
 
         void setWaveform(std::unique_ptr<Waveform> waveform);
 
+        Waveform &getWaveform();
+
         void render(std::vector<float> &audioData, const int numFrames);
 
     private:

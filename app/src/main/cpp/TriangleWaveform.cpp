@@ -2,6 +2,8 @@
 #include "Constants.h"
 #include <cassert>
 
+synth::TriangleWaveform::TriangleWaveform(int label) : Waveform(label) {}
+
 auto synth::TriangleWaveform::generate(
         const double phase
 ) -> float {
@@ -13,7 +15,7 @@ auto synth::TriangleWaveform::generate(
     } else if (phase <= PI + HALF_PI) {
         result = (phase - PI) / -HALF_PI;
     } else {
-        result = (phase - PI + HALF_PI) / HALF_PI - 1;
+        result = (phase - (PI + HALF_PI)) / HALF_PI - 1;
     }
 
     return static_cast<float>(result);

@@ -11,6 +11,12 @@
 #include <string>
 
 namespace synth {
+    static std::unique_ptr<AudioStream> stream;
+    static std::unique_ptr<Envelope> ampEnvelope;
+    static std::unique_ptr<AudioEngine> audioEngine;
+    static std::unique_ptr<Oscillator> osc1;
+    static std::unique_ptr<Oscillator> osc2;
+
     auto createWaveform(int type) -> std::unique_ptr<Waveform> {
         std::unique_ptr<Waveform> waveform;
         switch (type) {
@@ -32,13 +38,27 @@ namespace synth {
         return std::move(waveform);
     }
 
-    extern "C" {
+    auto getOscillatorFromId(
+            JNIEnv *env,
+            jobject nativeSynthOscillator
+    ) -> Oscillator & {
+        jclass cls = env->GetObjectClass(nativeSynthOscillator);
+        jfieldID field = env->GetFieldID(cls, "oscillatorId", "I");
+        if (field == NULL) {
+            /* Handle error */;
+        }
+        int oscillatorId = env->GetIntField(nativeSynthOscillator, field);
 
-    static std::unique_ptr<AudioStream> stream;
-    static std::unique_ptr<Envelope> ampEnvelope;
-    static std::unique_ptr<AudioEngine> audioEngine;
-    static std::unique_ptr<Oscillator> osc1;
-    static std::unique_ptr<Oscillator> osc2;
+        if (oscillatorId == 0) {
+            return *osc1;
+        } else if (oscillatorId == 1) {
+            return *osc2;
+        } else {
+            throw std::invalid_argument("No oscillator" + std::to_string(oscillatorId));
+        }
+    }
+
+    extern "C" {
 
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
@@ -131,10 +151,11 @@ namespace synth {
     }
 
     JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_FirstNativeSynthOscillator_getOscillator(
+    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
             JNIEnv *env,
-            jobject/* cls */
+            jobject obj
     ) -> jobject {
+        Oscillator &osc = getOscillatorFromId(env, obj);
         // Get the class we wish to return an instance of
         jclass clazz = env->FindClass("com/flatmapdev/synth/oscillatorCore/model/Oscillator");
 
@@ -142,72 +163,34 @@ namespace synth {
         jmethodID constructor = env->GetMethodID(clazz, "<init>", "(I)V");
 
         // Create an instance of clazz
-        jobject obj = env->NewObject(clazz, constructor, osc1->getPitchOffset());
+        jobject result = env->NewObject(clazz, constructor, osc.getPitchOffset());
 
         // return object
-        return obj;
+        return result;
     }
 
     JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_SecondNativeSynthOscillator_getOscillator(
+    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setOscillator(
             JNIEnv *env,
-            jobject/* cls */
-    ) -> jobject {
-        // Get the class we wish to return an instance of
-        jclass clazz = env->FindClass("com/flatmapdev/synth/oscillatorCore/model/Oscillator");
-
-        // Get the method id of an empty constructor in clazz
-        jmethodID constructor = env->GetMethodID(clazz, "<init>", "(I)V");
-
-        // Create an instance of clazz
-        jobject obj = env->NewObject(clazz, constructor, osc2->getPitchOffset());
-
-        // return object
-        return obj;
-    }
-
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_FirstNativeSynthOscillator_setOscillator(
-            JNIEnv *env,
-            jobject/* cls */,
+            jobject obj,
             jobject jOscillator
     ) -> void {
+        Oscillator &osc = getOscillatorFromId(env, obj);
         jclass cls = env->GetObjectClass(jOscillator);
         jfieldID fid = env->GetFieldID(cls, "pitchOffset", "I");
         jint pitchOffset = env->GetIntField(jOscillator, fid);
-        osc1->setPitchOffset(pitchOffset);
+        osc.setPitchOffset(pitchOffset);
     }
 
     JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_SecondNativeSynthOscillator_setOscillator(
+    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setWaveform(
             JNIEnv *env,
-            jobject/* cls */,
-            jobject jOscillator
-    ) -> void {
-        jclass cls = env->GetObjectClass(jOscillator);
-        jfieldID fid = env->GetFieldID(cls, "pitchOffset", "I");
-        jint pitchOffset = env->GetIntField(jOscillator, fid);
-        osc2->setPitchOffset(pitchOffset);
-    }
-
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_FirstNativeSynthOscillator_setWaveform(
-            JNIEnv */*env*/,
-            jobject/* cls */,
+            jobject obj,
             jint waveformType
     ) -> void {
+        Oscillator &osc = getOscillatorFromId(env, obj);
         auto waveform = createWaveform(waveformType);
-        osc1->setWaveform(std::move(waveform));
-    }
-
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_SecondNativeSynthOscillator_setWaveform(
-            JNIEnv */*env*/,
-            jobject/* cls */,
-            jint waveformType
-    ) -> void {
-        auto waveform = createWaveform(waveformType);
-        osc2->setWaveform(std::move(waveform));
+        osc.setWaveform(std::move(waveform));
     }
 
     } // extern "C"

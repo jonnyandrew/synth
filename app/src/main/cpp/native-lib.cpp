@@ -19,8 +19,8 @@ namespace synth {
 
     enum WaveformType {
         Sine,
-        Triangle,
         Square,
+        Triangle,
         Noise
     };
 
@@ -198,6 +198,16 @@ namespace synth {
         auto waveformType = static_cast<WaveformType>(waveformTypeInt);
         auto waveform = createWaveform(waveformType);
         osc.setWaveform(std::move(waveform));
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setPitchOffset(
+            JNIEnv *env,
+            jobject obj,
+            jint pitchOffset
+    ) -> void {
+        Oscillator &osc = getOscillatorFromId(env, obj);
+        osc.setPitchOffset(pitchOffset);
     }
 
     } // extern "C"

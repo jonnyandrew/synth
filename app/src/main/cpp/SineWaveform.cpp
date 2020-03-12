@@ -1,7 +1,6 @@
 #include "SineWaveform.h"
 #include "Constants.h"
 
-#include <cassert>
 #include <cmath>
 
 synth::SineWaveform::SineWaveform(int label) : Waveform(label) {}

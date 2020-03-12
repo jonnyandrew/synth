@@ -8,6 +8,7 @@ import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorCore.useCase.GetOscillator
 import com.flatmapdev.synth.oscillatorCore.useCase.SetOscillator
 import io.mockk.spyk
+import io.mockk.verify
 import io.mockk.verifyAll
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -46,13 +47,13 @@ class OscillatorViewModelTest {
 
     @Test
     fun `setOscillator should call the use case`() {
-        val oscillator = createOscillator(4)
+        val pitchOffset = 4
         val subject = createSubject()
 
-        subject.setOscillator(OscillatorId.Osc2, oscillator)
+        subject.setPitchOffset(OscillatorId.Osc2, pitchOffset)
 
-        verifyAll {
-            spySetOscillator.setOscillator(OscillatorId.Osc2, oscillator)
+        verify {
+            spySetOscillator.setPitchOffset(OscillatorId.Osc2, pitchOffset)
         }
     }
 
@@ -63,8 +64,20 @@ class OscillatorViewModelTest {
 
         subject.setWaveform(OscillatorId.Osc2, waveform)
 
-        verifyAll {
+        verify {
             spySetOscillator.setWaveform(OscillatorId.Osc2, waveform)
+        }
+    }
+
+    @Test
+    fun `setPitchOffset should call the use case`() {
+        val pitchOffset = 23
+        val subject = createSubject()
+
+        subject.setPitchOffset(OscillatorId.Osc1, pitchOffset)
+
+        verifyAll {
+            spySetOscillator.setPitchOffset(OscillatorId.Osc1, pitchOffset)
         }
     }
 

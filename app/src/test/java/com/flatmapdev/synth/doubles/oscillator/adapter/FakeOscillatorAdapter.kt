@@ -8,8 +8,10 @@ class FakeOscillatorAdapter(
     override var oscillator: Oscillator = Oscillator(0, Waveform.Sine)
 ) : OscillatorAdapter {
     override fun setWaveform(waveform: Waveform) {
-        oscillator = oscillator.copy(
-            waveform = waveform
-        )
+        oscillator = oscillator.copy(waveform = waveform)
+    }
+
+    override fun setPitchOffset(pitchOffset: Int) {
+        oscillator = oscillator.copy(pitchOffset = pitchOffset)
     }
 }

@@ -23,8 +23,8 @@ class OscillatorViewModel(
         _oscillator.value = getOscillator.execute(oscillatorId)
     }
 
-    fun setOscillator(oscillatorId: OscillatorId, oscillator: Oscillator) {
-        setOscillator.setOscillator(oscillatorId, oscillator)
+    fun setPitchOffset(oscillatorId: OscillatorId, pitchOffset: Int) {
+        setOscillator.setPitchOffset(oscillatorId, pitchOffset)
     }
 
     fun setWaveform(oscillatorId: OscillatorId, waveform: Waveform) {

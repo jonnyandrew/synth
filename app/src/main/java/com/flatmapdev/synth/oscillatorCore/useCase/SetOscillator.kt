@@ -12,18 +12,18 @@ class SetOscillator @Inject constructor(
     private val oscillatorAdapters: Map<OscillatorId, @JvmSuppressWildcards OscillatorAdapter>
 ) {
     fun setOscillator(oscillatorId: OscillatorId, oscillator: Oscillator) {
-        val adapter =
-            oscillatorAdapters[oscillatorId]
-                ?: error("Adapter not bound for ${oscillatorId.name}")
-
-        adapter.oscillator = oscillator
+        getAdapter(oscillatorId).oscillator = oscillator
     }
 
     fun setWaveform(oscillatorId: OscillatorId, waveform: Waveform) {
-        val adapter =
-            oscillatorAdapters[oscillatorId]
-                ?: error("Adapter not bound for ${oscillatorId.name}")
-
-        adapter.setWaveform(waveform)
+        getAdapter(oscillatorId).setWaveform(waveform)
     }
+
+    fun setPitchOffset(oscillatorId: OscillatorId, pitchOffset: Int) {
+        getAdapter(oscillatorId).setPitchOffset(pitchOffset)
+    }
+
+    private fun getAdapter(oscillatorId: OscillatorId) =
+        oscillatorAdapters[oscillatorId]
+            ?: error("Adapter not bound for ${oscillatorId.name}")
 }

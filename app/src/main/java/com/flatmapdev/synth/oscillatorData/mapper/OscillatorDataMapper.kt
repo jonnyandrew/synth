@@ -7,13 +7,13 @@ import com.flatmapdev.synth.oscillatorData.model.OscillatorData
 fun OscillatorData.toDomainModel(): Oscillator {
     return Oscillator(
         pitchOffset,
-        Waveform.values()[waveformType]
+        Waveform.fromDataModel(waveformType)
     )
 }
 
 fun Oscillator.toDataModel(): OscillatorData {
     return OscillatorData(
         pitchOffset,
-        waveform.ordinal
+        waveform.toDataModel()
     )
 }

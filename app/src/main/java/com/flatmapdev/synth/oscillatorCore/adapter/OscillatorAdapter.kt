@@ -7,4 +7,5 @@ interface OscillatorAdapter {
     var oscillator: Oscillator
 
     fun setWaveform(waveform: Waveform)
+    fun setPitchOffset(pitchOffset: Int)
 }

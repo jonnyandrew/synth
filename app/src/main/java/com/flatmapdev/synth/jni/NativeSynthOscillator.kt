@@ -12,6 +12,7 @@ class NativeSynthOscillator @Inject constructor(
     external override fun getOscillator(): OscillatorData
     external override fun setOscillator(oscillator: OscillatorData)
     external override fun setWaveform(waveform: Int)
+    external override fun setPitchOffset(pitchOffset: Int)
 
     companion object {
         init {

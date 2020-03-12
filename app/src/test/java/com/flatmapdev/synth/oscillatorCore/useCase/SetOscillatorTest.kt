@@ -52,6 +52,22 @@ class SetOscillatorTest {
         }
     }
 
+    @Test
+    fun `setPitchOffset sets the pitch offset on the adapter`() {
+        val pitchOffset = 30
+        val spyOscillatorAdapter = spyk(FakeOscillatorAdapter())
+        oscillatorAdapters = mapOf(
+            OscillatorId.Osc1 to spyOscillatorAdapter
+        )
+        val subject = createSubject()
+
+        subject.setPitchOffset(OscillatorId.Osc1, pitchOffset)
+
+        verify {
+            spyOscillatorAdapter.setPitchOffset(pitchOffset)
+        }
+    }
+
     @Test(expected = IllegalStateException::class)
     fun `setWaveform throws if the adapter is not present`() {
         val waveform = Waveform.Sine

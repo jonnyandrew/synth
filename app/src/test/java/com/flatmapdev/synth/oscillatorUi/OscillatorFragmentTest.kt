@@ -58,34 +58,14 @@ class OscillatorFragmentTest {
     }
 
     @Test
-    fun `when the oscillator pitch is changed, it sends the new oscillator config to the synth engine`() {
+    fun `when the oscillator pitch offset is changed, it sends the new oscillator config to the synth engine`() {
         launch()
 
         onView(withId(R.id.oscControlsPitchSeekBar))
             .perform(swipeRight())
 
         verify(atLeast = 1) {
-            spySynthOscillator.setOscillator(any())
-        }
-    }
-
-    @Test
-    fun `when the oscillator pitch is changed, it doesn't update the wrong oscillator in the engine`() {
-        val wrongSynthOscillator = spyk(FakeSynthOscillator())
-        testComponentBuilder = testComponentBuilder
-            .fakeJniModule(
-                FakeJniModule(
-                    synthOscillator1 = spySynthOscillator,
-                    synthOscillator2 = wrongSynthOscillator
-                )
-            )
-        launch()
-
-        onView(withId(R.id.oscControlsPitchSeekBar))
-            .perform(swipeRight())
-
-        verify(inverse = true) {
-            wrongSynthOscillator.setOscillator(any())
+            spySynthOscillator.setPitchOffset(any())
         }
     }
 

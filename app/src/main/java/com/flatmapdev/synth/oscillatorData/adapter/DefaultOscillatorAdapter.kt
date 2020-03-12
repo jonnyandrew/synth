@@ -15,6 +15,10 @@ class DefaultOscillatorAdapter(
         set(value) = synthOscillator.setOscillator(value.toDataModel())
 
     override fun setWaveform(waveform: Waveform) {
-        synthOscillator.setWaveform(waveform.ordinal)
+        synthOscillator.setWaveform(waveform.toDataModel())
+    }
+
+    override fun setPitchOffset(pitchOffset: Int) {
+        synthOscillator.setPitchOffset(pitchOffset)
     }
 }

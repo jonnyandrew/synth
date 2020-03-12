@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
-import com.flatmapdev.synth.oscillatorCore.model.Oscillator
 import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorShared.toUiString
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
@@ -61,12 +60,9 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    viewModel.setOscillator(
+                    viewModel.setPitchOffset(
                         args.oscillatorId,
-                        Oscillator(
-                            seekBar.getProgressFromMiddle(),
-                            Waveform.Square
-                        )
+                        seekBar.getProgressFromMiddle()
                     )
                 }
             }

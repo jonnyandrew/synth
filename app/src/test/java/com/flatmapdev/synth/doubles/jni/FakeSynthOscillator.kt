@@ -17,8 +17,10 @@ class FakeSynthOscillator(
     }
 
     override fun setWaveform(waveform: Int) {
-        oscillator = oscillator.copy(
-            waveformType = waveform
-        )
+        oscillator = oscillator.copy(waveformType = waveform)
+    }
+
+    override fun setPitchOffset(pitchOffset: Int) {
+        oscillator = oscillator.copy(pitchOffset = pitchOffset)
     }
 }

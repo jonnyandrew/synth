@@ -1,3 +1,4 @@
+#include <cmath>
 #include <gtest/gtest.h>
 #include <SineWaveform.h>
 #include "Constants.h"

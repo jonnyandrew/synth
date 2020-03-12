@@ -48,7 +48,19 @@ class DefaultOscillatorAdapterTest {
         subject.setWaveform(waveform)
 
         verify {
-            synthOscillator.setWaveform(waveform.ordinal)
+            synthOscillator.setWaveform(waveform.toDataModel())
+        }
+    }
+
+    fun `setPitchOffset sets the pitch offset on the synth oscillator`() {
+        val pitchOffset = -3
+        synthOscillator = FakeSynthOscillator()
+        val subject = createSubject()
+
+        subject.setPitchOffset(pitchOffset)
+
+        verify {
+            synthOscillator.setPitchOffset(pitchOffset)
         }
     }
 

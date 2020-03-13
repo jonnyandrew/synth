@@ -53,6 +53,9 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        unitTests.all {
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo1.maven.org/maven2'
+        }
     }
     lintOptions {
         abortOnError true

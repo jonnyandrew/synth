@@ -29,9 +29,15 @@ jobs:
       run: ./gradlew lintRelease
     - name: Kotlin Unit Test
       run: ./gradlew testRelease
+    - name: Archive Kotlin unit test result
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+         name: kotlin-unit-test-result
+         path: ./app/build/reports/tests/testReleaseUnitTest
     - name: C++ Unit Test
       uses: ReactiveCircus/android-emulator-runner@v2.4.0
       with:
         api-level: 29
         script: |
-          ./gradlew cppTest -Pabi=x86
+          ./gradlew cppTest -Pabi=$(adb shell getprop ro.product.cpu.abi)

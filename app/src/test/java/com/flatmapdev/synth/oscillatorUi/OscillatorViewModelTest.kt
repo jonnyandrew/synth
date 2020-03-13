@@ -4,9 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.flatmapdev.synth.doubles.oscillator.adapter.FakeOscillatorAdapter
 import com.flatmapdev.synth.doubles.oscillator.model.createOscillator
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
+import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorCore.useCase.GetOscillator
 import com.flatmapdev.synth.oscillatorCore.useCase.SetOscillator
 import io.mockk.spyk
+import io.mockk.verify
 import io.mockk.verifyAll
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -45,13 +47,37 @@ class OscillatorViewModelTest {
 
     @Test
     fun `setOscillator should call the use case`() {
-        val oscillator = createOscillator(4)
+        val pitchOffset = 4
         val subject = createSubject()
 
-        subject.setOscillator(OscillatorId.Osc2, oscillator)
+        subject.setPitchOffset(OscillatorId.Osc2, pitchOffset)
+
+        verify {
+            spySetOscillator.setPitchOffset(OscillatorId.Osc2, pitchOffset)
+        }
+    }
+
+    @Test
+    fun `setWaveform should call the use case`() {
+        val waveform = Waveform.Triangle
+        val subject = createSubject()
+
+        subject.setWaveform(OscillatorId.Osc2, waveform)
+
+        verify {
+            spySetOscillator.setWaveform(OscillatorId.Osc2, waveform)
+        }
+    }
+
+    @Test
+    fun `setPitchOffset should call the use case`() {
+        val pitchOffset = 23
+        val subject = createSubject()
+
+        subject.setPitchOffset(OscillatorId.Osc1, pitchOffset)
 
         verifyAll {
-            spySetOscillator.execute(OscillatorId.Osc2, oscillator)
+            spySetOscillator.setPitchOffset(OscillatorId.Osc1, pitchOffset)
         }
     }
 

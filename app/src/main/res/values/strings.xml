@@ -4,6 +4,8 @@
     <string name="device_features_supports_low_latency">Supports low latency: %1$s</string>
     <string name="device_features_supports_pro_latency">Supports pro latency: %1$s</string>
     <string name="synth_title">Synth</string>
+    <string name="about_title">About</string>
+    <string name="menu_main_about">About</string>
     <string name="control_panel_title">Synth</string>
     <string name="amp_envelope_title">Amp envelope</string>
     <string name="amp_envelope_attack">Attack</string>
@@ -12,6 +14,7 @@
     <string name="amp_envelope_release">Release</string>
     <string name="osc_title">Oscillator %1$d</string>
     <string name="osc_pitch_offset">Pitch</string>
+    <string name="osc_waveform">Waveform</string>
     <string name="keyboard_title">Keyboard</string>
     <string name="keyboard_scale_tonic">Tonic</string>
     <string name="keyboard_scale_type">Scale type</string>
@@ -30,6 +33,8 @@
     <string name="note_f_sharp_g_flat">F&#9839; / G&#9837;</string>
     <string name="note_g">G</string>
     <string name="note_g_sharp_a_flat">G&#9839; / A&#9837;</string>
-    <string name="menu_main_about">About</string>
-    <string name="about_title">About</string>
+    <string name="waveform_sine">Sine</string>
+    <string name="waveform_square">Square</string>
+    <string name="waveform_triangle">Triangle</string>
+    <string name="waveform_noise">Noise</string>
 </resources>

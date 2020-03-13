@@ -1,15 +1,20 @@
 #include "Oscillator.h"
 #include "Constants.h"
 #include "Pitch.h"
+#include "SineWaveform.h"
+#include "SquareWaveform.h"
+#include "TriangleWaveform.h"
 #include <cmath>
 
 synth::Oscillator::Oscillator(
-        const int sampleRate
+        const int sampleRate,
+        std::unique_ptr<Waveform> waveform
 ) :
-        sampleRate_(sampleRate),
-        pitch_(0),
-        pitchOffset_(0),
-        frequency_(calcFrequency(pitch_, pitchOffset_)) {
+        sampleRate_{sampleRate},
+        pitch_{0},
+        pitchOffset_{0},
+        frequency_{calcFrequency(pitch_, pitchOffset_)},
+        waveform_{std::move(waveform)} {
     assert(sampleRate > 0);
 }
 
@@ -17,10 +22,8 @@ void synth::Oscillator::render(std::vector<float> &audioData, const int numFrame
     const auto phaseIncrement =
             (TWO_PI * frequency_) / static_cast<double>(sampleRate_);
     for (int i = 0; i < numFrames; i++) {
-        // Calculates the next sample value for the sine wave.
-        audioData[i] = static_cast<float>(sin(phase_));
+        audioData[i] = waveform_->generate(phase_);
 
-        // Increments the phase, handling wrap around.
         phase_ += phaseIncrement;
         if (phase_ > TWO_PI) { phase_ -= TWO_PI; }
     }
@@ -49,5 +52,13 @@ auto synth::Oscillator::calcFrequency(
 
 auto synth::Oscillator::getFrequency() -> double {
     return frequency_;
+}
+
+void synth::Oscillator::setWaveform(std::unique_ptr<synth::Waveform> waveform) {
+    waveform_ = std::move(waveform);
+}
+
+auto synth::Oscillator::getWaveform() -> synth::Waveform & {
+    return *waveform_;
 }
 

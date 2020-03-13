@@ -53,6 +53,9 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        unitTests.all {
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo1.maven.org/maven2'
+        }
     }
     lintOptions {
         abortOnError true
@@ -75,6 +78,7 @@ task cppTest {
         }
     }
 
+    dependsOn ':app:generateJsonModelDebug'
     dependsOn ':app:externalNativeBuildDebug'
 }
 
@@ -91,6 +95,24 @@ task cppLint {
         }
     }
 
+    dependsOn ':app:generateJsonModelDebug'
+    dependsOn ':app:externalNativeBuildDebug'
+}
+
+task cppLintFix {
+    String abi = project.getProperties().getOrDefault('abi', 'x86')
+    doLast {
+        exec {
+            workingDir "./.cxx/cmake/debug/$abi"
+            commandLine 'chmod', '+x', './cpp_lint_runner.sh'
+        }
+        exec {
+            workingDir "./.cxx/cmake/debug/$abi"
+            commandLine './cpp_lint_runner.sh', '-fix'
+        }
+    }
+
+    dependsOn ':app:generateJsonModelDebug'
     dependsOn ':app:externalNativeBuildDebug'
 }
 

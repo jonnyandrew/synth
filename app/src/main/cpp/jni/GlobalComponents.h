@@ -1,7 +1,0 @@
-#ifndef SYNTH_GLOBALCOMPONENTS_H
-#define SYNTH_GLOBALCOMPONENTS_H
-
-namespace synth {
-
-}
-#endif //SYNTH_GLOBALCOMPONENTS_H

@@ -1,8 +1,10 @@
 package com.flatmapdev.synth.jni
 
-import com.flatmapdev.synth.oscillatorCore.model.Oscillator
+import com.flatmapdev.synth.oscillatorData.model.OscillatorData
 
 interface SynthOscillator {
-    fun getOscillator(): Oscillator
-    fun setOscillator(oscillator: Oscillator)
+    fun getOscillator(): OscillatorData
+    fun setOscillator(oscillator: OscillatorData)
+    fun setWaveform(waveform: Int)
+    fun setPitchOffset(pitchOffset: Int)
 }

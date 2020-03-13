@@ -3,6 +3,8 @@ package com.flatmapdev.synth.oscillatorData.adapter
 import com.flatmapdev.synth.doubles.jni.FakeSynthOscillator
 import com.flatmapdev.synth.doubles.oscillator.model.createOscillator
 import com.flatmapdev.synth.jni.SynthOscillator
+import com.flatmapdev.synth.oscillatorCore.model.Waveform
+import com.flatmapdev.synth.oscillatorData.mapper.toDataModel
 import io.mockk.spyk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
@@ -12,10 +14,10 @@ class DefaultOscillatorAdapterTest {
     lateinit var synthOscillator: SynthOscillator
 
     @Test
-    fun `it gets the oscillator data from the synth oscillator`() {
+    fun `getOscillator gets the oscillator data from the synth oscillator`() {
         val oscillator = createOscillator(12)
         synthOscillator = FakeSynthOscillator(
-            oscillator
+            oscillator.toDataModel()
         )
         val subject = createSubject()
 
@@ -25,7 +27,7 @@ class DefaultOscillatorAdapterTest {
     }
 
     @Test
-    fun `it sets the oscillator data on the synth oscillator`() {
+    fun `setOscillator sets the oscillator data on the synth oscillator`() {
         val oscillator = createOscillator(13)
         synthOscillator = spyk(FakeSynthOscillator())
         val subject = createSubject()
@@ -33,7 +35,32 @@ class DefaultOscillatorAdapterTest {
         subject.oscillator = oscillator
 
         verify {
-            synthOscillator.setOscillator(oscillator)
+            synthOscillator.setOscillator(oscillator.toDataModel())
+        }
+    }
+
+    @Test
+    fun `setWaveform sets the waveform on the synth oscillator`() {
+        val waveform = Waveform.Square
+        synthOscillator = spyk(FakeSynthOscillator())
+        val subject = createSubject()
+
+        subject.setWaveform(waveform)
+
+        verify {
+            synthOscillator.setWaveform(waveform.toDataModel())
+        }
+    }
+
+    fun `setPitchOffset sets the pitch offset on the synth oscillator`() {
+        val pitchOffset = -3
+        synthOscillator = FakeSynthOscillator()
+        val subject = createSubject()
+
+        subject.setPitchOffset(pitchOffset)
+
+        verify {
+            synthOscillator.setPitchOffset(pitchOffset)
         }
     }
 

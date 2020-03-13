@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.flatmapdev.synth.oscillatorCore.model.Oscillator
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
+import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorCore.useCase.GetOscillator
 import com.flatmapdev.synth.oscillatorCore.useCase.SetOscillator
 import dagger.Reusable
@@ -22,8 +23,12 @@ class OscillatorViewModel(
         _oscillator.value = getOscillator.execute(oscillatorId)
     }
 
-    fun setOscillator(oscillatorId: OscillatorId, oscillator: Oscillator) {
-        setOscillator.execute(oscillatorId, oscillator)
+    fun setPitchOffset(oscillatorId: OscillatorId, pitchOffset: Int) {
+        setOscillator.setPitchOffset(oscillatorId, pitchOffset)
+    }
+
+    fun setWaveform(oscillatorId: OscillatorId, waveform: Waveform) {
+        setOscillator.setWaveform(oscillatorId, waveform)
     }
 
     @Reusable

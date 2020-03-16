@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 @AppScope
 class NativeSynthFilter @Inject constructor() : SynthFilter {
+    external override fun setIsActive(isActive: Boolean)
     external override fun setCutoff(cutoff: Float)
     external override fun setResonance(resonance: Float)
 

@@ -1,7 +1,7 @@
 package com.flatmapdev.synth.filterUi
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -30,7 +30,7 @@ class FilterFragmentTest {
     }
 
     @Test
-    fun `when a amp envelope is changed, it sends the new envelope to the synth engine`() {
+    fun `when filter cutoff is changed, it sends the new envelope to the synth engine`() {
         val spySynthFilter = spyk(FakeSynthFilter())
         testComponentBuilder
             .fakeJniModule(
@@ -39,12 +39,26 @@ class FilterFragmentTest {
         launch()
 
         onView(withId(R.id.filterCutoffControl))
-            .perform(click())
-        onView(withId(R.id.filterResonanceControl))
-            .perform(click())
+            .perform(swipeRight())
 
         verify {
             spySynthFilter.setCutoff(any())
+        }
+    }
+
+    @Test
+    fun `when filter resonance is changed, it sends the new envelope to the synth engine`() {
+        val spySynthFilter = spyk(FakeSynthFilter())
+        testComponentBuilder
+            .fakeJniModule(
+                FakeJniModule(synthFilter = spySynthFilter)
+            )
+        launch()
+
+        onView(withId(R.id.filterResonanceControl))
+            .perform(swipeRight())
+
+        verify {
             spySynthFilter.setResonance(any())
         }
     }

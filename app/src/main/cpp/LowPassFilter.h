@@ -8,12 +8,15 @@ namespace synth {
 
     class LowPassFilter : public SignalSource {
     public:
+        static constexpr float MAX_RESONANCE = 4;
+
         LowPassFilter(const int sampleRate);
 
         void getSignal(
                 std::vector<float> &buffer
         ) override;
 
+        void setIsActive(bool isActive);
 
         void setCutoff(float cutoff);
 
@@ -22,6 +25,7 @@ namespace synth {
 
     private:
         float sampleRate_;
+        bool isActive_{true};
         float resonance_;
 
         double V_[4]{};

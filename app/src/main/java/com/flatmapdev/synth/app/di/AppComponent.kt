@@ -6,6 +6,7 @@ import com.flatmapdev.synth.ampEnvelopeUi.AmpEnvelopeFragment
 import com.flatmapdev.synth.controlPanelUi.ControlPanelFragment
 import com.flatmapdev.synth.deviceData.DeviceDataModule
 import com.flatmapdev.synth.engineData.EngineDataModule
+import com.flatmapdev.synth.filterData.FilterDataModule
 import com.flatmapdev.synth.filterUi.FilterFragment
 import com.flatmapdev.synth.jni.JniModule
 import com.flatmapdev.synth.keyboardData.KeyboardDataModule
@@ -22,6 +23,7 @@ import dagger.Component
     modules = [
         DeviceDataModule::class,
         EngineDataModule::class,
+        FilterDataModule::class,
         JniModule::class,
         KeyboardDataModule::class,
         OscillatorDataModule::class

@@ -44,6 +44,9 @@ void synth::LowPassFilter::getSignal(std::vector<float> &buffer) {
     double dV1;
     double dV2;
     double dV3;
+    if(!isActive_) {
+        return;
+    }
 
     for (float &i : buffer) {
         dV0 = -g_ * (tanh((drive_ * i + resonance_ * V_[3]) / (2 * VT)) + tV_[0]);
@@ -71,10 +74,16 @@ void synth::LowPassFilter::getSignal(std::vector<float> &buffer) {
 }
 
 void synth::LowPassFilter::setResonance(float resonance) {
+    assert(resonance <= MAX_RESONANCE);
+    assert(resonance >= 0.0F);
     resonance_ = resonance;
 }
 
 void synth::LowPassFilter::setCutoff(float cutoff) {
     double x = (PI * cutoff) / sampleRate_;
     g_ = 4.0 * PI * VT * cutoff * (1.0 - x) / (1.0 + x); //NOLINT
+}
+
+void synth::LowPassFilter::setIsActive(bool isActive) {
+    isActive_ = isActive;
 }

@@ -9,7 +9,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
-import com.flatmapdev.synth.jni.SynthFilter
+import com.flatmapdev.synth.filterCore.useCase.SetFilter
+import com.flatmapdev.synth.shared.data.mapper.toFrequency
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -21,7 +22,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 //    private lateinit var viewModel: FilterViewModel
 
     @Inject
-    lateinit var nativeSynthFilter: SynthFilter
+    lateinit var setFilter: SetFilter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,9 +50,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    nativeSynthFilter.setCutoff(
-                        seekBar.progress.toFloat() / 100
-                    )
+                    setFilter.setCutoff(progress.toFrequency())
                 }
             }
 
@@ -62,9 +61,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    nativeSynthFilter.setResonance(
-                        seekBar.progress.toFloat() / 25
-                    )
+                    setFilter.setResonance(seekBar.progress)
                 }
             }
 

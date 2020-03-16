@@ -28,3 +28,17 @@ TEST(LowPassFilterTest, ItAppliesTheLowPassFilter) {
     EXPECT_FLOAT_EQ(buffer[8], -0.016322533);
     EXPECT_FLOAT_EQ(buffer[9], -0.019032311);
 }
+
+TEST(LowPassFilterTest, WhenItIsNotActiveItActsAsAPassthrough) {
+    LowPassFilter lowPassFilter(48000);
+    std::vector<float> buffer(3, 0.5);
+
+    lowPassFilter.setCutoff(12345);
+    lowPassFilter.setResonance(3);
+    lowPassFilter.setIsActive(false);
+    lowPassFilter.getSignal(buffer);
+
+    EXPECT_FLOAT_EQ(buffer[0], 0.5);
+    EXPECT_FLOAT_EQ(buffer[1], 0.5);
+    EXPECT_FLOAT_EQ(buffer[2], 0.5);
+}

@@ -44,6 +44,6 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.flatmapdev.synth.filterUi.FilterFragment"
-        android:label="FilterFragment"
+        android:label="@string/filter_title"
         tools:layout="@layout/fragment_filter" />
 </navigation>

@@ -215,15 +215,22 @@ namespace synth {
     }
 
     JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setIsActive(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jboolean isActive
+    ) -> void {
+        filter->setIsActive(static_cast<bool>(isActive));
+    }
+
+
+    JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthFilter_setCutoff(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
-            jfloat cutoff
+            jfloat cutoffFrequency
     ) -> void {
-        const auto exponent = 4.0F;
-        cutoff *= pow(cutoff, exponent);
-        cutoff *= 20000;
-        filter->setCutoff(cutoff);
+        filter->setCutoff(cutoffFrequency);
     }
 
     JNIEXPORT auto JNICALL

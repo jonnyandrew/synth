@@ -23,9 +23,16 @@ class PercentToFractionTest(
     }
 
     @Test
-    fun `it converts`() {
+    fun `it converts percent to fraction`() {
         val result = percent.toFraction()
 
         assertThat(result).isEqualTo(fraction)
+    }
+
+    @Test
+    fun `it converts fraction to percent`() {
+        val result = fraction.toPercent()
+
+        assertThat(result).isEqualTo(percent)
     }
 }

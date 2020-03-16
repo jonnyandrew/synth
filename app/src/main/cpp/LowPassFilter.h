@@ -20,13 +20,18 @@ namespace synth {
 
         void setCutoff(float cutoff);
 
-        // [0, 4]
+        float getCutoff();
+
+        // [0, 1]
         void setResonance(float resonance);
+
+        float getResonance();
 
     private:
         float sampleRate_;
         bool isActive_{true};
         float resonance_;
+        float cutoff_{};
 
         double V_[4]{};
         double dV_[4]{};

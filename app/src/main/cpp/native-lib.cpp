@@ -163,6 +163,7 @@ namespace synth {
         };
         ampEnvelope->setEnvelopeParameters(envelopeParameters);
     }
+
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
             JNIEnv *env,
@@ -212,6 +213,20 @@ namespace synth {
     ) -> void {
         Oscillator &osc = getOscillatorFromId(env, obj);
         osc.setPitchOffset(pitchOffset);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_getFilter(
+            JNIEnv *env,
+            jobject  /*obj*/
+    ) -> jobject {
+        jclass filterClass = env->FindClass(
+                "com/flatmapdev/synth/filterData/model/FilterData");
+        jmethodID filterConstructor = env->GetMethodID(filterClass, "<init>", "(FF)V");
+        return env->NewObject(filterClass, filterConstructor,
+                              filter->getCutoff(),
+                              filter->getResonance()
+        );
     }
 
     JNIEXPORT auto JNICALL

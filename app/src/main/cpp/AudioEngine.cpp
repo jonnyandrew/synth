@@ -10,10 +10,12 @@
 synth::AudioEngine::AudioEngine(
         Oscillator &oscillator1,
         Oscillator &oscillator2,
-        EnvelopeControlledAmplifier envelopeControlledAmplifier
+        EnvelopeControlledAmplifier envelopeControlledAmplifier,
+        LowPassFilter &filter
 ) :
         oscillator1_(&oscillator1),
         oscillator2_(&oscillator2),
+        lowPassFilter_(&filter),
         envelopeControlledAmplifier_(std::move(envelopeControlledAmplifier)) {
     __android_log_print(ANDROID_LOG_INFO, LOGGER_TAG, "Initializing AudioEngine");
 }
@@ -39,6 +41,8 @@ void synth::AudioEngine::getSignal(std::vector<float> &buffer) {
     for (int i = 0; i < numFrames; i++) {
         buffer[i] = (audio1[i] + audio2[i]) / 2;
     }
+
+    lowPassFilter_->getSignal(buffer);
 
     // apply effects
     envelopeControlledAmplifier_.getSignal(buffer);

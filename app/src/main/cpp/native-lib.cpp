@@ -1,6 +1,7 @@
 #include "AudioEngine.h"
 #include "AudioStream.h"
 #include "Envelope.h"
+#include "LowPassFilter.h"
 #include "NoiseWaveform.h"
 #include "Oscillator.h"
 #include "SineWaveform.h"
@@ -16,6 +17,7 @@ namespace synth {
     static std::unique_ptr<AudioEngine> audioEngine;
     static std::unique_ptr<Oscillator> osc1;
     static std::unique_ptr<Oscillator> osc2;
+    static std::unique_ptr<LowPassFilter> filter;
 
     enum WaveformType {
         Sine,
@@ -87,10 +89,12 @@ namespace synth {
                 defaultEnvelopeParameters
         );
         EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
+        filter = std::make_unique<LowPassFilter>(AudioStream::getSampleRate());
         audioEngine = std::make_unique<AudioEngine>(
                 *osc1,
                 *osc2,
-                envelopeControlledAmplifier
+                envelopeControlledAmplifier,
+                *filter
         );
     }
 
@@ -208,6 +212,27 @@ namespace synth {
     ) -> void {
         Oscillator &osc = getOscillatorFromId(env, obj);
         osc.setPitchOffset(pitchOffset);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setCutoff(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jfloat cutoff
+    ) -> void {
+        const auto exponent = 4.0F;
+        cutoff *= pow(cutoff, exponent);
+        cutoff *= 20000;
+        filter->setCutoff(cutoff);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setResonance(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jfloat resonance
+    ) -> void {
+        filter->setResonance(resonance);
     }
 
     } // extern "C"

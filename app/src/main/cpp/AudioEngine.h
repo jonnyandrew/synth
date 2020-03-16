@@ -6,6 +6,7 @@
 #include "SignalSource.h"
 #include "AudioStream.h"
 #include "EnvelopeControlledAmplifier.h"
+#include "LowPassFilter.h"
 
 namespace synth {
     class AudioEngine : public SignalSource {
@@ -14,7 +15,8 @@ namespace synth {
         AudioEngine(
                 Oscillator &oscillator1,
                 Oscillator &oscillator2,
-                EnvelopeControlledAmplifier envelopeControlledAmplifier
+                EnvelopeControlledAmplifier envelopeControlledAmplifier,
+                LowPassFilter &lowPassFilter
         );
 
         void playNote(const int32_t pitch);
@@ -29,6 +31,7 @@ namespace synth {
         Oscillator *oscillator1_;
         Oscillator *oscillator2_;
         EnvelopeControlledAmplifier envelopeControlledAmplifier_;
+        LowPassFilter *lowPassFilter_;
     };
 }
 

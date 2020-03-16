@@ -1,6 +1,7 @@
 package com.flatmapdev.synth.doubles.jni
 
 import com.flatmapdev.synth.jni.Synth
+import com.flatmapdev.synth.jni.SynthFilter
 import com.flatmapdev.synth.jni.SynthOscillator
 import com.flatmapdev.synth.oscillatorCore.adapter.OscillatorKey
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
@@ -12,7 +13,9 @@ import dagger.multibindings.IntoMap
 class FakeJniModule(
     private val synth: Synth = FakeSynth(),
     private val synthOscillator1: SynthOscillator = FakeSynthOscillator(),
-    private val synthOscillator2: SynthOscillator = FakeSynthOscillator()
+    private val synthOscillator2: SynthOscillator = FakeSynthOscillator(),
+    private val synthFilter: SynthFilter = FakeSynthFilter()
+
 ) {
     @Provides
     fun synth(): Synth = synth
@@ -26,4 +29,7 @@ class FakeJniModule(
     @IntoMap
     @OscillatorKey(OscillatorId.Osc2)
     fun synthOscillator2(): SynthOscillator = synthOscillator2
+
+    @Provides
+    fun synthFilter(): SynthFilter = synthFilter
 }

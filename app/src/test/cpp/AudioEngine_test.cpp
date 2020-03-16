@@ -18,7 +18,8 @@ TEST(AudioEngineTest, WhenKeyIsPressedItSetsTheOscillatorPitches) {
     Oscillator oscillator2{sampleRate, std::move(sineWaveform2)};
     Envelope envelope{sampleRate, {100, 100, 0.4, 100}};
     EnvelopeControlledAmplifier envelopeControlledAmplifier{envelope};
-    AudioEngine audioEngine(oscillator1, oscillator2, envelopeControlledAmplifier);
+    LowPassFilter filter(sampleRate);
+    AudioEngine audioEngine(oscillator1, oscillator2, envelopeControlledAmplifier, filter);
 
     audioEngine.playNote(10);
 

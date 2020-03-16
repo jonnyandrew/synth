@@ -4,6 +4,7 @@ file(GLOB SYNTH_ENGINE_SOURCES
         AudioStream.cpp
         Envelope.cpp
         EnvelopeControlledAmplifier.cpp
+        LowPassFilter.cpp
         native-lib.cpp
         NoiseWaveform.cpp
         Oscillator.cpp

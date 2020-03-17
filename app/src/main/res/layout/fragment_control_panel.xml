@@ -30,19 +30,12 @@
             android:paddingBottom="8dp">
 
             <TextView
-                android:id="@+id/ampEnvelopeTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:padding="16dp"
-                android:text="@string/amp_envelope_title"
-                android:textAppearance="?attr/textAppearanceSubtitle1" />
-
-            <TextView
                 android:id="@+id/osc1Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_sinewave"
+                android:drawablePadding="32dp"
                 android:padding="16dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="@string/osc_title" />
@@ -52,15 +45,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_sinewave"
+                android:drawablePadding="32dp"
                 android:padding="16dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="@string/osc_title" />
+
+            <TextView
+                android:id="@+id/ampEnvelopeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_envelope"
+                android:drawablePadding="32dp"
+                android:padding="16dp"
+                android:text="@string/amp_envelope_title"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
 
             <TextView
                 android:id="@+id/filterTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_filter"
+                android:drawablePadding="32dp"
                 android:padding="16dp"
                 android:text="@string/filter_title"
                 android:textAppearance="?attr/textAppearanceSubtitle1" />
@@ -70,6 +78,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_notes"
+                android:drawablePadding="32dp"
                 android:padding="16dp"
                 android:text="@string/keyboard_title"
                 android:textAppearance="?attr/textAppearanceSubtitle1" />

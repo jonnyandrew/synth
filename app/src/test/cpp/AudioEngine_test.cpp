@@ -4,6 +4,7 @@
 #include <vector>
 #include <Pitch.h>
 #include <SineWaveform.h>
+#include <Filter.h>
 #include "Oscillator.h"
 #include "Constants.h"
 #include "../../main/cpp/AudioEngine.h"
@@ -18,7 +19,7 @@ TEST(AudioEngineTest, WhenKeyIsPressedItSetsTheOscillatorPitches) {
     Oscillator oscillator2{sampleRate, std::move(sineWaveform2)};
     Envelope envelope{sampleRate, {100, 100, 0.4, 100}};
     EnvelopeControlledAmplifier envelopeControlledAmplifier{envelope};
-    LowPassFilter filter(sampleRate);
+    Filter filter(sampleRate);
     AudioEngine audioEngine(oscillator1, oscillator2, envelopeControlledAmplifier, filter);
 
     audioEngine.playNote(10);

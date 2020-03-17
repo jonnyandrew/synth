@@ -6,7 +6,6 @@
 #include "SignalSource.h"
 #include "AudioStream.h"
 #include "EnvelopeControlledAmplifier.h"
-#include "LowPassFilter.h"
 
 namespace synth {
     class AudioEngine : public SignalSource {

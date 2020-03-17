@@ -29,32 +29,6 @@ class SetFilterTest {
     }
 
     @Test
-    fun `setCutoff turns off the filter when cutoff is gt 20000`() {
-        val subject = createSubject()
-
-        subject.setCutoff(Frequency(20001F))
-        subject.setCutoff(Frequency(Float.MAX_VALUE))
-
-        verify {
-            filterAdapter.setIsActive(false)
-            filterAdapter.setIsActive(false)
-        }
-    }
-
-    @Test
-    fun `setCutoff turns on the filter when cutoff is lte 20000`() {
-        val subject = createSubject()
-
-        subject.setCutoff(Frequency(Float.MIN_VALUE))
-        subject.setCutoff(Frequency(20000F))
-
-        verify {
-            filterAdapter.setIsActive(true)
-            filterAdapter.setIsActive(true)
-        }
-    }
-
-    @Test
     fun `setResonance sets the resonance on the adapter`() {
         val subject = createSubject()
 

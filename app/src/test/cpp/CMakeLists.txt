@@ -29,7 +29,6 @@ add_executable(unit-tests
         AudioEngine_test.cpp
         Envelope_test.cpp
         EnvelopeControlledAmplifier_test.cpp
-        LowPassFilter_test.cpp
         Oscillator_test.cpp
         Pitch_test.cpp
         SineWaveform_test.cpp

@@ -1,16 +1,15 @@
-#ifndef SYNTH_LOWPASSFILTER_H
-#define SYNTH_LOWPASSFILTER_H
+#ifndef SYNTH_FILTER_H
+#define SYNTH_FILTER_H
 
 #include "SignalSource.h"
+#include <VAStateVariableFilter.h>
 #include <vector>
 
 namespace synth {
 
-    class LowPassFilter : public SignalSource {
+    class Filter : public SignalSource {
     public:
-        static constexpr float MAX_RESONANCE = 4;
-
-        LowPassFilter(const int sampleRate);
+        Filter(const int sampleRate);
 
         void getSignal(
                 std::vector<float> &buffer
@@ -28,19 +27,12 @@ namespace synth {
         float getResonance();
 
     private:
+        VAStateVariableFilter vaStateVariableFilter_{};
         float sampleRate_;
         bool isActive_{true};
         float resonance_;
-        float cutoff_{};
-
-        double V_[4]{};
-        double dV_[4]{};
-        double tV_[4]{};
-
-        double g_{};
-        double drive_;
     };
 
 }
 
-#endif //SYNTH_LOWPASSFILTER_H
+#endif //SYNTH_FILTER_H

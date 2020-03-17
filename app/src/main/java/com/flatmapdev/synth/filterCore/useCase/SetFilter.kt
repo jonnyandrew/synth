@@ -11,7 +11,6 @@ class SetFilter @Inject constructor(
     private val filterAdapter: FilterAdapter
 ) {
     fun setCutoff(cutoff: Frequency) {
-        filterAdapter.setIsActive(cutoff.value < 20000)
         filterAdapter.setCutoff(cutoff)
     }
 

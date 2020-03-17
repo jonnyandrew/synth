@@ -1,12 +1,12 @@
 #include "AudioEngine.h"
 #include "AudioStream.h"
 #include "Envelope.h"
-#include "LowPassFilter.h"
 #include "NoiseWaveform.h"
 #include "Oscillator.h"
 #include "SineWaveform.h"
 #include "SquareWaveform.h"
 #include "TriangleWaveform.h"
+#include "Filter.h"
 #include <jni.h>
 #include <oboe/Oboe.h>
 #include <string>
@@ -17,7 +17,7 @@ namespace synth {
     static std::unique_ptr<AudioEngine> audioEngine;
     static std::unique_ptr<Oscillator> osc1;
     static std::unique_ptr<Oscillator> osc2;
-    static std::unique_ptr<LowPassFilter> filter;
+    static std::unique_ptr<Filter> filter;
 
     enum WaveformType {
         Sine,
@@ -89,7 +89,7 @@ namespace synth {
                 defaultEnvelopeParameters
         );
         EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
-        filter = std::make_unique<LowPassFilter>(AudioStream::getSampleRate());
+        filter = std::make_unique<Filter>(AudioStream::getSampleRate());
         audioEngine = std::make_unique<AudioEngine>(
                 *osc1,
                 *osc2,

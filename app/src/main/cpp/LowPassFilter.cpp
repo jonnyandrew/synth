@@ -17,6 +17,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "LowPassFilter.h"
 #include "Constants.h"
 
+#include <cmath>
+
 /*
 This model is based on a reference implementation of an algorithm developed by
 Stefano D'Angelo and Vesa Valimaki, presented in a paper published at ICASSP in 2013.
@@ -44,7 +46,7 @@ void synth::LowPassFilter::getSignal(std::vector<float> &buffer) {
     double dV1;
     double dV2;
     double dV3;
-    if(!isActive_) {
+    if (!isActive_) {
         return;
     }
 

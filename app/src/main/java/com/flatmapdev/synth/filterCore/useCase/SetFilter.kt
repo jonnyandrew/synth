@@ -1,6 +1,7 @@
 package com.flatmapdev.synth.filterCore.useCase
 
 import com.flatmapdev.synth.filterCore.adapter.FilterAdapter
+import com.flatmapdev.synth.shared.core.model.Frequency
 import com.flatmapdev.synth.shared.core.model.Percent
 import dagger.Reusable
 import javax.inject.Inject
@@ -9,9 +10,9 @@ import javax.inject.Inject
 class SetFilter @Inject constructor(
     private val filterAdapter: FilterAdapter
 ) {
-    fun setCutoff(cutoffFrequency: Float) {
-        filterAdapter.setIsActive(cutoffFrequency < 20000)
-        filterAdapter.setCutoff(cutoffFrequency)
+    fun setCutoff(cutoff: Frequency) {
+        filterAdapter.setIsActive(cutoff.value < 20000)
+        filterAdapter.setCutoff(cutoff)
     }
 
     fun setResonance(resonance: Percent) {

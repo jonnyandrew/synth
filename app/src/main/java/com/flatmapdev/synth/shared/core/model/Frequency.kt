@@ -1,3 +1,3 @@
 package com.flatmapdev.synth.shared.core.model
 
-typealias Frequency = Float
+inline class Frequency(val value: Float)

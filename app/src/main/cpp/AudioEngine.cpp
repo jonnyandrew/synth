@@ -11,7 +11,7 @@ synth::AudioEngine::AudioEngine(
         Oscillator &oscillator1,
         Oscillator &oscillator2,
         EnvelopeControlledAmplifier envelopeControlledAmplifier,
-        LowPassFilter &filter
+        SignalSource &filter
 ) :
         oscillator1_(&oscillator1),
         oscillator2_(&oscillator2),

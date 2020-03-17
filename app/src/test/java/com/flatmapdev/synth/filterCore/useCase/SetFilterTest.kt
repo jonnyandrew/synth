@@ -2,6 +2,7 @@ package com.flatmapdev.synth.filterCore.useCase
 
 import com.flatmapdev.synth.doubles.filter.adapter.FakeFilterAdapter
 import com.flatmapdev.synth.filterCore.adapter.FilterAdapter
+import com.flatmapdev.synth.shared.core.model.Frequency
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
@@ -17,12 +18,13 @@ class SetFilterTest {
 
     @Test
     fun `setCutoff sets the cutoff on the adapter`() {
+        val frequency = Frequency(12345F)
         val subject = createSubject()
 
-        subject.setCutoff(12345F)
+        subject.setCutoff(frequency)
 
         verify {
-            filterAdapter.setCutoff(12345F)
+            filterAdapter.setCutoff(frequency)
         }
     }
 
@@ -30,8 +32,8 @@ class SetFilterTest {
     fun `setCutoff turns off the filter when cutoff is gt 20000`() {
         val subject = createSubject()
 
-        subject.setCutoff(20001F)
-        subject.setCutoff(Float.MAX_VALUE)
+        subject.setCutoff(Frequency(20001F))
+        subject.setCutoff(Frequency(Float.MAX_VALUE))
 
         verify {
             filterAdapter.setIsActive(false)
@@ -43,8 +45,8 @@ class SetFilterTest {
     fun `setCutoff turns on the filter when cutoff is lte 20000`() {
         val subject = createSubject()
 
-        subject.setCutoff(Float.MIN_VALUE)
-        subject.setCutoff(20000F)
+        subject.setCutoff(Frequency(Float.MIN_VALUE))
+        subject.setCutoff(Frequency(20000F))
 
         verify {
             filterAdapter.setIsActive(true)

@@ -16,7 +16,7 @@ namespace synth {
                 Oscillator &oscillator1,
                 Oscillator &oscillator2,
                 EnvelopeControlledAmplifier envelopeControlledAmplifier,
-                LowPassFilter &lowPassFilter
+                SignalSource &lowPassFilter
         );
 
         void playNote(const int32_t pitch);
@@ -31,7 +31,7 @@ namespace synth {
         Oscillator *oscillator1_;
         Oscillator *oscillator2_;
         EnvelopeControlledAmplifier envelopeControlledAmplifier_;
-        LowPassFilter *lowPassFilter_;
+        SignalSource *lowPassFilter_;
     };
 }
 

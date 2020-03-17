@@ -5,6 +5,7 @@ import com.flatmapdev.synth.doubles.filter.adapter.FakeFilterAdapter
 import com.flatmapdev.synth.filterCore.model.Filter
 import com.flatmapdev.synth.filterCore.useCase.GetFilter
 import com.flatmapdev.synth.filterCore.useCase.SetFilter
+import com.flatmapdev.synth.shared.core.model.Frequency
 import com.flatmapdev.synth.shared.core.model.Percent
 import com.flatmapdev.synth.shared.data.mapper.toFrequency
 import io.mockk.spyk
@@ -30,7 +31,7 @@ class FilterViewModelTest {
     @Test
     fun `it emits the filter`() {
         val filter = Filter(
-            cutoffFrequency = 1000f,
+            cutoff = Frequency(1000f),
             resonance = 66
         )
         fakeFilterAdapter = FakeFilterAdapter(filter)

@@ -13,10 +13,11 @@ private const val curveExponent = 4.0F
 
 fun Percent.toFrequency(): Frequency {
     val fractionalFrequency = this.toFraction().pow(curveExponent)
-    return minFrequency + fractionalFrequency * frequencyRange
+    val value = minFrequency + fractionalFrequency * frequencyRange
+    return Frequency(value)
 }
 
-fun Frequency.fromFrequencyToPercent(): Percent {
-    val fractionalFrequency = (this - minFrequency) / frequencyRange
+fun Frequency.toPercent(): Percent {
+    val fractionalFrequency = (this.value - minFrequency) / frequencyRange
     return fractionalFrequency.pow(1 / curveExponent).toPercent()
 }

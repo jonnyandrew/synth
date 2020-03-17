@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.flatmapdev.synth.filterCore.useCase.GetFilter
 import com.flatmapdev.synth.filterCore.useCase.SetFilter
 import com.flatmapdev.synth.shared.core.model.Percent
-import com.flatmapdev.synth.shared.data.mapper.fromFrequencyToPercent
 import com.flatmapdev.synth.shared.data.mapper.toFrequency
+import com.flatmapdev.synth.shared.data.mapper.toPercent
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class FilterViewModel(
     fun init() {
         _filter.value = getFilter.execute().let {
             FilterControls(
-                it.cutoffFrequency.fromFrequencyToPercent(),
+                it.cutoff.toPercent(),
                 it.resonance
             )
         }

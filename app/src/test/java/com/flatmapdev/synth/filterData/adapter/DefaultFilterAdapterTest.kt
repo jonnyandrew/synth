@@ -5,6 +5,7 @@ import com.flatmapdev.synth.filterCore.adapter.FilterAdapter
 import com.flatmapdev.synth.filterCore.model.Filter
 import com.flatmapdev.synth.filterData.model.FilterData
 import com.flatmapdev.synth.jni.SynthFilter
+import com.flatmapdev.synth.shared.core.model.Frequency
 import com.flatmapdev.synth.shared.core.model.toFraction
 import com.flatmapdev.synth.shared.core.model.toPercent
 import io.mockk.spyk
@@ -30,7 +31,7 @@ class DefaultFilterAdapterTest {
 
         assertThat(result).isEqualTo(
             Filter(
-                234f,
+                Frequency(234f),
                 0.5f.toPercent()
             )
         )
@@ -53,7 +54,7 @@ class DefaultFilterAdapterTest {
         synthFilter = spyk(FakeSynthFilter())
         val subject = createSubject()
 
-        subject.setCutoff(10000F)
+        subject.setCutoff(Frequency(10000F))
 
         verify {
             synthFilter.setCutoff(10000F)

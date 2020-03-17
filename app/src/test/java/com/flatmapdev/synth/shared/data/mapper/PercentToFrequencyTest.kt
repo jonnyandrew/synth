@@ -1,7 +1,7 @@
 package com.flatmapdev.synth.shared.core.model
 
-import com.flatmapdev.synth.shared.data.mapper.fromFrequencyToPercent
 import com.flatmapdev.synth.shared.data.mapper.toFrequency
+import com.flatmapdev.synth.shared.data.mapper.toPercent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized
 @RunWith(Parameterized::class)
 class PercentToFrequencyTest(
     private val percent: Percent,
-    private val frequency: Frequency
+    private val frequency: Float
 ) {
     companion object {
         @Parameterized.Parameters
@@ -28,12 +28,12 @@ class PercentToFrequencyTest(
     fun `it converts percent to frequency`() {
         val result = percent.toFrequency()
 
-        assertThat(result).isEqualTo(frequency)
+        assertThat(result).isEqualTo(Frequency(frequency))
     }
 
     @Test
     fun `it converts frequency to percent`() {
-        val result = frequency.fromFrequencyToPercent()
+        val result = Frequency(frequency).toPercent()
 
         assertThat(result).isEqualTo(percent)
     }

@@ -6,6 +6,7 @@
 #include "SineWaveform.h"
 #include "SquareWaveform.h"
 #include "TriangleWaveform.h"
+#include "Filter.h"
 #include <jni.h>
 #include <oboe/Oboe.h>
 #include <string>
@@ -16,6 +17,7 @@ namespace synth {
     static std::unique_ptr<AudioEngine> audioEngine;
     static std::unique_ptr<Oscillator> osc1;
     static std::unique_ptr<Oscillator> osc2;
+    static std::unique_ptr<Filter> filter;
 
     enum WaveformType {
         Sine,
@@ -87,10 +89,12 @@ namespace synth {
                 defaultEnvelopeParameters
         );
         EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
+        filter = std::make_unique<Filter>(AudioStream::getSampleRate());
         audioEngine = std::make_unique<AudioEngine>(
                 *osc1,
                 *osc2,
-                envelopeControlledAmplifier
+                envelopeControlledAmplifier,
+                *filter
         );
     }
 
@@ -159,6 +163,7 @@ namespace synth {
         };
         ampEnvelope->setEnvelopeParameters(envelopeParameters);
     }
+
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
             JNIEnv *env,
@@ -208,6 +213,48 @@ namespace synth {
     ) -> void {
         Oscillator &osc = getOscillatorFromId(env, obj);
         osc.setPitchOffset(pitchOffset);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_getFilter(
+            JNIEnv *env,
+            jobject  /*obj*/
+    ) -> jobject {
+        jclass filterClass = env->FindClass(
+                "com/flatmapdev/synth/filterData/model/FilterData");
+        jmethodID filterConstructor = env->GetMethodID(filterClass, "<init>", "(FF)V");
+        return env->NewObject(filterClass, filterConstructor,
+                              filter->getCutoff(),
+                              filter->getResonance()
+        );
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setIsActive(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jboolean isActive
+    ) -> void {
+        filter->setIsActive(static_cast<bool>(isActive));
+    }
+
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setCutoff(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jfloat cutoffFrequency
+    ) -> void {
+        filter->setCutoff(cutoffFrequency);
+    }
+
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setResonance(
+            JNIEnv * /*env*/,
+            jobject  /*obj*/,
+            jfloat resonance
+    ) -> void {
+        filter->setResonance(resonance);
     }
 
     } // extern "C"

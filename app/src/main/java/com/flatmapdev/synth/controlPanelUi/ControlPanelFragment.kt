@@ -50,6 +50,7 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
         osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
         osc2Title.setOnClickListener { navigateToOscillator2() }
 
+        filterTitle.setOnClickListener { navigateToFilter() }
         keyboardTitle.setOnClickListener { navigateToKeyboard() }
     }
 
@@ -73,6 +74,12 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
             ControlPanelFragmentDirections.actionControlPanelFragmentToOscillatorFragment(
                 OscillatorId.Osc2
             )
+        )
+    }
+
+    private fun navigateToFilter() {
+        findNavController().navigate(
+            ControlPanelFragmentDirections.actionControlPanelFragmentToFilterFragment()
         )
     }
 

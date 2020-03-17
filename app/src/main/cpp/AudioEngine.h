@@ -14,7 +14,8 @@ namespace synth {
         AudioEngine(
                 Oscillator &oscillator1,
                 Oscillator &oscillator2,
-                EnvelopeControlledAmplifier envelopeControlledAmplifier
+                EnvelopeControlledAmplifier envelopeControlledAmplifier,
+                SignalSource &lowPassFilter
         );
 
         void playNote(const int32_t pitch);
@@ -29,6 +30,7 @@ namespace synth {
         Oscillator *oscillator1_;
         Oscillator *oscillator2_;
         EnvelopeControlledAmplifier envelopeControlledAmplifier_;
+        SignalSource *lowPassFilter_;
     };
 }
 

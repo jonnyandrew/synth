@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_controlPanelFragment_to_keyboardFragment"
             app:destination="@id/keyboardFragment" />
+        <action
+            android:id="@+id/action_controlPanelFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
     <fragment
         android:id="@+id/oscillatorFragment"
@@ -37,6 +40,10 @@
         android:id="@+id/keyboardFragment"
         android:name="com.flatmapdev.synth.keyboardUi.KeyboardFragment"
         android:label="@string/keyboard_title"
-        tools:layout="@layout/fragment_keyboard"
-        />
+        tools:layout="@layout/fragment_keyboard" />
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.flatmapdev.synth.filterUi.FilterFragment"
+        android:label="@string/filter_title"
+        tools:layout="@layout/fragment_filter" />
 </navigation>

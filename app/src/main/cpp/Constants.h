@@ -9,6 +9,7 @@ namespace synth {
     constexpr auto MAX_LEVEL = 1.0F;
     constexpr auto MIN_LEVEL = 0.0F;
     constexpr auto MS_PER_S = 1000.0F;
+    constexpr auto MAX_FREQUENCY = 20000.0F;
 }
 
 #endif //SYNTH_CONSTANTS_H

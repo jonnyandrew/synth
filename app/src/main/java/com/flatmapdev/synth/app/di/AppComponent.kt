@@ -6,6 +6,8 @@ import com.flatmapdev.synth.ampEnvelopeUi.AmpEnvelopeFragment
 import com.flatmapdev.synth.controlPanelUi.ControlPanelFragment
 import com.flatmapdev.synth.deviceData.DeviceDataModule
 import com.flatmapdev.synth.engineData.EngineDataModule
+import com.flatmapdev.synth.filterData.FilterDataModule
+import com.flatmapdev.synth.filterUi.FilterFragment
 import com.flatmapdev.synth.jni.JniModule
 import com.flatmapdev.synth.keyboardData.KeyboardDataModule
 import com.flatmapdev.synth.keyboardUi.KeyboardFragment
@@ -21,6 +23,7 @@ import dagger.Component
     modules = [
         DeviceDataModule::class,
         EngineDataModule::class,
+        FilterDataModule::class,
         JniModule::class,
         KeyboardDataModule::class,
         OscillatorDataModule::class
@@ -31,6 +34,7 @@ interface AppComponent {
     fun inject(aboutFragment: AboutFragment)
     fun inject(ampEnvelopeFragment: AmpEnvelopeFragment)
     fun inject(controlPanelFragment: ControlPanelFragment)
+    fun inject(filterFragment: FilterFragment)
     fun inject(keyboardFragment: KeyboardFragment)
     fun inject(mainActivity: MainActivity)
     fun inject(oscillatorFragment: OscillatorFragment)

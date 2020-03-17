@@ -1,9 +1,10 @@
 
-file(GLOB SYNTH_ENGINE_SOURCES
+set(SYNTH_ENGINE_SOURCES
         AudioEngine.cpp
         AudioStream.cpp
         Envelope.cpp
         EnvelopeControlledAmplifier.cpp
+        Filter.cpp
         native-lib.cpp
         NoiseWaveform.cpp
         Oscillator.cpp
@@ -21,6 +22,7 @@ add_library(
 target_link_libraries(
         synth-engine
         oboe
+        vasvf
         ${log-lib}
 )
 

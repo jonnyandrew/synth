@@ -12,6 +12,9 @@ abstract class JniModule {
     @Binds
     abstract fun synth(impl: NativeSynth): Synth
 
+    @Binds
+    abstract fun synthFilter(impl: NativeSynthFilter): SynthFilter
+
     @Module
     companion object {
         @Provides

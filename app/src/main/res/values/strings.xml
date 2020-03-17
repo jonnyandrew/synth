@@ -37,4 +37,7 @@
     <string name="waveform_square">Square</string>
     <string name="waveform_triangle">Triangle</string>
     <string name="waveform_noise">Noise</string>
+    <string name="filter_title">Filter</string>
+    <string name="filter_cutoff">Cutoff</string>
+    <string name="filter_resonance">Resonance</string>
 </resources>

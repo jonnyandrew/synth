@@ -57,6 +57,15 @@
                 tools:text="@string/osc_title" />
 
             <TextView
+                android:id="@+id/filterTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:padding="16dp"
+                android:text="@string/filter_title"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+            <TextView
                 android:id="@+id/keyboardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

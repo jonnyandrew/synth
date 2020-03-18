@@ -1,13 +1,29 @@
-name: Android CI
+name: Test
 
 on: [push]
 
 jobs:
-  build:
-
+  lint:
     runs-on: macOS-latest
-
     steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Add clang-tidy to path
+      run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
+    - name: C++ Lint
+      run: ./gradlew cppLint
+    - name: Kotlin Lint
+      run: ./gradlew lintKotlin
+    - name: Android Lint
+      run: ./gradlew lintRelease
+
+  test:
+    runs-on: macOS-latest
     - uses: actions/checkout@v2
     - name: Checkout submodules
       shell: bash
@@ -19,14 +35,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Add clang-tidy to path
-      run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
-    - name: C++ Lint
-      run: ./gradlew cppLint
-    - name: Kotlin Lint
-      run: ./gradlew lintKotlin
-    - name: Android Lint
-      run: ./gradlew lintRelease
     - name: Kotlin Unit Test
       run: ./gradlew testRelease
     - name: Archive Kotlin unit test result

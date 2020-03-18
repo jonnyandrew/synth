@@ -7,4 +7,6 @@
 
     <color name="keyAColor">#dedede</color>
     <color name="keyBColor">#b7b7b7</color>
+
+    <color name="ic_launcher_background">@color/secondaryColor</color>
 </resources>

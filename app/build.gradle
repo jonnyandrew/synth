@@ -29,10 +29,24 @@ android {
             }
         }
     }
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('keystore.properties').newDataInputStream())
+            storeFile file(properties['storeFile'])
+            keyAlias properties['keyAlias']
+            storePassword properties['storePassword']
+            keyPassword properties['keyPassword']
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     externalNativeBuild {
@@ -149,7 +163,7 @@ dependencies {
     // tests on the CI. But this should be changed from implementation to testImplementation when
     // its possible to do so.
     // See https://developer.android.com/training/basics/fragments/testing#configure
-    implementation('androidx.fragment:fragment-testing:1.2.1', {
+    implementation('androidx.fragment:fragment-testing:1.2.2', {
         exclude group: 'androidx.test'
     })
     testImplementation 'org.robolectric:robolectric:4.3'

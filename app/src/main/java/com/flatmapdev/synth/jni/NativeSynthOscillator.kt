@@ -1,10 +1,12 @@
 package com.flatmapdev.synth.jni
 
+import androidx.annotation.Keep
 import com.flatmapdev.synth.oscillatorData.model.OscillatorData
 import com.flatmapdev.synth.shared.scopes.AppScope
 import javax.inject.Inject
 
 @AppScope
+@Keep
 class NativeSynthOscillator @Inject constructor(
     @Suppress("unused")
     private val oscillatorId: Int

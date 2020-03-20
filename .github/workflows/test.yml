@@ -13,6 +13,9 @@ jobs:
         auth_header="$(git config --local --get http.https://github.com/.extraheader)"
         git submodule sync --recursive
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Setup CMake
+      shell: bash
+      run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "cmake;3.10.2.4988404"
     - name: Add clang-tidy to path
       run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
     - name: C++ Lint

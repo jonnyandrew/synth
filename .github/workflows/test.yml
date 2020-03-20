@@ -1,0 +1,52 @@
+name: Test
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Add clang-tidy to path
+      run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
+    - name: C++ Lint
+      run: ./gradlew cppLint
+    - name: Kotlin Lint
+      run: ./gradlew lintKotlin
+    - name: Android Lint
+      run: ./gradlew lintRelease
+
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Kotlin Unit Test
+        run: ./gradlew testRelease
+      - name: Archive Kotlin unit test result
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: kotlin-unit-test-result
+          path: ./app/build/reports/tests/testReleaseUnitTest
+      - name: C++ Unit Test
+        uses: ReactiveCircus/android-emulator-runner@v2.4.0
+        with:
+          api-level: 29
+          script: |
+            ./gradlew cppTest -Pabi=$(adb shell getprop ro.product.cpu.abi)

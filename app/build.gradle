@@ -12,6 +12,11 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+def keystorePropertiesFile = project.rootProject.file('keystore.properties')
+def abi = project.getProperties().getOrDefault('abi', 'x86')
+def appVersionCode = Integer.valueOf(project.getProperties().getOrDefault('versionCode', 1))
+def appVersionName = project.getProperties().getOrDefault('versionName', '1.0')
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -19,8 +24,8 @@ android {
         applicationId "com.flatmapdev.synth"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -29,10 +34,29 @@ android {
             }
         }
     }
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            release {
+                Properties properties = new Properties()
+                properties.load(keystorePropertiesFile.newDataInputStream())
+                storeFile file(properties['storeFile'])
+                keyAlias properties['keyAlias']
+                storePassword properties['storePassword']
+                keyPassword properties['keyPassword']
+            }
+        }
+    }
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     externalNativeBuild {
@@ -68,7 +92,6 @@ android {
 }
 
 task cppTest {
-    String abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
             workingDir "./.cxx/cmake/debug/$abi"
@@ -85,7 +108,6 @@ task cppTest {
 }
 
 task cppLint {
-    String abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
             workingDir "./.cxx/cmake/debug/$abi"
@@ -102,7 +124,6 @@ task cppLint {
 }
 
 task cppLintFix {
-    String abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
             workingDir "./.cxx/cmake/debug/$abi"
@@ -149,7 +170,7 @@ dependencies {
     // tests on the CI. But this should be changed from implementation to testImplementation when
     // its possible to do so.
     // See https://developer.android.com/training/basics/fragments/testing#configure
-    implementation('androidx.fragment:fragment-testing:1.2.1', {
+    implementation('androidx.fragment:fragment-testing:1.2.2', {
         exclude group: 'androidx.test'
     })
     testImplementation 'org.robolectric:robolectric:4.3'

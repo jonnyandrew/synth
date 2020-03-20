@@ -16,8 +16,8 @@ jobs:
     - name: Setup CMake
       shell: bash
       run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "cmake;3.10.2.4988404"
-    - name: Add clang-tidy to path
-      run: echo ::set-env name=PATH::$(echo "$(find $ANDROID_NDK_HOME -name "clang-tidy" | xargs dirname):$PATH")
+    - name: Find clang-tidy
+      run: $(find $ANDROID_NDK_HOME -name "clang-tidy") --version
     - name: C++ Lint
       run: ./gradlew cppLint
     - name: Kotlin Lint

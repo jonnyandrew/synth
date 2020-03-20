@@ -13,6 +13,8 @@ class StubSynthEngineAdapter(
 
     override fun stop() {}
 
+    override fun cleanUp() {}
+
     override fun playNote(key: Key) {}
 
     override fun stopNote() {}

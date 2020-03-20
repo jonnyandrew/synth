@@ -7,24 +7,22 @@
 #include "../synth/SineWaveform.h"
 #include "../synth/SquareWaveform.h"
 #include "../synth/TriangleWaveform.h"
+#include "Synth.h"
 #include <jni.h>
 #include <oboe/Oboe.h>
 #include <string>
 
 namespace jni {
-    static std::unique_ptr<synth::AudioStream> stream;
-    static std::unique_ptr<synth::Envelope> ampEnvelope;
-    static std::unique_ptr<synth::AudioEngine> audioEngine;
-    static std::unique_ptr<synth::Oscillator> osc1;
-    static std::unique_ptr<synth::Oscillator> osc2;
-    static std::unique_ptr<synth::Filter> filter;
-
     enum WaveformType {
         Sine,
         Square,
         Triangle,
         Noise
     };
+
+    auto getSynth(jlong pointer) -> Synth & {
+        return *(reinterpret_cast<Synth *>(pointer)); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+    }
 
     auto createWaveform(WaveformType type) -> std::unique_ptr<synth::Waveform> {
         std::unique_ptr<synth::Waveform> waveform;
@@ -49,8 +47,10 @@ namespace jni {
 
     auto getOscillatorFromId(
             JNIEnv *env,
-            jobject nativeSynthOscillator
+            jobject nativeSynthOscillator,
+            jlong synthPtr
     ) -> synth::Oscillator & {
+        auto synth = &getSynth(synthPtr);
         jclass cls = env->GetObjectClass(nativeSynthOscillator);
         jfieldID field = env->GetFieldID(cls, "oscillatorId", "I");
         int oscillatorId = env->GetIntField(nativeSynthOscillator, field);
@@ -58,10 +58,10 @@ namespace jni {
         synth::Oscillator *osc;
         switch (oscillatorId) {
             case 0:
-                osc = osc1.get();
+                osc = &synth->getOscillator1();
                 break;
             case 1:
-                osc = osc2.get();
+                osc = &synth->getOscillator2();
                 break;
             default:
                 throw std::invalid_argument("No oscillator " + std::to_string(oscillatorId));
@@ -72,34 +72,55 @@ namespace jni {
 
     extern "C" {
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
+    JNIEXPORT auto JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_initialize(
+            JNIEnv */* env */
+    ) -> jlong {
         auto waveform1 = createWaveform(WaveformType::Sine);
-        osc1 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(), std::move(waveform1));
+        auto osc1 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(),
+                                                        std::move(waveform1));
         auto waveform2 = createWaveform(WaveformType::Sine);
-        osc2 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(), std::move(waveform2));
+        auto osc2 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(),
+                                                        std::move(waveform2));
         constexpr auto attack = 100.0F;
         constexpr auto decay = 100.0F;
         constexpr auto sustain = 0.3F;
         constexpr auto release = 4000.0F;
         synth::EnvelopeParameters defaultEnvelopeParameters =
                 {attack, decay, sustain, release};
-        ampEnvelope = std::make_unique<synth::Envelope>(
+        auto ampEnvelope = std::make_unique<synth::Envelope>(
                 synth::AudioStream::getSampleRate(),
                 defaultEnvelopeParameters
         );
         synth::EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
-        filter = std::make_unique<synth::Filter>(synth::AudioStream::getSampleRate());
-        audioEngine = std::make_unique<synth::AudioEngine>(
+        auto filter = std::make_unique<synth::Filter>(synth::AudioStream::getSampleRate());
+        auto audioEngine = std::make_unique<synth::AudioEngine>(
                 *osc1,
                 *osc2,
                 envelopeControlledAmplifier,
                 *filter
         );
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+        return reinterpret_cast<jlong>(new Synth(
+                std::move(ampEnvelope),
+                std::move(audioEngine),
+                std::move(osc1),
+                std::move(osc2),
+                std::move(filter)
+        ));
+    }
+
+    JNIEXPORT void JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_cleanUp(
+            JNIEnv */* env */,
+            jobject /* cls */,
+            jlong synth
+    ) {
+        delete &getSynth(synth);
     }
 
     JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_getVersion(
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_getVersion(
             JNIEnv *env
     ) -> jstring {
         const std::string version = "0.1.0";
@@ -107,37 +128,57 @@ namespace jni {
     }
 
     JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_start() {
-        stream = std::make_unique<synth::AudioStream>(*audioEngine);
-    }
-
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_stop() {
-        stream->close();
-    }
-
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_playNote(
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_start(
             JNIEnv */* env */,
             jclass /* cls */,
-            jint pitch
+            jlong synthPtr
     ) {
-        audioEngine->playNote(pitch);
+        auto synth = &getSynth(synthPtr);
+        auto stream = std::make_unique<synth::AudioStream>(synth->getAudioEngine());
+        synth->setStream(std::move(stream));
     }
 
     JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_stopNote() {
-        audioEngine->stopNote();
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_stop(
+            JNIEnv */* env */,
+            jclass /* cls */,
+            jlong synthPtr
+    ) {
+        auto synth = &getSynth(synthPtr);
+        synth->getStream().close();
+    }
+
+    JNIEXPORT void JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_playNote(
+            JNIEnv */* env */,
+            jclass /* cls */,
+            jlong synthPtr,
+            jint pitch
+    ) {
+        auto synth = &getSynth(synthPtr);
+        synth->getAudioEngine().playNote(pitch);
+    }
+
+    JNIEXPORT void JNICALL
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_stopNote(
+            JNIEnv */* env */,
+            jclass /* cls */,
+            jlong synthPtr
+    ) {
+        auto synth = &getSynth(synthPtr);
+        synth->getAudioEngine().stopNote();
     }
 
     JNIEXPORT JNICALL auto
-    Java_com_flatmapdev_synth_jni_NativeSynth_getAmpEnvelope(
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_getAmpEnvelope(
             JNIEnv *env,
-            jobject /* cls */
+            jobject /* cls */,
+            jlong synthPtr
     ) -> jfloatArray {
+        auto synth = &getSynth(synthPtr);
         jfloatArray result;
         result = env->NewFloatArray(4);
-        auto envelopeParameters = ampEnvelope->getEnvelopeParameters();
+        auto envelopeParameters = synth->getAmpEnvelope().getEnvelopeParameters();
         jfloat buffer[4]{
                 envelopeParameters.attackTimeMs,
                 envelopeParameters.decayTimeMs,
@@ -149,11 +190,13 @@ namespace jni {
     }
 
     JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynth_setAmpEnvelope(
+    Java_com_flatmapdev_synth_jni_NativeSynthEngine_setAmpEnvelope(
             JNIEnv *env,
             jobject /* cls */,
+            jlong synthPtr,
             jfloatArray jEnvelopeAdsr
     ) {
+        auto synth = &getSynth(synthPtr);
         float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, nullptr);
         synth::EnvelopeParameters envelopeParameters{
                 envelopeAdsr[0],
@@ -161,15 +204,16 @@ namespace jni {
                 envelopeAdsr[2],
                 envelopeAdsr[3]
         };
-        ampEnvelope->setEnvelopeParameters(envelopeParameters);
+        synth->getAmpEnvelope().setEnvelopeParameters(envelopeParameters);
     }
 
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
             JNIEnv *env,
-            jobject obj
+            jobject obj,
+            jlong synth
     ) -> jobject {
-        auto osc = getOscillatorFromId(env, obj);
+        synth::Oscillator &osc = getOscillatorFromId(env, obj, synth);
         jclass oscillatorClass = env->FindClass(
                 "com/flatmapdev/synth/oscillatorData/model/OscillatorData");
         jmethodID oscillatorConstructor = env->GetMethodID(oscillatorClass, "<init>", "(II)V");
@@ -184,9 +228,10 @@ namespace jni {
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setOscillator(
             JNIEnv *env,
             jobject obj,
+            jlong synth,
             jobject jOscillator
     ) -> void {
-        auto osc = getOscillatorFromId(env, obj);
+        synth::Oscillator &osc = getOscillatorFromId(env, obj, synth);
         jclass cls = env->GetObjectClass(jOscillator);
         jfieldID fid = env->GetFieldID(cls, "pitchOffset", "I");
         jint pitchOffset = env->GetIntField(jOscillator, fid);
@@ -197,9 +242,10 @@ namespace jni {
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setWaveform(
             JNIEnv *env,
             jobject obj,
+            jlong synth,
             jint waveformTypeInt
     ) -> void {
-        auto osc = getOscillatorFromId(env, obj);
+        synth::Oscillator &osc = getOscillatorFromId(env, obj, synth);
         auto waveformType = static_cast<WaveformType>(waveformTypeInt);
         auto waveform = createWaveform(waveformType);
         osc.setWaveform(std::move(waveform));
@@ -209,23 +255,26 @@ namespace jni {
     Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setPitchOffset(
             JNIEnv *env,
             jobject obj,
+            jlong synth,
             jint pitchOffset
     ) -> void {
-        auto osc = getOscillatorFromId(env, obj);
+        synth::Oscillator &osc = getOscillatorFromId(env, obj, synth);
         osc.setPitchOffset(pitchOffset);
     }
 
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthFilter_getFilter(
             JNIEnv *env,
-            jobject  /*obj*/
+            jobject  /*obj*/,
+            jlong synthPtr
     ) -> jobject {
+        auto synth = &getSynth(synthPtr);
         jclass filterClass = env->FindClass(
                 "com/flatmapdev/synth/filterData/model/FilterData");
         jmethodID filterConstructor = env->GetMethodID(filterClass, "<init>", "(FF)V");
         return env->NewObject(filterClass, filterConstructor,
-                              filter->getCutoff(),
-                              filter->getResonance()
+                              synth->getFilter().getCutoff(),
+                              synth->getFilter().getResonance()
         );
     }
 
@@ -233,9 +282,11 @@ namespace jni {
     Java_com_flatmapdev_synth_jni_NativeSynthFilter_setIsActive(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
+            jlong synthPtr,
             jboolean isActive
     ) -> void {
-        filter->setIsActive(static_cast<bool>(isActive));
+        auto synth = &getSynth(synthPtr);
+        synth->getFilter().setIsActive(static_cast<bool>(isActive));
     }
 
 
@@ -243,19 +294,23 @@ namespace jni {
     Java_com_flatmapdev_synth_jni_NativeSynthFilter_setCutoff(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
+            jlong synthPtr,
             jfloat cutoffFrequency
     ) -> void {
-        filter->setCutoff(cutoffFrequency);
+        auto synth = &getSynth(synthPtr);
+        synth->getFilter().setCutoff(cutoffFrequency);
     }
 
     JNIEXPORT auto JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthFilter_setResonance(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
+            jlong synthPtr,
             jfloat resonance
     ) -> void {
-        filter->setResonance(resonance);
+        auto synth = &getSynth(synthPtr);
+        synth->getFilter().setResonance(resonance);
     }
 
     } // extern "C"
-} // namespace synth
+} // namespace jni

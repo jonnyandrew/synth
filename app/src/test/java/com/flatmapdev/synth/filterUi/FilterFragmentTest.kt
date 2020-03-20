@@ -42,7 +42,7 @@ class FilterFragmentTest {
             .perform(swipeRight())
 
         verify {
-            spySynthFilter.setCutoff(any())
+            spySynthFilter.setCutoff(any(), any())
         }
     }
 
@@ -59,7 +59,7 @@ class FilterFragmentTest {
             .perform(swipeRight())
 
         verify {
-            spySynthFilter.setResonance(any())
+            spySynthFilter.setResonance(any(), any())
         }
     }
 

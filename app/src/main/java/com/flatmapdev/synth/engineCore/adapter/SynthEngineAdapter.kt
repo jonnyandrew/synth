@@ -6,6 +6,7 @@ import com.flatmapdev.synth.keyboardCore.model.Key
 interface SynthEngineAdapter {
     fun start()
     fun stop()
+    fun cleanUp()
     fun playNote(key: Key)
     fun stopNote()
     val version: String

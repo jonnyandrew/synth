@@ -8,10 +8,10 @@ import javax.inject.Inject
 @AppScope
 @Keep
 class NativeSynthFilter @Inject constructor() : SynthFilter {
-    external override fun getFilter(): FilterData
-    external override fun setIsActive(isActive: Boolean)
-    external override fun setCutoff(cutoff: Float)
-    external override fun setResonance(resonance: Float)
+    external override fun getFilter(synth: Pointer): FilterData
+    external override fun setIsActive(synth: Pointer, isActive: Boolean)
+    external override fun setCutoff(synth: Pointer, cutoff: Float)
+    external override fun setResonance(synth: Pointer, resonance: Float)
 
     companion object {
         init {

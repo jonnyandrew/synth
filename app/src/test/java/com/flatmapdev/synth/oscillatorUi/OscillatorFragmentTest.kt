@@ -65,7 +65,7 @@ class OscillatorFragmentTest {
             .perform(swipeRight())
 
         verify(atLeast = 1) {
-            spySynthOscillator.setPitchOffset(any())
+            spySynthOscillator.setPitchOffset(any(), any())
         }
     }
 
@@ -83,7 +83,7 @@ class OscillatorFragmentTest {
         }
 
         verify {
-            spySynthOscillator.setWaveform(Waveform.Triangle.ordinal)
+            spySynthOscillator.setWaveform(any(), Waveform.Triangle.ordinal)
         }
     }
 

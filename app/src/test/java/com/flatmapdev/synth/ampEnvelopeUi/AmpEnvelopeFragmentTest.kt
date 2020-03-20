@@ -11,7 +11,7 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
-import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.doubles.jni.FakeSynthEngine
 import com.flatmapdev.synth.utils.NavControllerFragmentFactory
 import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import io.mockk.spyk
@@ -31,10 +31,10 @@ class AmpEnvelopeFragmentTest {
 
     @Test
     fun `when a amp envelope is changed, it sends the new envelope to the synth engine`() {
-        val spySynth = spyk(FakeSynth())
+        val spySynth = spyk(FakeSynthEngine())
         testComponentBuilder
             .fakeJniModule(
-                FakeJniModule(synth = spySynth)
+                FakeJniModule(synthEngine = spySynth)
             )
         launch()
 
@@ -48,7 +48,7 @@ class AmpEnvelopeFragmentTest {
             .perform(click())
 
         verify(exactly = 4) {
-            spySynth.setAmpEnvelope(any())
+            spySynth.setAmpEnvelope(any(), any())
         }
     }
 

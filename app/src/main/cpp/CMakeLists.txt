@@ -1,6 +1,7 @@
 include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
         jni/native-lib.cpp
+        jni/Synth.cpp
         synth/AudioEngine.cpp
         synth/AudioStream.cpp
         synth/Envelope.cpp

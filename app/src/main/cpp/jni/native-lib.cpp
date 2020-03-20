@@ -11,13 +11,13 @@
 #include <oboe/Oboe.h>
 #include <string>
 
-namespace synth {
-    static std::unique_ptr<AudioStream> stream;
-    static std::unique_ptr<Envelope> ampEnvelope;
-    static std::unique_ptr<AudioEngine> audioEngine;
-    static std::unique_ptr<Oscillator> osc1;
-    static std::unique_ptr<Oscillator> osc2;
-    static std::unique_ptr<Filter> filter;
+namespace jni {
+    static std::unique_ptr<synth::AudioStream> stream;
+    static std::unique_ptr<synth::Envelope> ampEnvelope;
+    static std::unique_ptr<synth::AudioEngine> audioEngine;
+    static std::unique_ptr<synth::Oscillator> osc1;
+    static std::unique_ptr<synth::Oscillator> osc2;
+    static std::unique_ptr<synth::Filter> filter;
 
     enum WaveformType {
         Sine,
@@ -26,20 +26,20 @@ namespace synth {
         Noise
     };
 
-    auto createWaveform(WaveformType type) -> std::unique_ptr<Waveform> {
-        std::unique_ptr<Waveform> waveform;
+    auto createWaveform(WaveformType type) -> std::unique_ptr<synth::Waveform> {
+        std::unique_ptr<synth::Waveform> waveform;
         switch (type) {
             case WaveformType::Sine:
-                waveform = std::make_unique<SineWaveform>(type);
+                waveform = std::make_unique<synth::SineWaveform>(type);
                 break;
             case WaveformType::Triangle:
-                waveform = std::make_unique<TriangleWaveform>(type);
+                waveform = std::make_unique<synth::TriangleWaveform>(type);
                 break;
             case WaveformType::Square:
-                waveform = std::make_unique<SquareWaveform>(type);
+                waveform = std::make_unique<synth::SquareWaveform>(type);
                 break;
             case WaveformType::Noise:
-                waveform = std::make_unique<NoiseWaveform>(type);
+                waveform = std::make_unique<synth::NoiseWaveform>(type);
                 break;
             default:
                 throw std::invalid_argument("No such waveform for type " + std::to_string(type));
@@ -50,12 +50,12 @@ namespace synth {
     auto getOscillatorFromId(
             JNIEnv *env,
             jobject nativeSynthOscillator
-    ) -> Oscillator & {
+    ) -> synth::Oscillator & {
         jclass cls = env->GetObjectClass(nativeSynthOscillator);
         jfieldID field = env->GetFieldID(cls, "oscillatorId", "I");
         int oscillatorId = env->GetIntField(nativeSynthOscillator, field);
 
-        Oscillator *osc;
+        synth::Oscillator *osc;
         switch (oscillatorId) {
             case 0:
                 osc = osc1.get();
@@ -75,22 +75,22 @@ namespace synth {
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynth_initialize() {
         auto waveform1 = createWaveform(WaveformType::Sine);
-        osc1 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform1));
+        osc1 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(), std::move(waveform1));
         auto waveform2 = createWaveform(WaveformType::Sine);
-        osc2 = std::make_unique<Oscillator>(AudioStream::getSampleRate(), std::move(waveform2));
+        osc2 = std::make_unique<synth::Oscillator>(synth::AudioStream::getSampleRate(), std::move(waveform2));
         constexpr auto attack = 100.0F;
         constexpr auto decay = 100.0F;
         constexpr auto sustain = 0.3F;
         constexpr auto release = 4000.0F;
-        EnvelopeParameters defaultEnvelopeParameters =
+        synth::EnvelopeParameters defaultEnvelopeParameters =
                 {attack, decay, sustain, release};
-        ampEnvelope = std::make_unique<Envelope>(
-                AudioStream::getSampleRate(),
+        ampEnvelope = std::make_unique<synth::Envelope>(
+                synth::AudioStream::getSampleRate(),
                 defaultEnvelopeParameters
         );
-        EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
-        filter = std::make_unique<Filter>(AudioStream::getSampleRate());
-        audioEngine = std::make_unique<AudioEngine>(
+        synth::EnvelopeControlledAmplifier envelopeControlledAmplifier(*ampEnvelope);
+        filter = std::make_unique<synth::Filter>(synth::AudioStream::getSampleRate());
+        audioEngine = std::make_unique<synth::AudioEngine>(
                 *osc1,
                 *osc2,
                 envelopeControlledAmplifier,
@@ -108,7 +108,7 @@ namespace synth {
 
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynth_start() {
-        stream = std::make_unique<AudioStream>(*audioEngine);
+        stream = std::make_unique<synth::AudioStream>(*audioEngine);
     }
 
     JNIEXPORT void JNICALL
@@ -155,7 +155,7 @@ namespace synth {
             jfloatArray jEnvelopeAdsr
     ) {
         float *envelopeAdsr = env->GetFloatArrayElements(jEnvelopeAdsr, nullptr);
-        EnvelopeParameters envelopeParameters{
+        synth::EnvelopeParameters envelopeParameters{
                 envelopeAdsr[0],
                 envelopeAdsr[1],
                 envelopeAdsr[2],
@@ -169,7 +169,7 @@ namespace synth {
             JNIEnv *env,
             jobject obj
     ) -> jobject {
-        Oscillator &osc = getOscillatorFromId(env, obj);
+        auto osc = getOscillatorFromId(env, obj);
         jclass oscillatorClass = env->FindClass(
                 "com/flatmapdev/synth/oscillatorData/model/OscillatorData");
         jmethodID oscillatorConstructor = env->GetMethodID(oscillatorClass, "<init>", "(II)V");
@@ -186,7 +186,7 @@ namespace synth {
             jobject obj,
             jobject jOscillator
     ) -> void {
-        Oscillator &osc = getOscillatorFromId(env, obj);
+        auto osc = getOscillatorFromId(env, obj);
         jclass cls = env->GetObjectClass(jOscillator);
         jfieldID fid = env->GetFieldID(cls, "pitchOffset", "I");
         jint pitchOffset = env->GetIntField(jOscillator, fid);
@@ -199,7 +199,7 @@ namespace synth {
             jobject obj,
             jint waveformTypeInt
     ) -> void {
-        Oscillator &osc = getOscillatorFromId(env, obj);
+        auto osc = getOscillatorFromId(env, obj);
         auto waveformType = static_cast<WaveformType>(waveformTypeInt);
         auto waveform = createWaveform(waveformType);
         osc.setWaveform(std::move(waveform));
@@ -211,7 +211,7 @@ namespace synth {
             jobject obj,
             jint pitchOffset
     ) -> void {
-        Oscillator &osc = getOscillatorFromId(env, obj);
+        auto osc = getOscillatorFromId(env, obj);
         osc.setPitchOffset(pitchOffset);
     }
 

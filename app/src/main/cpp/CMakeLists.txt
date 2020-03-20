@@ -1,4 +1,4 @@
-
+include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
         AudioEngine.cpp
         AudioStream.cpp
@@ -41,6 +41,7 @@ android-*,\
 
 set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)
 
+list_transform_prepend(SYNTH_ENGINE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/")
 add_custom_command(
         TARGET synth-engine POST_BUILD
         VERBATIM COMMAND > ${LINT_RUNNER}

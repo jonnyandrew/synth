@@ -17,7 +17,11 @@ namespace synth {
         oboe::DataCallbackResult onAudioReady(
                 oboe::AudioStream *oboeStream,
                 void *audioData,
-                int32_t numFrames);
+                int32_t numFrames) override;
+
+        void onErrorBeforeClose(oboe::AudioStream *oboeStream, oboe::Result result) override;
+
+        void onErrorAfterClose(oboe::AudioStream *oboeStream, oboe::Result result) override;
 
     private:
         oboe::ManagedStream oboeStream_;
@@ -25,6 +29,8 @@ namespace synth {
         SignalSource *audioSource_;
 
         static int sampleRate_;
+
+        void initNewStream();
     };
 };
 #endif //SYNTH_AUDIOSTREAM_H

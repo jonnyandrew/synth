@@ -8,6 +8,10 @@
 
 synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
         : audioSource_(&audioSource) {
+    initNewStream();
+}
+
+void synth::AudioStream::initNewStream() {
     oboe::AudioStreamBuilder builder;
     builder
             .setDirection(oboe::Direction::Output)
@@ -17,7 +21,7 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
             ->setChannelCount(oboe::ChannelCount::Mono)
             ->setCallback(this);
 
-    const oboe::Result result = builder.openManagedStream(oboeStream_);
+    const auto result = builder.openManagedStream(oboeStream_);
 
     if (result != oboe::Result::OK) {
         std::string resultText = oboe::convertToText(result);
@@ -32,7 +36,6 @@ synth::AudioStream::AudioStream(synth::SignalSource &audioSource)
     }
     oboeStream_->requestStart();
 }
-
 
 auto synth::AudioStream::onAudioReady(
         oboe::AudioStream */* oboeStream */,
@@ -65,6 +68,26 @@ auto synth::AudioStream::getSampleRate() -> int {
 
 void synth::AudioStream::close() {
     oboeStream_->close();
+}
+
+void synth::AudioStream::onErrorBeforeClose(oboe::AudioStream * /*unused*/, oboe::Result result) {
+    std::string resultText = oboe::convertToText(result);
+    __android_log_print(
+            ANDROID_LOG_ERROR, LOGGER_TAG,
+            "Error before close. Error: %s",
+            resultText.c_str()
+    );
+}
+
+void synth::AudioStream::onErrorAfterClose(oboe::AudioStream * /*unused*/, oboe::Result result) {
+    std::string resultText = oboe::convertToText(result);
+    __android_log_print(
+            ANDROID_LOG_ERROR, LOGGER_TAG,
+            "Error after close. Error: %s",
+            resultText.c_str()
+    );
+
+    initNewStream();
 }
 
 int synth::AudioStream::sampleRate_;

@@ -12,6 +12,7 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+def abi = project.getProperties().getOrDefault('abi', 'x86')
 def keystorePropertiesFile = project.rootProject.file('keystore.properties')
 def appVersionCode = Integer.valueOf(project.getProperties().getOrDefault('versionCode', 1))
 def appVersionName = project.getProperties().getOrDefault('versionName', '1.0')
@@ -108,7 +109,6 @@ task cppTest {
 }
 
 task cppLint {
-    def abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
             workingDir "./.cxx/cmake/debug/$abi"

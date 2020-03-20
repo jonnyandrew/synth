@@ -14,8 +14,6 @@ jobs:
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Setup NDK
       run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
-    - name: Find clang-tidy
-      run: $(find $ANDROID_NDK_HOME -name "clang-tidy") --version
     - name: C++ Lint
       run: ./gradlew cppLint
     - name: Kotlin Lint

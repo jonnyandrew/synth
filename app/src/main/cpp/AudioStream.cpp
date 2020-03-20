@@ -70,7 +70,7 @@ void synth::AudioStream::close() {
     oboeStream_->close();
 }
 
-void synth::AudioStream::onErrorBeforeClose(oboe::AudioStream *, oboe::Result result) {
+void synth::AudioStream::onErrorBeforeClose(oboe::AudioStream * /*unused*/, oboe::Result result) {
     std::string resultText = oboe::convertToText(result);
     __android_log_print(
             ANDROID_LOG_ERROR, LOGGER_TAG,
@@ -79,7 +79,7 @@ void synth::AudioStream::onErrorBeforeClose(oboe::AudioStream *, oboe::Result re
     );
 }
 
-void synth::AudioStream::onErrorAfterClose(oboe::AudioStream *, oboe::Result result) {
+void synth::AudioStream::onErrorAfterClose(oboe::AudioStream * /*unused*/, oboe::Result result) {
     std::string resultText = oboe::convertToText(result);
     __android_log_print(
             ANDROID_LOG_ERROR, LOGGER_TAG,

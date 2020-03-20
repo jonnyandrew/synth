@@ -19,9 +19,9 @@ namespace synth {
                 void *audioData,
                 int32_t numFrames) override;
 
-        void onErrorBeforeClose(oboe::AudioStream *oboeStream, oboe::Result error) override;
+        void onErrorBeforeClose(oboe::AudioStream *oboeStream, oboe::Result result) override;
 
-        void onErrorAfterClose(oboe::AudioStream *oboeStream, oboe::Result error) override;
+        void onErrorAfterClose(oboe::AudioStream *oboeStream, oboe::Result result) override;
 
     private:
         oboe::ManagedStream oboeStream_;

@@ -2,12 +2,12 @@
 #include <memory>
 #include <iostream>
 #include <vector>
-#include <Pitch.h>
-#include <SineWaveform.h>
-#include <Filter.h>
-#include "Oscillator.h"
-#include "Constants.h"
-#include "../../main/cpp/AudioEngine.h"
+#include "synth/Pitch.h"
+#include "synth/SineWaveform.h"
+#include "synth/Filter.h"
+#include "synth/Oscillator.h"
+#include "synth/Constants.h"
+#include "synth/AudioEngine.h"
 
 using namespace synth;
 

@@ -1,8 +1,8 @@
 #include <cmath>
 #include <gtest/gtest.h>
-#include <SineWaveform.h>
-#include "Constants.h"
-#include "FloatUtil.h"
+#include "synth/SineWaveform.h"
+#include "synth/Constants.h"
+#include "../util/FloatUtil.h"
 
 using namespace synth;
 

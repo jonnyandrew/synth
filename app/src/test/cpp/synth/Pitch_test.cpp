@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include <math.h>
-#include "Pitch.h"
+#include "synth/Pitch.h"
 
 using namespace synth;
 

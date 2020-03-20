@@ -22,13 +22,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Cache NDK
-      uses: actions/cache@v1
-      with:
-        path: ${{ env.ANDROID_NDK_HOME }}
-        key: ${{ runner.os }}-ndk-21.0.6113669-cmake-3.10.2.4988404
-        restore-keys: |
-          ${{ runner.os }}-ndk-
     - name: Setup NDK
       shell: bash
       run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"

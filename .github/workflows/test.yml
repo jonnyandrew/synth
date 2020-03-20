@@ -13,16 +13,6 @@ jobs:
         auth_header="$(git config --local --get http.https://github.com/.extraheader)"
         git submodule sync --recursive
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Checkout submodules
-      shell: bash
-      run: echo $ANDROID_NDK_HOME
-    - name: Cache NDK
-      uses: actions/cache@v1
-      with:
-        path: $ANDROID_NDK_HOME
-        key: ${{ runner.os }}-ndk-21.0.6113669-cmake-3.10.2.4988404
-        restore-keys: |
-          ${{ runner.os }}-ndk-21.0.6113669-cmake-3.10.2.4988404
     - name: Setup NDK
       shell: bash
       run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
@@ -45,13 +35,6 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-      - name: Cache NDK
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.ANDROID_NDK_HOME }}
-          key: ${{ runner.os }}-ndk-21.0.6113669-cmake-3.10.2.4988404
-          restore-keys: |
-            ${{ runner.os }}-ndk-
       - name: Setup NDK
         shell: bash
         run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"

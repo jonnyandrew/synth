@@ -13,7 +13,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 def keystorePropertiesFile = project.rootProject.file('keystore.properties')
-def abi = project.getProperties().getOrDefault('abi', 'x86')
 def appVersionCode = Integer.valueOf(project.getProperties().getOrDefault('versionCode', 1))
 def appVersionName = project.getProperties().getOrDefault('versionName', '1.0')
 
@@ -30,7 +29,6 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++14"
-                version "3.10.2"
             }
         }
     }
@@ -59,9 +57,11 @@ android {
             }
         }
     }
+    ndkVersion '21.0.6113669'
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
+            version "3.10.2"
         }
     }
 
@@ -108,6 +108,7 @@ task cppTest {
 }
 
 task cppLint {
+    def abi = project.getProperties().getOrDefault('abi', 'x86')
     doLast {
         exec {
             workingDir "./.cxx/cmake/debug/$abi"

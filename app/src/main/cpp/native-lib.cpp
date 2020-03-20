@@ -1,12 +1,12 @@
 #include "AudioEngine.h"
 #include "AudioStream.h"
 #include "Envelope.h"
+#include "Filter.h"
 #include "NoiseWaveform.h"
 #include "Oscillator.h"
 #include "SineWaveform.h"
 #include "SquareWaveform.h"
 #include "TriangleWaveform.h"
-#include "Filter.h"
 #include <jni.h>
 #include <oboe/Oboe.h>
 #include <string>

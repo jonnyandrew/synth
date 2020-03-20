@@ -30,7 +30,7 @@ namespace synth {
         VAStateVariableFilter vaStateVariableFilter_{};
         float sampleRate_;
         bool isActive_{true};
-        float resonance_;
+        float resonance_{};
     };
 
 }

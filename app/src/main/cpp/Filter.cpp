@@ -5,7 +5,7 @@ synth::Filter::Filter(const int sampleRate)
         : sampleRate_{static_cast<float>(sampleRate)} {
     setCutoff(MAX_FREQUENCY);
     setResonance(0.0F);
-    vaStateVariableFilter_.setSampleRate(sampleRate);
+    vaStateVariableFilter_.setSampleRate(sampleRate_);
 }
 
 void synth::Filter::getSignal(std::vector<float> &buffer) {

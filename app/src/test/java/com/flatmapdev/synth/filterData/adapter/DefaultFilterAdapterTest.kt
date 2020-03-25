@@ -45,7 +45,7 @@ class DefaultFilterAdapterTest {
         subject.setIsActive(false)
 
         verify {
-            synthFilter.setIsActive(false)
+            synthFilter.setIsActive(any(), false)
         }
     }
 
@@ -57,7 +57,7 @@ class DefaultFilterAdapterTest {
         subject.setCutoff(Frequency(10000F))
 
         verify {
-            synthFilter.setCutoff(10000F)
+            synthFilter.setCutoff(any(), 10000F)
         }
     }
 
@@ -69,12 +69,13 @@ class DefaultFilterAdapterTest {
         subject.setResonance(50)
 
         verify {
-            synthFilter.setResonance(50.toFraction())
+            synthFilter.setResonance(any(), 50.toFraction())
         }
     }
 
     private fun createSubject(): FilterAdapter {
         return DefaultFilterAdapter(
+            0,
             synthFilter
         )
     }

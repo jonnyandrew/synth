@@ -11,10 +11,10 @@ class NativeSynthOscillator @Inject constructor(
     @Suppress("unused")
     private val oscillatorId: Int
 ) : SynthOscillator {
-    external override fun getOscillator(): OscillatorData
-    external override fun setOscillator(oscillator: OscillatorData)
-    external override fun setWaveform(waveform: Int)
-    external override fun setPitchOffset(pitchOffset: Int)
+    external override fun getOscillator(synth: Pointer): OscillatorData
+    external override fun setOscillator(synth: Pointer, oscillator: OscillatorData)
+    external override fun setWaveform(synth: Pointer, waveform: Int)
+    external override fun setPitchOffset(synth: Pointer, pitchOffset: Int)
 
     companion object {
         init {

@@ -1,5 +1,6 @@
 package com.flatmapdev.synth.oscillatorData
 
+import com.flatmapdev.synth.jni.Pointer
 import com.flatmapdev.synth.jni.SynthOscillator
 import com.flatmapdev.synth.oscillatorCore.adapter.OscillatorAdapter
 import com.flatmapdev.synth.oscillatorCore.adapter.OscillatorKey
@@ -18,9 +19,11 @@ abstract class OscillatorDataModule {
         @OscillatorKey(OscillatorId.Osc1)
         @JvmStatic
         fun oscillator1DefaultOscillatorAdapter(
+            synth: Pointer,
             synthOscillators: Map<OscillatorId, @JvmSuppressWildcards SynthOscillator>
         ): OscillatorAdapter {
             return DefaultOscillatorAdapter(
+                synth,
                 synthOscillators[OscillatorId.Osc1] ?: error("No oscillator bound")
             )
         }
@@ -30,9 +33,11 @@ abstract class OscillatorDataModule {
         @OscillatorKey(OscillatorId.Osc2)
         @JvmStatic
         fun oscillator2DefaultOscillatorAdapter(
+            synth: Pointer,
             synthOscillators: Map<OscillatorId, @JvmSuppressWildcards SynthOscillator>
         ): OscillatorAdapter {
             return DefaultOscillatorAdapter(
+                synth,
                 synthOscillators[OscillatorId.Osc2] ?: error("No oscillator bound")
             )
         }

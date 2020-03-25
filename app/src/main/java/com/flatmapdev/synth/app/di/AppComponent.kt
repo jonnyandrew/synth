@@ -3,6 +3,7 @@ package com.flatmapdev.synth.app.di
 import android.content.Context
 import com.flatmapdev.synth.aboutUi.AboutFragment
 import com.flatmapdev.synth.ampEnvelopeUi.AmpEnvelopeFragment
+import com.flatmapdev.synth.app.CleanUpService
 import com.flatmapdev.synth.controlPanelUi.ControlPanelFragment
 import com.flatmapdev.synth.deviceData.DeviceDataModule
 import com.flatmapdev.synth.engineData.EngineDataModule
@@ -33,6 +34,7 @@ import dagger.Component
 interface AppComponent {
     fun inject(aboutFragment: AboutFragment)
     fun inject(ampEnvelopeFragment: AmpEnvelopeFragment)
+    fun inject(cleanUpService: CleanUpService)
     fun inject(controlPanelFragment: ControlPanelFragment)
     fun inject(filterFragment: FilterFragment)
     fun inject(keyboardFragment: KeyboardFragment)

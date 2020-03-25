@@ -3,7 +3,7 @@
 #include <iostream>
 #include <array>
 #include <math.h>
-#include "EnvelopeControlledAmplifier.h"
+#include "synth/EnvelopeControlledAmplifier.h"
 
 using namespace synth;
 

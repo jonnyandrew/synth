@@ -26,14 +26,14 @@ target_include_directories(
 )
 
 add_executable(unit-tests
-        AudioEngine_test.cpp
-        Envelope_test.cpp
-        EnvelopeControlledAmplifier_test.cpp
-        Oscillator_test.cpp
-        Pitch_test.cpp
-        SineWaveform_test.cpp
-        SquareWaveform_test.cpp
-        TriangleWaveform_test.cpp
+        synth/AudioEngine_test.cpp
+        synth/Envelope_test.cpp
+        synth/EnvelopeControlledAmplifier_test.cpp
+        synth/Oscillator_test.cpp
+        synth/Pitch_test.cpp
+        synth/SineWaveform_test.cpp
+        synth/SquareWaveform_test.cpp
+        synth/TriangleWaveform_test.cpp
         )
 
 find_program(ADB adb)

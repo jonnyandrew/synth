@@ -5,34 +5,40 @@ import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.engineData.mapper.toEnvelope
 import com.flatmapdev.synth.engineData.mapper.toFloatArray
 import com.flatmapdev.synth.engineData.mapper.toPitch
-import com.flatmapdev.synth.jni.Synth
+import com.flatmapdev.synth.jni.Pointer
+import com.flatmapdev.synth.jni.SynthEngine
 import com.flatmapdev.synth.keyboardCore.model.Key
 import javax.inject.Inject
 
 class DefaultSynthEngineAdapter @Inject constructor(
-    private val synth: Synth
+    private val synth: Pointer,
+    private val synthEngine: SynthEngine
 ) : SynthEngineAdapter {
-    override val version get() = synth.getVersion()
+    override val version get() = synthEngine.getVersion()
 
-    override fun start() = synth.start()
+    override fun start() = synthEngine.start(synth)
 
-    override fun stop() = synth.stop()
+    override fun stop() = synthEngine.stop(synth)
+
+    override fun cleanUp() = synthEngine.cleanUp(synth)
 
     override fun playNote(key: Key) {
-        synth.playNote(
+        synthEngine.playNote(
+            synth,
             key.toPitch()
         )
     }
 
-    override fun stopNote() = synth.stopNote()
+    override fun stopNote() = synthEngine.stopNote(synth)
 
     override var ampEnvelope: Envelope
         get() {
-            return synth.getAmpEnvelope()
+            return synthEngine.getAmpEnvelope(synth)
                 .toEnvelope()
         }
         set(envelope) {
-            synth.setAmpEnvelope(
+            synthEngine.setAmpEnvelope(
+                synth,
                 envelope.toFloatArray()
             )
         }

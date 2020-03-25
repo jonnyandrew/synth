@@ -2,7 +2,7 @@
 #include <memory>
 #include <iostream>
 #include <array>
-#include "Envelope.h"
+#include "synth/Envelope.h"
 
 using namespace synth;
 

@@ -1,18 +1,23 @@
 include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
-        AudioEngine.cpp
-        AudioStream.cpp
-        Envelope.cpp
-        EnvelopeControlledAmplifier.cpp
-        Filter.cpp
-        native-lib.cpp
-        NoiseWaveform.cpp
-        Oscillator.cpp
-        PlayException.cpp
-        SineWaveform.cpp
-        SquareWaveform.cpp
-        TriangleWaveform.cpp
-        Waveform.cpp
+        jni/AmpEnvelopeJni.cpp
+        jni/FilterJni.cpp
+        jni/OscillatorJni.cpp
+        jni/SynthEngineJni.cpp
+        jni/model/Synth.cpp
+        jni/model/WaveformType.cpp
+        synth/AudioEngine.cpp
+        synth/AudioStream.cpp
+        synth/Envelope.cpp
+        synth/EnvelopeControlledAmplifier.cpp
+        synth/Filter.cpp
+        synth/NoiseWaveform.cpp
+        synth/Oscillator.cpp
+        synth/PlayException.cpp
+        synth/SineWaveform.cpp
+        synth/SquareWaveform.cpp
+        synth/TriangleWaveform.cpp
+        synth/Waveform.cpp
         )
 add_library(
         synth-engine

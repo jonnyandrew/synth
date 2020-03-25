@@ -2,10 +2,10 @@
 #include <memory>
 #include <iostream>
 #include <vector>
-#include <Pitch.h>
-#include <SineWaveform.h>
-#include "Oscillator.h"
-#include "Constants.h"
+#include "synth/Pitch.h"
+#include "synth/SineWaveform.h"
+#include "synth/Oscillator.h"
+#include "synth/Constants.h"
 
 using namespace synth;
 

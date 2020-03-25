@@ -35,7 +35,7 @@ class DefaultOscillatorAdapterTest {
         subject.oscillator = oscillator
 
         verify {
-            synthOscillator.setOscillator(oscillator.toDataModel())
+            synthOscillator.setOscillator(any(), oscillator.toDataModel())
         }
     }
 
@@ -48,7 +48,7 @@ class DefaultOscillatorAdapterTest {
         subject.setWaveform(waveform)
 
         verify {
-            synthOscillator.setWaveform(waveform.toDataModel())
+            synthOscillator.setWaveform(any(), waveform.toDataModel())
         }
     }
 
@@ -60,12 +60,13 @@ class DefaultOscillatorAdapterTest {
         subject.setPitchOffset(pitchOffset)
 
         verify {
-            synthOscillator.setPitchOffset(pitchOffset)
+            synthOscillator.setPitchOffset(any(), pitchOffset)
         }
     }
 
     private fun createSubject(): DefaultOscillatorAdapter {
         return DefaultOscillatorAdapter(
+            0,
             synthOscillator
         )
     }

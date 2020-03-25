@@ -4,8 +4,8 @@ import com.flatmapdev.synth.filterData.model.FilterData
 import com.flatmapdev.synth.shared.core.model.Fraction
 
 interface SynthFilter {
-    fun getFilter(): FilterData
-    fun setIsActive(isActive: Boolean)
-    fun setCutoff(cutoff: Float)
-    fun setResonance(resonance: Fraction)
+    fun getFilter(synth: Pointer): FilterData
+    fun setIsActive(synth: Pointer, isActive: Boolean)
+    fun setCutoff(synth: Pointer, cutoff: Float)
+    fun setResonance(synth: Pointer, resonance: Fraction)
 }

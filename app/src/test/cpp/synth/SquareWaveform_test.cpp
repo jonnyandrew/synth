@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <Pitch.h>
-#include <SquareWaveform.h>
-#include "Constants.h"
+#include "synth/Pitch.h"
+#include "synth/SquareWaveform.h"
+#include "synth/Constants.h"
 
 using namespace synth;
 

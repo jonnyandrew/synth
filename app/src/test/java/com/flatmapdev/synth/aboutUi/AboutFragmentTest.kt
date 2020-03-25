@@ -12,7 +12,7 @@ import com.flatmapdev.synth.doubles.device.FakeDeviceDataModule
 import com.flatmapdev.synth.doubles.device.adapter.StubDeviceFeaturesAdapter
 import com.flatmapdev.synth.doubles.device.model.createDeviceFeatures
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
-import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.doubles.jni.FakeSynthEngine
 import com.flatmapdev.synth.utils.NavControllerFragmentFactory
 import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import org.junit.Before
@@ -32,7 +32,7 @@ class AboutFragmentTest {
     fun `it shows the engine version`() {
         testComponentBuilder.fakeJniModule(
             FakeJniModule(
-                synth = FakeSynth(
+                synthEngine = FakeSynthEngine(
                     version = "1.2.345"
                 )
             )

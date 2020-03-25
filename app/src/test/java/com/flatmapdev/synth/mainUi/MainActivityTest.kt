@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
-import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.doubles.jni.FakeSynthEngine
 import io.mockk.spyk
 import io.mockk.verify
 import io.mockk.verifyOrder
@@ -26,11 +26,11 @@ class MainActivityTest {
 
     @Test
     fun `it starts the synth engine`() {
-        val spySynth = spyk(FakeSynth())
+        val spySynth = spyk(FakeSynthEngine())
         getApp().appComponent = testComponentBuilder
             .fakeJniModule(
                 FakeJniModule(
-                    synth = spySynth
+                    synthEngine = spySynth
                 )
             )
             .build()
@@ -38,16 +38,16 @@ class MainActivityTest {
 
         onView(isDisplayed())
 
-        verify { spySynth.start() }
+        verify { spySynth.start(any()) }
     }
 
     @Test
     fun `when it is destroyed, it stops the synth engine`() {
-        val spySynth = spyk(FakeSynth())
+        val spySynth = spyk(FakeSynthEngine())
         getApp().appComponent = testComponentBuilder
             .fakeJniModule(
                 FakeJniModule(
-                    synth = spySynth
+                    synthEngine = spySynth
                 )
             )
             .build()
@@ -56,9 +56,9 @@ class MainActivityTest {
         scenario.recreate()
 
         verifyOrder {
-            spySynth.start()
-            spySynth.stop()
-            spySynth.start()
+            spySynth.start(any())
+            spySynth.stop(any())
+            spySynth.start(any())
         }
     }
 }

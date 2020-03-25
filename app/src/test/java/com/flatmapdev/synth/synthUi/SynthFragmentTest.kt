@@ -10,7 +10,7 @@ import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.di.DaggerTestAppComponent
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.doubles.jni.FakeJniModule
-import com.flatmapdev.synth.doubles.jni.FakeSynth
+import com.flatmapdev.synth.doubles.jni.FakeSynthEngine
 import com.flatmapdev.synth.utils.launchAndSetUpFragment
 import io.mockk.spyk
 import io.mockk.verify
@@ -38,11 +38,11 @@ class SynthFragmentTest {
 
     @Test
     fun `when a key is tapped, it sends a signal to the synth engine`() {
-        val spySynth = spyk(FakeSynth())
+        val spySynth = spyk(FakeSynthEngine())
         getApp().appComponent = testComponentBuilder
             .fakeJniModule(
                 FakeJniModule(
-                    synth = spySynth
+                    synthEngine = spySynth
                 )
             )
             .build()
@@ -51,6 +51,6 @@ class SynthFragmentTest {
         onView(withId(R.id.keyboard))
             .perform(click())
 
-        verify { spySynth.playNote(any()) }
+        verify { spySynth.playNote(any(), any()) }
     }
 }

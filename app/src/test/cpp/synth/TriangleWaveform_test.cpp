@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <TriangleWaveform.h>
-#include "Constants.h"
-#include "FloatUtil.h"
+#include "synth/TriangleWaveform.h"
+#include "synth/Constants.h"
+#include "../util/FloatUtil.h"
 
 using namespace synth;
 

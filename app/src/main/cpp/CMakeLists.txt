@@ -1,7 +1,11 @@
 include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
-        jni/native-lib.cpp
-        jni/Synth.cpp
+        jni/AmpEnvelopeJni.cpp
+        jni/FilterJni.cpp
+        jni/OscillatorJni.cpp
+        jni/SynthEngineJni.cpp
+        jni/model/Synth.cpp
+        jni/model/WaveformType.cpp
         synth/AudioEngine.cpp
         synth/AudioStream.cpp
         synth/Envelope.cpp

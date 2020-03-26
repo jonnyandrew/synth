@@ -26,6 +26,7 @@ add_library(
 )
 target_link_libraries(
         synth-engine
+        libnativehelper
         oboe
         vasvf
         ${log-lib}

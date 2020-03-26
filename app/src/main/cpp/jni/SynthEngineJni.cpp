@@ -1,18 +1,40 @@
+#include "SynthEngineJni.h"
+
 #include "../synth/NoiseWaveform.h"
 #include "../synth/SineWaveform.h"
 #include "../synth/SquareWaveform.h"
 #include "../synth/TriangleWaveform.h"
 #include "model/Synth.h"
 #include "model/WaveformType.h"
-#include <jni.h>
+#include <nativehelper/JNIHelp.h>
 
 namespace jni {
-
-
     extern "C" {
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_initialize(
+    JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void */*reserved*/) {
+        JNIEnv *env;
+        if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+            return JNI_ERR;
+        }
+
+        // Find your class. JNI_OnLoad is called from the correct class loader context for this to work.
+        jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthEngine");
+        if (c == nullptr) return JNI_ERR;
+
+        jniThrowNullPointerException(env, "Class not found");
+
+        JNINativeMethod methods[] = {
+                {"initialise", "([I)[I", (void *) jni::initialise}
+        };
+        jniRegisterNativeMethods(env,
+                                 "com/flatmapdev/synth/jni/NativeSynthEngine", methods,
+                                 NELEM(methods));
+
+        return JNI_VERSION_1_6;
+    }
+    }
+
+    auto initialise(
             JNIEnv */* env */
     ) -> jlong {
         auto waveform1 = jni::model::createWaveform(model::WaveformType::Sine);
@@ -49,6 +71,7 @@ namespace jni {
         ));
     }
 
+    extern "C" {
     JNIEXPORT void JNICALL
     Java_com_flatmapdev_synth_jni_NativeSynthEngine_cleanUp(
             JNIEnv */* env */,

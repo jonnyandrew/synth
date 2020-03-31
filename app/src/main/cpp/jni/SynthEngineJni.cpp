@@ -10,13 +10,23 @@
 #include <nativehelper/JNIHelp.h>
 
 namespace jni {
-    extern "C" {
-    auto JNI_OnLoad(JavaVM *vm, void */*reserved*/) -> jint {
-        JNIEnv *env;
-        if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
-            return JNI_ERR;
-        }
+    auto initialize(JNIEnv */* env */) -> jlong;
 
+    void cleanUp(JNIEnv * /*unused*/, jobject /* cls */, jlong synth);
+
+    auto getVersion(JNIEnv *env) -> jstring;
+
+    void start(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    void stop(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    void playNote(JNIEnv */* env */, jclass /* cls */, jlong synthPtr,
+                  jint pitch
+    );
+
+    void stopNote(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    auto registerSynthEngineMethods(JNIEnv *env) -> jint {
         jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthEngine");
         if (c == nullptr) { return JNI_ERR; }
 
@@ -38,7 +48,6 @@ namespace jni {
                                  methods.size());
 
         return JNI_VERSION_1_6;
-    }
     }
 
     auto initialize(
@@ -79,7 +88,7 @@ namespace jni {
     }
 
     void cleanUp(
-            JNIEnv */* env */,
+            JNIEnv * /*unused*/,
             jobject /* cls */,
             jlong synth
     ) {

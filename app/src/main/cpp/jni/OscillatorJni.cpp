@@ -1,7 +1,39 @@
+#include "OscillatorJni.h"
 #include "model/Synth.h"
 #include "model/WaveformType.h"
+#include <nativehelper/JNIHelp.h>
 
 namespace jni {
+    auto getOscillator(JNIEnv *env, jobject obj, jlong synth) -> jobject;
+
+    auto setOscillator(JNIEnv *env, jobject obj, jlong synth, jobject jOscillator) -> void;
+
+    auto setWaveform(JNIEnv *env, jobject obj, jlong synth, jint waveformTypeInt) -> void;
+
+    auto setPitchOffset(JNIEnv *env, jobject obj, jlong synth, jint pitchOffset) -> void;
+
+    auto registerOscillatorMethods(JNIEnv *env) -> jint {
+        jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthOscillator");
+        if (c == nullptr) { return JNI_ERR; }
+
+        std::vector<JNINativeMethod> methods{
+                {"getOscillator",  "(J)Lcom/flatmapdev/synth/oscillatorData/model/OscillatorData;", reinterpret_cast<void *>(jni::getOscillator)},
+                {"setOscillator",  "(JLcom/flatmapdev/synth/oscillatorData/model/OscillatorData;)V",                                                          reinterpret_cast<void *>(jni::setOscillator)},
+                {"setWaveform",    "(JI)V",                                                         reinterpret_cast<void *>(jni::setWaveform)},
+                {"setPitchOffset", "(JI)V",                                                         reinterpret_cast<void *>(jni::setPitchOffset)},
+        };
+
+        jniRegisterNativeMethods(
+                env,
+                "com/flatmapdev/synth/jni/NativeSynthOscillator",
+                methods.data(),
+                methods.size()
+
+        );
+
+        return JNI_VERSION_1_6;
+    }
+
     auto getOscillatorFromId(
             JNIEnv *env,
             jobject nativeSynthOscillator,
@@ -27,10 +59,7 @@ namespace jni {
         return *osc;
     }
 
-    extern "C" {
-
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_getOscillator(
+    auto getOscillator(
             JNIEnv *env,
             jobject obj,
             jlong synth
@@ -46,8 +75,7 @@ namespace jni {
         );
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setOscillator(
+    auto setOscillator(
             JNIEnv *env,
             jobject obj,
             jlong synth,
@@ -60,8 +88,7 @@ namespace jni {
         osc.setPitchOffset(pitchOffset);
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setWaveform(
+    auto setWaveform(
             JNIEnv *env,
             jobject obj,
             jlong synth,
@@ -73,8 +100,7 @@ namespace jni {
         osc.setWaveform(std::move(waveform));
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthOscillator_setPitchOffset(
+    auto setPitchOffset(
             JNIEnv *env,
             jobject obj,
             jlong synth,
@@ -84,6 +110,5 @@ namespace jni {
         osc.setPitchOffset(pitchOffset);
     }
 
-    }
 }  // namespace jni
 

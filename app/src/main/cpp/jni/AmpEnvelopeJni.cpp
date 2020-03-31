@@ -34,9 +34,6 @@ namespace jni {
     ) {
         auto synth = &model::Synth::fromPtr(synthPtr);
         ScopedFloatArrayRO envelopeAdsr(env, jEnvelopeAdsr);
-        if (envelopeAdsr.get() == nullptr) {
-            jniThrowNullPointerException(env, "envelope is null");
-        }
         synth::EnvelopeParameters envelopeParameters{
                 envelopeAdsr[0],
                 envelopeAdsr[1],

@@ -1,4 +1,5 @@
 #include "OscillatorJni.h"
+#include "FilterJni.h"
 #include "SynthEngineJni.h"
 #include <jni.h>
 
@@ -11,6 +12,7 @@ namespace jni {
 
         if (jni::registerSynthEngineMethods(env) == JNI_ERR) { return JNI_ERR; }
         if (jni::registerOscillatorMethods(env) == JNI_ERR) { return JNI_ERR; }
+        if (jni::registerFilterMethods(env) == JNI_ERR) { return JNI_ERR; }
 
         return JNI_VERSION_1_6;
     }

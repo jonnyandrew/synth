@@ -1,12 +1,39 @@
 #include "model/Synth.h"
 #include <jni.h>
+#include <nativehelper/JNIHelp.h>
 
 namespace jni {
 
-    extern "C" {
+    auto getFilter(JNIEnv *env, jobject /*unused*/, jlong synthPtr) -> jobject;
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthFilter_getFilter(
+    void setIsActive(JNIEnv * /*unused*/, jobject /*unused*/, jlong synthPtr, jboolean isActive);
+
+    void setCutoff(JNIEnv * /*unused*/, jobject /*unused*/, jlong synthPtr, jfloat cutoffFrequency);
+
+    void setResonance(JNIEnv * /*unused*/, jobject /*unused*/, jlong synthPtr, jfloat resonance);
+
+    auto registerFilterMethods(JNIEnv *env) -> jint {
+        jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthFilter");
+        if (c == nullptr) { return JNI_ERR; }
+
+        std::vector<JNINativeMethod> methods{
+                {"getFilter",    "(J)Lcom/flatmapdev/synth/filterData/model/FilterData;", reinterpret_cast<void *>(jni::getFilter)},
+                {"setIsActive",  "(JZ)V",                                                 reinterpret_cast<void *>(jni::setIsActive)},
+                {"setCutoff",    "(JF)V",                                                 reinterpret_cast<void *>(jni::setCutoff)},
+                {"setResonance", "(JF)V",                                                 reinterpret_cast<void *>(jni::setResonance)},
+        };
+
+        jniRegisterNativeMethods(
+                env,
+                "com/flatmapdev/synth/jni/NativeSynthFilter",
+                methods.data(),
+                methods.size()
+        );
+
+        return JNI_VERSION_1_6;
+    }
+
+    auto getFilter(
             JNIEnv *env,
             jobject  /*obj*/,
             jlong synthPtr
@@ -21,8 +48,7 @@ namespace jni {
         );
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setIsActive(
+    auto setIsActive(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
             jlong synthPtr,
@@ -32,9 +58,7 @@ namespace jni {
         synth->getFilter().setIsActive(static_cast<bool>(isActive));
     }
 
-
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setCutoff(
+    auto setCutoff(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
             jlong synthPtr,
@@ -44,8 +68,7 @@ namespace jni {
         synth->getFilter().setCutoff(cutoffFrequency);
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthFilter_setResonance(
+    auto setResonance(
             JNIEnv * /*env*/,
             jobject  /*obj*/,
             jlong synthPtr,
@@ -53,6 +76,5 @@ namespace jni {
     ) -> void {
         auto synth = &model::Synth::fromPtr(synthPtr);
         synth->getFilter().setResonance(resonance);
-    }
     }
 }  // namespace jni

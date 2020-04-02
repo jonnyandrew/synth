@@ -3,4 +3,4 @@
 	url = https://github.com/google/oboe
 [submodule "app/libs/cpp/libnativehelper"]
 	path = app/libs/cpp/libnativehelper/src
-	url = https://android.googlesource.com/platform/libnativehelper
+	url = https://github.com/jonnyandrew/libnativehelper

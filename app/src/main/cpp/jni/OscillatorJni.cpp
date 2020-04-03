@@ -17,10 +17,10 @@ namespace jni {
         if (c == nullptr) { return JNI_ERR; }
 
         std::vector<JNINativeMethod> methods{
-                {"getOscillator",  "(J)Lcom/flatmapdev/synth/oscillatorData/model/OscillatorData;", reinterpret_cast<void *>(jni::getOscillator)},
-                {"setOscillator",  "(JLcom/flatmapdev/synth/oscillatorData/model/OscillatorData;)V",                                                          reinterpret_cast<void *>(jni::setOscillator)},
-                {"setWaveform",    "(JI)V",                                                         reinterpret_cast<void *>(jni::setWaveform)},
-                {"setPitchOffset", "(JI)V",                                                         reinterpret_cast<void *>(jni::setPitchOffset)},
+                {"getOscillator",  "(J)Lcom/flatmapdev/synth/oscillatorData/model/OscillatorData;",  reinterpret_cast<void *>(jni::getOscillator)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setOscillator",  "(JLcom/flatmapdev/synth/oscillatorData/model/OscillatorData;)V", reinterpret_cast<void *>(jni::setOscillator)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setWaveform",    "(JI)V",                                                          reinterpret_cast<void *>(jni::setWaveform)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setPitchOffset", "(JI)V",                                                          reinterpret_cast<void *>(jni::setPitchOffset)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
         };
 
         jniRegisterNativeMethods(

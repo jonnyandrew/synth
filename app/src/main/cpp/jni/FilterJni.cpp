@@ -17,10 +17,10 @@ namespace jni {
         if (c == nullptr) { return JNI_ERR; }
 
         std::vector<JNINativeMethod> methods{
-                {"getFilter",    "(J)Lcom/flatmapdev/synth/filterData/model/FilterData;", reinterpret_cast<void *>(jni::getFilter)},
-                {"setIsActive",  "(JZ)V",                                                 reinterpret_cast<void *>(jni::setIsActive)},
-                {"setCutoff",    "(JF)V",                                                 reinterpret_cast<void *>(jni::setCutoff)},
-                {"setResonance", "(JF)V",                                                 reinterpret_cast<void *>(jni::setResonance)},
+                {"getFilter",    "(J)Lcom/flatmapdev/synth/filterData/model/FilterData;", reinterpret_cast<void *>(jni::getFilter)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setIsActive",  "(JZ)V",                                                 reinterpret_cast<void *>(jni::setIsActive)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setCutoff",    "(JF)V",                                                 reinterpret_cast<void *>(jni::setCutoff)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setResonance", "(JF)V",                                                 reinterpret_cast<void *>(jni::setResonance)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
         };
 
         jniRegisterNativeMethods(

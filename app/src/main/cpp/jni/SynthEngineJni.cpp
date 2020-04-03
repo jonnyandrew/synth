@@ -30,16 +30,14 @@ namespace jni {
         jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthEngine");
         if (c == nullptr) { return JNI_ERR; }
 
-        auto methods = std::vector<JNINativeMethod>{
-                {
-                        {"initialize", "()J", reinterpret_cast<void *>(jni::initialize)},
-                        {"cleanUp", "(J)V", reinterpret_cast<void *>(jni::cleanUp)},
-                        {"getVersion", "()Ljava/lang/String;", reinterpret_cast<void *>(jni::getVersion)},
-                        {"start", "(J)V", reinterpret_cast<void *>(jni::start)},
-                        {"stop", "(J)V", reinterpret_cast<void *>(jni::stop)},
-                        {"playNote", "(JI)V", reinterpret_cast<void *>(jni::playNote)},
-                        {"stopNote", "(J)V", reinterpret_cast<void *>(jni::stopNote)},
-                }
+        std::vector<JNINativeMethod> methods{
+                {"initialize", "()J",                  reinterpret_cast<void *>(jni::initialize)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"cleanUp",    "(J)V",                 reinterpret_cast<void *>(jni::cleanUp)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"getVersion", "()Ljava/lang/String;", reinterpret_cast<void *>(jni::getVersion)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"start",      "(J)V",                 reinterpret_cast<void *>(jni::start)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"stop",       "(J)V",                 reinterpret_cast<void *>(jni::stop)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"playNote",   "(JI)V",                reinterpret_cast<void *>(jni::playNote)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"stopNote",   "(J)V",                 reinterpret_cast<void *>(jni::stopNote)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
         };
 
         jniRegisterNativeMethods(env,

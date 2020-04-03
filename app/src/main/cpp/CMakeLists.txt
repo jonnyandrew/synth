@@ -41,7 +41,6 @@ android-*,\
 -fuchsia-*,\
 -cppcoreguidelines-pro-bounds-array-to-pointer-decay,\
 -cppcoreguidelines-pro-bounds-pointer-arithmetic,\
--cppcoreguidelines-pro-type-reinterpret-cast,\
 -cppcoreguidelines-pro-type-vararg,\
 -hicpp-no-array-decay,\
 -hicpp-vararg,\

@@ -1,18 +1,56 @@
+#include "SynthEngineJni.h"
+
 #include "../synth/NoiseWaveform.h"
 #include "../synth/SineWaveform.h"
 #include "../synth/SquareWaveform.h"
 #include "../synth/TriangleWaveform.h"
 #include "model/Synth.h"
 #include "model/WaveformType.h"
-#include <jni.h>
+#include <array>
+#include <nativehelper/JNIHelp.h>
 
 namespace jni {
+    auto initialize(JNIEnv */* env */) -> jlong;
 
+    void cleanUp(JNIEnv * /*unused*/, jobject /* cls */, jlong synth);
 
-    extern "C" {
+    auto getVersion(JNIEnv *env) -> jstring;
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_initialize(
+    void start(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    void stop(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    void playNote(JNIEnv */* env */, jclass /* cls */, jlong synthPtr,
+                  jint pitch
+    );
+
+    void stopNote(JNIEnv */* env */, jclass /* cls */, jlong synthPtr);
+
+    auto registerSynthEngineMethods(JNIEnv *env) -> jint {
+        jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthEngine");
+        if (c == nullptr) { return JNI_ERR; }
+
+        auto methods = std::vector<JNINativeMethod>{
+                {
+                        {"initialize", "()J", reinterpret_cast<void *>(jni::initialize)},
+                        {"cleanUp", "(J)V", reinterpret_cast<void *>(jni::cleanUp)},
+                        {"getVersion", "()Ljava/lang/String;", reinterpret_cast<void *>(jni::getVersion)},
+                        {"start", "(J)V", reinterpret_cast<void *>(jni::start)},
+                        {"stop", "(J)V", reinterpret_cast<void *>(jni::stop)},
+                        {"playNote", "(JI)V", reinterpret_cast<void *>(jni::playNote)},
+                        {"stopNote", "(J)V", reinterpret_cast<void *>(jni::stopNote)},
+                }
+        };
+
+        jniRegisterNativeMethods(env,
+                                 "com/flatmapdev/synth/jni/NativeSynthEngine",
+                                 methods.data(),
+                                 methods.size());
+
+        return JNI_VERSION_1_6;
+    }
+
+    auto initialize(
             JNIEnv */* env */
     ) -> jlong {
         auto waveform1 = jni::model::createWaveform(model::WaveformType::Sine);
@@ -49,25 +87,22 @@ namespace jni {
         ));
     }
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_cleanUp(
-            JNIEnv */* env */,
+    void cleanUp(
+            JNIEnv * /*unused*/,
             jobject /* cls */,
             jlong synth
     ) {
         delete &model::Synth::fromPtr(synth); // NOLINT(cppcoreguidelines-owning-memory)
     }
 
-    JNIEXPORT auto JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_getVersion(
+    auto getVersion(
             JNIEnv *env
     ) -> jstring {
         const std::string version = "0.1.0";
         return env->NewStringUTF(version.c_str());
     }
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_start(
+    void start(
             JNIEnv */* env */,
             jclass /* cls */,
             jlong synthPtr
@@ -77,8 +112,7 @@ namespace jni {
         synth->setStream(std::move(stream));
     }
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_stop(
+    void stop(
             JNIEnv */* env */,
             jclass /* cls */,
             jlong synthPtr
@@ -87,8 +121,7 @@ namespace jni {
         synth->getStream().close();
     }
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_playNote(
+    void playNote(
             JNIEnv */* env */,
             jclass /* cls */,
             jlong synthPtr,
@@ -98,15 +131,12 @@ namespace jni {
         synth->getAudioEngine().playNote(pitch);
     }
 
-    JNIEXPORT void JNICALL
-    Java_com_flatmapdev_synth_jni_NativeSynthEngine_stopNote(
+    void stopNote(
             JNIEnv */* env */,
             jclass /* cls */,
             jlong synthPtr
     ) {
         auto synth = &model::Synth::fromPtr(synthPtr);
         synth->getAudioEngine().stopNote();
-    }
-
     }
 } // namespace jni

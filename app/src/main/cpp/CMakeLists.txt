@@ -2,6 +2,7 @@ include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
         jni/AmpEnvelopeJni.cpp
         jni/FilterJni.cpp
+        jni/OnLoad.cpp
         jni/OscillatorJni.cpp
         jni/SynthEngineJni.cpp
         jni/model/Synth.cpp
@@ -26,6 +27,7 @@ add_library(
 )
 target_link_libraries(
         synth-engine
+        libnativehelper
         oboe
         vasvf
         ${log-lib}
@@ -39,9 +41,11 @@ android-*,\
 -fuchsia-*,\
 -cppcoreguidelines-pro-bounds-array-to-pointer-decay,\
 -cppcoreguidelines-pro-bounds-pointer-arithmetic,\
+-cppcoreguidelines-pro-type-reinterpret-cast,\
 -cppcoreguidelines-pro-type-vararg,\
 -hicpp-no-array-decay,\
 -hicpp-vararg,\
+-clang-analyzer-core.uninitialized.UndefReturn,\
 -clang-diagnostic-unused-command-line-argument")
 
 set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)

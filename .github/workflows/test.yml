@@ -50,3 +50,9 @@ jobs:
           api-level: 29
           script: |
             ./gradlew cppTest -Pabi=$(adb shell getprop ro.product.cpu.abi)
+      - name: Connected Android Test
+        uses: ReactiveCircus/android-emulator-runner@v2.4.0
+        with:
+          api-level: 29
+          script: |
+            ./gradlew connectedAndroidTest

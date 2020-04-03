@@ -1,8 +1,13 @@
 #include "model/Synth.h"
+#include "Helpers.h"
 #include <jni.h>
 #include <nativehelper/JNIHelp.h>
 
 namespace jni {
+    struct FilterDataClassData {
+        jclass cls;
+        jmethodID constructor;
+    } filterDataClassData;
 
     auto getFilter(JNIEnv *env, jobject /*unused*/, jlong synthPtr) -> jobject;
 
@@ -12,7 +17,7 @@ namespace jni {
 
     void setResonance(JNIEnv * /*unused*/, jobject /*unused*/, jlong synthPtr, jfloat resonance);
 
-    auto registerFilterMethods(JNIEnv *env) -> jint {
+    auto setUpFilterJni(JNIEnv *env) -> jint {
         jclass c = env->FindClass("com/flatmapdev/synth/jni/NativeSynthFilter");
         if (c == nullptr) { return JNI_ERR; }
 
@@ -29,6 +34,13 @@ namespace jni {
                 methods.data(),
                 methods.size()
         );
+        filterDataClassData.cls = findClass(env,
+                                            "com/flatmapdev/synth/filterData/model/FilterData"
+        );
+        if (filterDataClassData.cls == nullptr) { return JNI_ERR; }
+        filterDataClassData.constructor = getMethodID(env, filterDataClassData.cls, "<init>",
+                                                      "(FF)V");
+        if (filterDataClassData.constructor == nullptr) { return JNI_ERR; }
 
         return JNI_VERSION_1_6;
     }
@@ -39,10 +51,7 @@ namespace jni {
             jlong synthPtr
     ) -> jobject {
         auto synth = &model::Synth::fromPtr(synthPtr);
-        jclass filterClass = env->FindClass(
-                "com/flatmapdev/synth/filterData/model/FilterData");
-        jmethodID filterConstructor = env->GetMethodID(filterClass, "<init>", "(FF)V");
-        return env->NewObject(filterClass, filterConstructor,
+        return env->NewObject(filterDataClassData.cls, filterDataClassData.constructor,
                               synth->getFilter().getCutoff(),
                               synth->getFilter().getResonance()
         );

@@ -13,8 +13,8 @@ namespace jni {
         auto *env = static_cast<JNIEnv *>(envVoidPtr);
 
         if (jni::registerAmpEnvelopeMethods(env) == JNI_ERR) { return JNI_ERR; }
-        if (jni::registerFilterMethods(env) == JNI_ERR) { return JNI_ERR; }
-        if (jni::registerOscillatorMethods(env) == JNI_ERR) { return JNI_ERR; }
+        if (jni::setUpFilterJni(env) == JNI_ERR) { return JNI_ERR; }
+        if (jni::setUpOscillatorJni(env) == JNI_ERR) { return JNI_ERR; }
         if (jni::registerSynthEngineMethods(env) == JNI_ERR) { return JNI_ERR; }
 
         return JNI_VERSION_1_6;

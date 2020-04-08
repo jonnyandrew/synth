@@ -4,6 +4,6 @@
 #include <jni.h>
 
 namespace jni {
-    jint registerOscillatorMethods(JNIEnv *env);
+    jint setUpOscillatorJni(JNIEnv *env);
 } // namespace jni
 #endif //SYNTH_OSCILLATORJNI_H

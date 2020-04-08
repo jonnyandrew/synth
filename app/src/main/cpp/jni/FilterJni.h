@@ -4,7 +4,7 @@
 #include <jni.h>
 
 namespace jni {
-    jint registerFilterMethods(JNIEnv *env);
+    jint setUpFilterJni(JNIEnv *env);
 } // namespace jni
 
 #endif //SYNTH_FILTERJNI_H

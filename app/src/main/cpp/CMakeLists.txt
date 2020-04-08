@@ -2,6 +2,7 @@ include(cmake/list_transform.cmake)
 set(SYNTH_ENGINE_SOURCES
         jni/AmpEnvelopeJni.cpp
         jni/FilterJni.cpp
+        jni/Helpers.cpp
         jni/OnLoad.cpp
         jni/OscillatorJni.cpp
         jni/SynthEngineJni.cpp
@@ -41,7 +42,6 @@ android-*,\
 -fuchsia-*,\
 -cppcoreguidelines-pro-bounds-array-to-pointer-decay,\
 -cppcoreguidelines-pro-bounds-pointer-arithmetic,\
--cppcoreguidelines-pro-type-reinterpret-cast,\
 -cppcoreguidelines-pro-type-vararg,\
 -hicpp-no-array-decay,\
 -hicpp-vararg,\

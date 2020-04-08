@@ -12,8 +12,8 @@ namespace jni {
         if (c == nullptr) { return JNI_ERR; }
 
         std::vector<JNINativeMethod> methods{
-                {"getAmpEnvelope", "(J)[F",  reinterpret_cast<void *>(jni::getAmpEnvelope)},
-                {"setAmpEnvelope", "(J[F)V", reinterpret_cast<void *>(jni::setAmpEnvelope)}
+                {"getAmpEnvelope", "(J)[F",  reinterpret_cast<void *>(jni::getAmpEnvelope)}, // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                {"setAmpEnvelope", "(J[F)V", reinterpret_cast<void *>(jni::setAmpEnvelope)} // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
         };
 
         jniRegisterNativeMethods(

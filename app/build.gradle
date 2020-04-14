@@ -179,7 +179,6 @@ dependencies {
     testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
-    testImplementation 'androidx.fragment:fragment-testing:1.2.2'
     // Must build with androidx.fragment:fragment-testing so that we can run release flavor unit
     // tests on the CI. But this should be changed from implementation to testImplementation when
     // its possible to do so.

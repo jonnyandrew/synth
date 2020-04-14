@@ -46,7 +46,8 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
-        binding.toolbar.title = getString(R.string.osc_title, args.oscillatorId.number)
+        val oscillatorNumber: Int = args.oscillatorId.number
+        binding.toolbar.title = getString(R.string.osc_title, oscillatorNumber)
         viewModel.init(args.oscillatorId)
         viewModel.oscillator.observe(viewLifecycleOwner, Observer {
             binding.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)

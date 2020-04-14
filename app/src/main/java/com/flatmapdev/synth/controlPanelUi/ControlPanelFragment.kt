@@ -11,16 +11,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentControlPanelBinding
 import com.flatmapdev.synth.oscillatorCore.model.OscillatorId
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_control_panel.*
 
 class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
     @Inject
     lateinit var viewModelFactory: ControlPanelViewModel.Factory
 
     private lateinit var viewModel: ControlPanelViewModel
+    private val binding by viewBinding(FragmentControlPanelBinding::bind)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,23 +37,23 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NavigationUI.setupWithNavController(toolbar, findNavController())
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
 
-        ampEnvelopeTitle.setOnClickListener { navigateToAmpEnvelope() }
+        binding.ampEnvelopeTitle.setOnClickListener { navigateToAmpEnvelope() }
 
-        osc1Title.text = getString(R.string.osc_title, OscillatorId.Osc1.number)
-        osc1Title.setOnClickListener { navigateToOscillator1() }
+        binding.osc1Title.text = getString(R.string.osc_title, OscillatorId.Osc1.number)
+        binding.osc1Title.setOnClickListener { navigateToOscillator1() }
 
-        osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
-        osc2Title.setOnClickListener { navigateToOscillator2() }
+        binding.osc2Title.text = getString(R.string.osc_title, OscillatorId.Osc2.number)
+        binding.osc2Title.setOnClickListener { navigateToOscillator2() }
 
-        filterTitle.setOnClickListener { navigateToFilter() }
-        keyboardTitle.setOnClickListener { navigateToKeyboard() }
+        binding.filterTitle.setOnClickListener { navigateToFilter() }
+        binding.keyboardTitle.setOnClickListener { navigateToKeyboard() }
     }
 
     private fun navigateToAmpEnvelope() {

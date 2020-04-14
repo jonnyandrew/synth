@@ -15,16 +15,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentSynthBinding
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_synth.*
 
 class SynthFragment : Fragment(R.layout.fragment_synth) {
     @Inject
     lateinit var viewModelFactory: SynthViewModel.Factory
 
     private lateinit var viewModel: SynthViewModel
+    private val binding by viewBinding(FragmentSynthBinding::bind)
 
     private val navController: NavController
         get() {
@@ -102,8 +104,8 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
     }
 
     private fun setUpKeyboard(keys: List<Key>) {
-        keyboard.numKeys = keys.size
-        keyboard.keyTouchListener = { keyIndex ->
+        binding.keyboard.numKeys = keys.size
+        binding.keyboard.keyTouchListener = { keyIndex ->
             when (keyIndex) {
                 null -> viewModel.stopKeys()
                 else -> viewModel.playKey(keys[keyIndex])

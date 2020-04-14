@@ -12,15 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentFilterBinding
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_filter.*
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     @Inject
     lateinit var filterViewModelFactory: FilterViewModel.Factory
 
     private lateinit var viewModel: FilterViewModel
+    private val binding by viewBinding(FragmentFilterBinding::bind)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,18 +37,18 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NavigationUI.setupWithNavController(toolbar, findNavController())
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         viewModel.init()
         viewModel.filter.observe(viewLifecycleOwner, Observer {
-            filterCutoffControl.progress = it.cutoff
-            filterResonanceControl.progress = it.resonance
+            binding.filterCutoffControl.progress = it.cutoff
+            binding.filterResonanceControl.progress = it.resonance
         })
 
         setUpControls()
     }
 
     private fun setUpControls() {
-        filterCutoffControl.setOnSeekBarChangeListener(object :
+        binding.filterCutoffControl.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -57,7 +59,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-        filterResonanceControl.setOnSeekBarChangeListener(object :
+        binding.filterResonanceControl.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {

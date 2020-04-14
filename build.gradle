@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         // NOTE: Do not place your application dependencies here; they belong
@@ -46,7 +46,7 @@ allprojects {
             if (!lowercaseName.contains("compileonly")
                     && !lowercaseName.contains("kapt")
                     && !lowercaseName.contains("annotationprocessor")) {
-                eachDependency { DependencyResolveDetails details ->
+                eachDependency { details ->
                     if (details.requested.group == 'com.google.auto.service') {
                         // Change the name to auto-service-annotations
                         // We can't tell Gradle to just ignore this dependency, but this works for our needs

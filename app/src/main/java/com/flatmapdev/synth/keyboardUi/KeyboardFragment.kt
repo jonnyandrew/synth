@@ -12,19 +12,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentKeyboardBinding
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.keyboardShared.toUiString
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.setDropDownItems
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_keyboard.*
 
 class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
     @Inject
     lateinit var keyboardViewModelFactory: KeyboardViewModel.Factory
 
     private lateinit var viewModel: KeyboardViewModel
+    private val binding by viewBinding(FragmentKeyboardBinding::bind)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,14 +41,14 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NavigationUI.setupWithNavController(toolbar, findNavController())
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         viewModel.init()
         viewModel.scale.observe(viewLifecycleOwner, Observer {
-            scaleTonic.setText(getString(it.tonic.toUiString()), false)
-            scaleType.setText(getString(it.type.toUiString()), false)
+            binding.scaleTonic.setText(getString(it.tonic.toUiString()), false)
+            binding.scaleType.setText(getString(it.type.toUiString()), false)
         })
 
-        scaleTonic.onItemClickListener = object : AdapterView.OnItemClickListener {
+        binding.scaleTonic.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -56,7 +58,7 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
                 viewModel.setScaleTonic(Note.values()[position])
             }
         }
-        scaleType.onItemClickListener = object : AdapterView.OnItemClickListener {
+        binding.scaleType.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -69,11 +71,11 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
         val noteItems = Note.values()
             .map(Note::toUiString)
             .map(::getString)
-        scaleTonic.setDropDownItems(noteItems)
+        binding.scaleTonic.setDropDownItems(noteItems)
 
         val scaleTypeItems = ScaleType.values()
             .map(ScaleType::toUiString)
             .map(::getString)
-        scaleType.setDropDownItems(scaleTypeItems)
+        binding.scaleType.setDropDownItems(scaleTypeItems)
     }
 }

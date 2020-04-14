@@ -6,8 +6,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -97,6 +95,10 @@ android {
         textOutput 'stdout'
         xmlReport false
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 task cppTest {
@@ -164,6 +166,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'com.google.android.material:material:1.1.0'
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
     // test
     kaptTest 'com.google.dagger:dagger-compiler:2.26'
@@ -173,7 +179,6 @@ dependencies {
     testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
-    testImplementation 'androidx.fragment:fragment-testing:1.2.2'
     // Must build with androidx.fragment:fragment-testing so that we can run release flavor unit
     // tests on the CI. But this should be changed from implementation to testImplementation when
     // its possible to do so.

@@ -13,20 +13,22 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentOscillatorBinding
 import com.flatmapdev.synth.oscillatorCore.model.Waveform
 import com.flatmapdev.synth.oscillatorShared.toUiString
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.getProgressFromMiddle
 import com.flatmapdev.synth.shared.ui.util.setDropDownItems
 import com.flatmapdev.synth.shared.ui.util.setProgressFromMiddle
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_oscillator.*
 
 class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
     @Inject
     lateinit var oscillatorViewModelFactory: OscillatorViewModel.Factory
 
     private lateinit var viewModel: OscillatorViewModel
+    private val binding by viewBinding(FragmentOscillatorBinding::bind)
 
     val args: OscillatorFragmentArgs by navArgs()
 
@@ -43,12 +45,13 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NavigationUI.setupWithNavController(toolbar, findNavController())
-        toolbar.title = getString(R.string.osc_title, args.oscillatorId.number)
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+        val oscillatorNumber: Int = args.oscillatorId.number
+        binding.toolbar.title = getString(R.string.osc_title, oscillatorNumber)
         viewModel.init(args.oscillatorId)
         viewModel.oscillator.observe(viewLifecycleOwner, Observer {
-            oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
-            waveform.setText(getString(it.waveform.toUiString()), false)
+            binding.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
+            binding.waveform.setText(getString(it.waveform.toUiString()), false)
         })
 
         setUpPitchControls()
@@ -56,7 +59,7 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
     }
 
     private fun setUpPitchControls() {
-        oscControlsPitchSeekBar.setOnSeekBarChangeListener(object :
+        binding.oscControlsPitchSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -77,7 +80,7 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
 
         val labels = waveforms.map(Waveform::toUiString)
             .map(::getString)
-        waveform.apply {
+        binding.waveform.apply {
             setDropDownItems(labels)
             setOnItemClickListener { _, _, position, _ ->
                 viewModel.setWaveform(

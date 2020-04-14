@@ -12,16 +12,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.flatmapdev.synth.R
 import com.flatmapdev.synth.app.App
+import com.flatmapdev.synth.databinding.FragmentAmpEnvelopeBinding
 import com.flatmapdev.synth.engineCore.model.Envelope
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
+import com.flatmapdev.synth.shared.ui.util.viewBinding
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_amp_envelope.*
 
 class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
     @Inject
     lateinit var ampEnvelopeViewModelFactory: AmpEnvelopeViewModel.Factory
 
     private lateinit var ampEnvelopeViewModel: AmpEnvelopeViewModel
+    private val binding by viewBinding(FragmentAmpEnvelopeBinding::bind)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,7 +40,7 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NavigationUI.setupWithNavController(toolbar, findNavController())
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         ampEnvelopeViewModel.init()
         ampEnvelopeViewModel.ampEnvelope.observe(viewLifecycleOwner, Observer { envelope ->
             setAmpEnvelopeValues(envelope)
@@ -47,10 +49,10 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
     }
 
     private fun setAmpEnvelopeValues(envelope: Envelope) {
-        ampEnvelopeControlsAttackSeekBar.progress = envelope.attackPercent
-        ampEnvelopeControlsDecaySeekBar.progress = envelope.decayPercent
-        ampEnvelopeControlsSustainSeekBar.progress = envelope.sustainPercent
-        ampEnvelopeControlsReleaseSeekBar.progress = envelope.releasePercent
+        binding.ampEnvelopeControlsAttackSeekBar.progress = envelope.attackPercent
+        binding.ampEnvelopeControlsDecaySeekBar.progress = envelope.decayPercent
+        binding.ampEnvelopeControlsSustainSeekBar.progress = envelope.sustainPercent
+        binding.ampEnvelopeControlsReleaseSeekBar.progress = envelope.releasePercent
     }
 
     private fun setupAmpEnvelopeControls() {
@@ -60,10 +62,10 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
                 if (fromUser) {
                     ampEnvelopeViewModel.setAmpEnvelope(
                         Envelope(
-                            ampEnvelopeControlsAttackSeekBar.progress,
-                            ampEnvelopeControlsDecaySeekBar.progress,
-                            ampEnvelopeControlsSustainSeekBar.progress,
-                            ampEnvelopeControlsReleaseSeekBar.progress
+                            binding.ampEnvelopeControlsAttackSeekBar.progress,
+                            binding.ampEnvelopeControlsDecaySeekBar.progress,
+                            binding.ampEnvelopeControlsSustainSeekBar.progress,
+                            binding.ampEnvelopeControlsReleaseSeekBar.progress
                         )
                     )
                 }
@@ -72,9 +74,9 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         }
-        ampEnvelopeControlsAttackSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
-        ampEnvelopeControlsDecaySeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
-        ampEnvelopeControlsSustainSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
-        ampEnvelopeControlsReleaseSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+        binding.ampEnvelopeControlsAttackSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+        binding.ampEnvelopeControlsDecaySeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+        binding.ampEnvelopeControlsSustainSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+        binding.ampEnvelopeControlsReleaseSeekBar.setOnSeekBarChangeListener(seekBarChangeListener)
     }
 }

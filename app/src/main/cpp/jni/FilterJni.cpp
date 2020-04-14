@@ -34,8 +34,10 @@ namespace jni {
                 methods.data(),
                 methods.size()
         );
-        filterDataClassData.cls = findClass(env,
-                                            "com/flatmapdev/synth/filterData/model/FilterData"
+        filterDataClassData.cls = reinterpret_cast<jclass>(// NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                env->NewGlobalRef(findClass(
+                        env, "com/flatmapdev/synth/filterData/model/FilterData"
+                ))
         );
         if (filterDataClassData.cls == nullptr) { return JNI_ERR; }
         filterDataClassData.constructor = getMethodID(env, filterDataClassData.cls, "<init>",

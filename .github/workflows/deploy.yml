@@ -43,7 +43,7 @@ jobs:
         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         packageName: com.flatmapdev.synth
         releaseFile: ${{ steps.sign.outputs.signedReleaseFile }}
-        track: beta
+        track: internal
         mappingFile: ./app/build/outputs/mapping/release/mapping.txt
 
 

@@ -44,7 +44,7 @@ class SynthViewModel(
         private val playKey: PlayKey,
         private val stopKeys: StopKeys
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(SynthViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 SynthViewModel(

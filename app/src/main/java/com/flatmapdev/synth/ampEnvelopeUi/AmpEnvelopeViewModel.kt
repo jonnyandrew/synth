@@ -30,7 +30,7 @@ class AmpEnvelopeViewModel(
         private val getAmpEnvelope: GetAmpEnvelope,
         private val setAmpEnvelope: SetAmpEnvelope
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(AmpEnvelopeViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 AmpEnvelopeViewModel(

@@ -21,7 +21,7 @@ class SharedPreferencesScaleAdapter @Inject constructor(
     val sharedPreferences: SharedPreferences
 ) : ScaleAdapter {
     private val keyChanged = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> offer(key) }
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> trySend(key) }
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
     }

@@ -47,7 +47,7 @@ class KeyboardViewModel(
         private val getScale: GetScale,
         private val setScale: SetScale
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(KeyboardViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 KeyboardViewModel(

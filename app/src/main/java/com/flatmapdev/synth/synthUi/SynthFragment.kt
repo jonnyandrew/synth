@@ -48,29 +48,6 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
         applyTransitions()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
-        /**
-         * This statement is a workaround for a bug which occurs while testing this
-         * Fragment inside a FragmentScenario (i.e. launchFragmentInContainer<SynthFragment>()).
-         * If the NavHost in this fragment has app:defaultNavHost="true" set, then
-         * the Fragment crashes in onCreateView with the following exception:
-         *
-         *     android.view.InflateException
-         *     ...
-         *     Caused by: IllegalStateException: FragmentManager is already executing transactions
-         *     ...
-         *     at at androidx.navigation.fragment.NavHostFragment.onAttach
-         *
-         * It's because NavHostFragment tries to run a similar transaction during it's onAttach.
-         * So running the transaction later (here in onActivityCreated) is a workaround for now.
-         */
-        childFragmentManager.beginTransaction().setPrimaryNavigationFragment(
-            childFragmentManager.findFragmentById(R.id.synthNavHostFragmentContainer)
-        ).commit()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init()

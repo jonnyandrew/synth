@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ControlPanelViewModel() : ViewModel() {
     @Reusable
     class Factory @Inject constructor() : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(ControlPanelViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 ControlPanelViewModel() as T

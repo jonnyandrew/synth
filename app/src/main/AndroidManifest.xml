@@ -12,16 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".mainUi.MainActivity">
+        <activity
+            android:name=".mainUi.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name="com.flatmapdev.synth.app.CleanUpService"
-            android:stopWithTask="false" />
     </application>
 
 </manifest>

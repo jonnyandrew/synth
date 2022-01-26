@@ -47,12 +47,12 @@ jobs:
       - name: C++ Unit Test
         uses: ReactiveCircus/android-emulator-runner@v2.15.0
         with:
-          api-level: 29
+          api-level: 31
           script: |
             ./gradlew cppTest -Pabi=$(adb shell getprop ro.product.cpu.abi)
       - name: Connected Android Test
         uses: ReactiveCircus/android-emulator-runner@v2.15.0
         with:
-          api-level: 29
+          api-level: 31
           script: |
             ./gradlew connectedAndroidTest

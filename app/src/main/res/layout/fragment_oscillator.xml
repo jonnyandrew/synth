@@ -33,7 +33,7 @@
                 android:hint="@string/osc_waveform"
                 android:labelFor="@id/waveform">
 
-                <AutoCompleteTextView
+                <com.flatmapdev.synth.shared.ui.NonFilterableAutoCompleteTextView
                     android:id="@+id/waveform"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

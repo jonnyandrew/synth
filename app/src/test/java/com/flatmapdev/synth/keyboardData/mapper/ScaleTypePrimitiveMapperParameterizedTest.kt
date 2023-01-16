@@ -17,7 +17,8 @@ class ScaleTypePrimitiveMapperParameterizedTest(
         fun data(): Array<Array<Any>> {
             return ScaleType.values().map {
                 arrayOf(
-                    it, when (it) {
+                    it,
+                    when (it) {
                         ScaleType.Major -> "MAJOR"
                         ScaleType.HarmonicMinor -> "HARMONIC_MINOR"
                         ScaleType.MinorPentatonic -> "MINOR_PENTATONIC"

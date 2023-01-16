@@ -51,9 +51,12 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init()
-        viewModel.keyboard.observe(viewLifecycleOwner, Observer { keys ->
-            setUpKeyboard(keys)
-        })
+        viewModel.keyboard.observe(
+            viewLifecycleOwner,
+            Observer { keys ->
+                setUpKeyboard(keys)
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

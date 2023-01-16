@@ -35,21 +35,27 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
-        viewModel.engineVersion.observe(viewLifecycleOwner, Observer { value ->
-            binding.engineVersion.text = getString(
-                R.string.app_engine_version, value
-            )
-        })
+        viewModel.engineVersion.observe(
+            viewLifecycleOwner,
+            Observer { value ->
+                binding.engineVersion.text = getString(
+                    R.string.app_engine_version, value
+                )
+            }
+        )
 
-        viewModel.deviceFeatures.observe(viewLifecycleOwner, Observer { deviceFeatures ->
-            binding.lowLatencyStatus.text = getString(
-                R.string.device_features_supports_low_latency,
-                deviceFeatures.isLowLatency.toString()
-            )
-            binding.proLatencyStatus.text = getString(
-                R.string.device_features_supports_pro_latency,
-                deviceFeatures.isProLatency.toString()
-            )
-        })
+        viewModel.deviceFeatures.observe(
+            viewLifecycleOwner,
+            Observer { deviceFeatures ->
+                binding.lowLatencyStatus.text = getString(
+                    R.string.device_features_supports_low_latency,
+                    deviceFeatures.isLowLatency.toString()
+                )
+                binding.proLatencyStatus.text = getString(
+                    R.string.device_features_supports_pro_latency,
+                    deviceFeatures.isProLatency.toString()
+                )
+            }
+        )
     }
 }

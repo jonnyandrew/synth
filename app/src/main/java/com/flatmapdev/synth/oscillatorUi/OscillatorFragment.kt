@@ -49,10 +49,13 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
         val oscillatorNumber: Int = args.oscillatorId.number
         binding.toolbar.title = getString(R.string.osc_title, oscillatorNumber)
         viewModel.init(args.oscillatorId)
-        viewModel.oscillator.observe(viewLifecycleOwner, Observer {
-            binding.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
-            binding.waveform.setText(getString(it.waveform.toUiString()), false)
-        })
+        viewModel.oscillator.observe(
+            viewLifecycleOwner,
+            Observer {
+                binding.oscControlsPitchSeekBar.setProgressFromMiddle(it.pitchOffset)
+                binding.waveform.setText(getString(it.waveform.toUiString()), false)
+            }
+        )
 
         setUpPitchControls()
         setUpWaveformControls()
@@ -60,19 +63,19 @@ class OscillatorFragment : Fragment(R.layout.fragment_oscillator) {
 
     private fun setUpPitchControls() {
         binding.oscControlsPitchSeekBar.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    viewModel.setPitchOffset(
-                        args.oscillatorId,
-                        seekBar.getProgressFromMiddle()
-                    )
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        viewModel.setPitchOffset(
+                            args.oscillatorId,
+                            seekBar.getProgressFromMiddle()
+                        )
+                    }
                 }
-            }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
     }
 
     private fun setUpWaveformControls() {

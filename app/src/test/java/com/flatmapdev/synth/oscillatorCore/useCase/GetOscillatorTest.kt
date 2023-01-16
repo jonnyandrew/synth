@@ -14,9 +14,9 @@ class GetOscillatorTest {
         val oscillator = createOscillator(-12)
         oscillatorAdapters = mapOf(
             OscillatorId.Osc1 to
-                    FakeOscillatorAdapter(
-                        oscillator = oscillator
-                    )
+                FakeOscillatorAdapter(
+                    oscillator = oscillator
+                )
         )
         val subject = createSubject()
 

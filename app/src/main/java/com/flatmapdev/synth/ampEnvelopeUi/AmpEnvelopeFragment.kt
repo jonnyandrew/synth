@@ -42,9 +42,12 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         ampEnvelopeViewModel.init()
-        ampEnvelopeViewModel.ampEnvelope.observe(viewLifecycleOwner, Observer { envelope ->
-            setAmpEnvelopeValues(envelope)
-        })
+        ampEnvelopeViewModel.ampEnvelope.observe(
+            viewLifecycleOwner,
+            Observer { envelope ->
+                setAmpEnvelopeValues(envelope)
+            }
+        )
         setupAmpEnvelopeControls()
     }
 

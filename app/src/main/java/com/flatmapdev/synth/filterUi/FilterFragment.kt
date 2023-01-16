@@ -39,36 +39,39 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         viewModel.init()
-        viewModel.filter.observe(viewLifecycleOwner, Observer {
-            binding.filterCutoffControl.progress = it.cutoff
-            binding.filterResonanceControl.progress = it.resonance
-        })
+        viewModel.filter.observe(
+            viewLifecycleOwner,
+            Observer {
+                binding.filterCutoffControl.progress = it.cutoff
+                binding.filterResonanceControl.progress = it.resonance
+            }
+        )
 
         setUpControls()
     }
 
     private fun setUpControls() {
         binding.filterCutoffControl.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    viewModel.setCutoff(progress)
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        viewModel.setCutoff(progress)
+                    }
                 }
-            }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
         binding.filterResonanceControl.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    viewModel.setResonance(seekBar.progress)
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        viewModel.setResonance(seekBar.progress)
+                    }
                 }
-            }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
     }
 }

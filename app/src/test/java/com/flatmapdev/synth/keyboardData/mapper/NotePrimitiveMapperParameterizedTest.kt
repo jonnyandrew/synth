@@ -31,7 +31,7 @@ class NotePrimitiveMapperParameterizedTest(
                         Note.A -> "A"
                         Note.A_SHARP_B_FLAT -> "A_SHARP_B_FLAT"
                         Note.B -> "B"
-                    }
+                    } as Any
                 )
             }.toTypedArray()
         }

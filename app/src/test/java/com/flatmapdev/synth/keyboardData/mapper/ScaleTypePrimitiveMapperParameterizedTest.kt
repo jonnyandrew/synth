@@ -22,7 +22,7 @@ class ScaleTypePrimitiveMapperParameterizedTest(
                         ScaleType.Major -> "MAJOR"
                         ScaleType.HarmonicMinor -> "HARMONIC_MINOR"
                         ScaleType.MinorPentatonic -> "MINOR_PENTATONIC"
-                    }
+                    } as Any
                 )
             }.toTypedArray()
         }

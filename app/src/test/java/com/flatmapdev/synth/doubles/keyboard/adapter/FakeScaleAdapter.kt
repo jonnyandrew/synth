@@ -2,18 +2,17 @@ package com.flatmapdev.synth.doubles.keyboard.adapter
 
 import com.flatmapdev.synth.keyboardCore.adapter.ScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Scale
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeScaleAdapter(
     scale: Scale? = null
 ) : ScaleAdapter {
-    private val scaleChannel = ConflatedBroadcastChannel(scale)
+    private val scale = MutableStateFlow(scale)
 
-    override fun getScale(): Flow<Scale?> = scaleChannel.asFlow()
+    override fun getScale(): Flow<Scale?> = scale
 
     override fun storeScale(scale: Scale) {
-        scaleChannel.offer(scale)
+        this.scale.tryEmit(scale)
     }
 }

@@ -9,7 +9,7 @@ import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.utils.test
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `it gets a null scale if none is persisted`() = runBlockingTest {
+    fun `it gets a null scale if none is persisted`() = runTest {
         val subject = createSubject()
         subject.getScale()
             .test(this)
@@ -32,7 +32,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `it persists the scale`() = runBlockingTest {
+    fun `it persists the scale`() = runTest {
         val scale = Scale(Note.E, ScaleType.Major)
         val adapter1 = createSubject()
         val adapter2 = createSubject()
@@ -47,7 +47,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `it retrieves data stored in a potentially old format 1`() = runBlockingTest {
+    fun `it retrieves data stored in a potentially old format 1`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "C_SHARP_D_FLAT")
             putString("ScaleType", "MINOR_PENTATONIC")
@@ -62,7 +62,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `getScale retrieves data stored in a potentially old format 2`() = runBlockingTest {
+    fun `getScale retrieves data stored in a potentially old format 2`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "A")
             putString("ScaleType", "MAJOR")
@@ -77,7 +77,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `getScale returns null scale if some data is missing 1`() = runBlockingTest {
+    fun `getScale returns null scale if some data is missing 1`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("ScaleType", "MAJOR")
         }
@@ -90,7 +90,7 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `it returns null if some data is missing 2`() = runBlockingTest {
+    fun `it returns null if some data is missing 2`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "A")
         }

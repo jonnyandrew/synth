@@ -6,7 +6,10 @@ import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.utils.test
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -18,17 +21,17 @@ class GetKeyboardTest(
 ) {
 
     @Test
-    fun `it gets the expected keys`() = runBlockingTest {
+    fun `it gets the expected keys`() = runTest {
         val subject = GetKeyboard(
             GetScale(
                 FakeScaleAdapter(scale = scale)
             )
         )
 
-        subject.execute()
-            .test(this)
-            .assertValues(keys)
-            .finish()
+        val result = subject.execute()
+            .toList().last()
+
+        assertThat(result).isEqualTo(keys)
     }
 
     companion object {

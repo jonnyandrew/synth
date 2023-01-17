@@ -33,7 +33,6 @@ class AmpEnvelopeFragment : Fragment(R.layout.fragment_amp_envelope) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
 
         applyTransitions()
     }

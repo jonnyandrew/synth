@@ -64,7 +64,6 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
         allWarningsAsErrors = true
         freeCompilerArgs += [
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -149,7 +148,7 @@ dependencies {
     // core
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation 'com.google.dagger:dagger:2.44.2'
     kapt 'com.google.dagger:dagger-compiler:2.44.2'
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -164,9 +163,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
     // test
-    kaptTest 'com.google.dagger:dagger-compiler:2.40.5'
+    kaptTest 'com.google.dagger:dagger-compiler:2.44.2'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.assertj:assertj-core:3.12.2'
     testImplementation 'androidx.test:core:1.5.0'
@@ -184,6 +184,7 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.10.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
     testImplementation "androidx.navigation:navigation-testing:$nav_version"
+    testImplementation 'app.cash.turbine:turbine:0.12.1'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

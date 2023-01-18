@@ -1,11 +1,12 @@
 package com.flatmapdev.synth.keyboardCore.useCase
 
+import app.cash.turbine.test
 import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
-import com.flatmapdev.synth.utils.test
 import kotlinx.coroutines.test.runTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class GetScaleTest {
@@ -15,10 +16,9 @@ class GetScaleTest {
         val scaleAdapter = FakeScaleAdapter(scale = scale)
         val subject = GetScale(scaleAdapter)
 
-        subject.execute()
-            .test(this)
-            .assertValues(scale)
-            .finish()
+        subject.execute().test {
+            assertThat(awaitItem()).isEqualTo(scale)
+        }
     }
 
     @Test
@@ -26,11 +26,10 @@ class GetScaleTest {
         val scaleAdapter = FakeScaleAdapter(scale = null)
         val subject = GetScale(scaleAdapter)
 
-        subject.execute()
-            .test(this)
-            .assertValues(
+        subject.execute().test {
+            assertThat(awaitItem()).isEqualTo(
                 Scale(Note.C, ScaleType.MinorPentatonic)
             )
-            .finish()
+        }
     }
 }

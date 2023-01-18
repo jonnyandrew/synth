@@ -4,12 +4,13 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
-import com.flatmapdev.synth.utils.test
 import kotlinx.coroutines.test.runTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,9 +27,9 @@ class SharedPreferencesScaleAdapterTest {
     fun `it gets a null scale if none is persisted`() = runTest {
         val subject = createSubject()
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isEqualTo(null)
+            }
     }
 
     @Test
@@ -37,13 +38,12 @@ class SharedPreferencesScaleAdapterTest {
         val adapter1 = createSubject()
         val adapter2 = createSubject()
 
-        val testCollector = adapter2.getScale()
-            .test(this)
-        adapter1.storeScale(scale)
-
-        // Store the scale with one adapter and check it is available to the other
-        testCollector.assertValues(null, scale, null)
-            .finish()
+        adapter2.getScale()
+            .test {
+                assertThat(awaitItem()).isEqualTo(null)
+                adapter1.storeScale(scale)
+                assertThat(awaitItem()).isEqualTo(scale)
+            }
     }
 
     @Test
@@ -55,10 +55,9 @@ class SharedPreferencesScaleAdapterTest {
         val scale = Scale(Note.C_SHARP_D_FLAT, ScaleType.MinorPentatonic)
         val subject = createSubject()
 
-        subject.getScale()
-            .test(this)
-            .assertValues(scale)
-            .finish()
+        subject.getScale().test {
+            assertThat(awaitItem()).isEqualTo(scale)
+        }
     }
 
     @Test
@@ -70,10 +69,9 @@ class SharedPreferencesScaleAdapterTest {
         val scale = Scale(Note.A, ScaleType.Major)
         val subject = createSubject()
 
-        subject.getScale()
-            .test(this)
-            .assertValues(scale)
-            .finish()
+        subject.getScale().test {
+            assertThat(awaitItem()).isEqualTo(scale)
+        }
     }
 
     @Test
@@ -84,9 +82,9 @@ class SharedPreferencesScaleAdapterTest {
         val subject = createSubject()
 
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isNull()
+            }
     }
 
     @Test
@@ -97,9 +95,9 @@ class SharedPreferencesScaleAdapterTest {
         val subject = createSubject()
 
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isNull()
+            }
     }
 
     private fun createSubject(): SharedPreferencesScaleAdapter {

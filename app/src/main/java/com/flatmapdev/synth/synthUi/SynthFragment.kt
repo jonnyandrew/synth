@@ -10,9 +10,9 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -22,6 +22,7 @@ import com.flatmapdev.synth.databinding.FragmentSynthBinding
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.viewBinding
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class SynthFragment : Fragment(R.layout.fragment_synth) {
@@ -53,35 +54,37 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init()
-        viewModel.keyboard.observe(
-            viewLifecycleOwner,
-            Observer { keys ->
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.keyboard.collectLatest { keys ->
                 setUpKeyboard(keys)
             }
-        )
+        }
 
         val menuHost: MenuHost = requireActivity()
 
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
-                menuInflater.inflate(R.menu.menu_main, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
-                return when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        return navController.navigateUp()
-                    }
-                    R.id.about -> {
-                        navigateToAbout()
-                        true
-                    }
-                    else -> false
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    // Add menu items here
+                    menuInflater.inflate(R.menu.menu_main, menu)
                 }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    // Handle the menu selection
+                    return when (menuItem.itemId) {
+                        android.R.id.home -> {
+                            return navController.navigateUp()
+                        }
+                        R.id.about -> {
+                            navigateToAbout()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner, Lifecycle.State.RESUMED
+        )
     }
 
     private fun navigateToAbout() {

@@ -51,14 +51,16 @@ jobs:
           name: kotlin-unit-test-result
           path: ./app/build/reports/tests/testReleaseUnitTest
       - name: C++ Unit Test
-        uses: ReactiveCircus/android-emulator-runner@v2.15.0
+        uses: ReactiveCircus/android-emulator-runner@v2.27.0
         with:
           api-level: 31
+          arch: x86_64
           script: |
             ./gradlew cppTest -Pabi=$(adb shell getprop ro.product.cpu.abi)
       - name: Connected Android Test
-        uses: ReactiveCircus/android-emulator-runner@v2.15.0
+        uses: ReactiveCircus/android-emulator-runner@v2.27.0
         with:
           api-level: 31
+          arch: x86_64
           script: |
             ./gradlew connectedAndroidTest

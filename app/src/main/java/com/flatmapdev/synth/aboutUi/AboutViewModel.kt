@@ -31,7 +31,7 @@ class AboutViewModel(
         private val getDeviceFeatures: GetDeviceFeatures,
         private val synthEngineAdapter: SynthEngineAdapter
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(AboutViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 AboutViewModel(

@@ -43,10 +43,13 @@ class KeyboardFragment : Fragment(R.layout.fragment_keyboard) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
         viewModel.init()
-        viewModel.scale.observe(viewLifecycleOwner, Observer {
-            binding.scaleTonic.setText(getString(it.tonic.toUiString()), false)
-            binding.scaleType.setText(getString(it.type.toUiString()), false)
-        })
+        viewModel.scale.observe(
+            viewLifecycleOwner,
+            Observer {
+                binding.scaleTonic.setText(getString(it.tonic.toUiString()), false)
+                binding.scaleType.setText(getString(it.type.toUiString()), false)
+            }
+        )
 
         binding.scaleTonic.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(

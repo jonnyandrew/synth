@@ -4,12 +4,13 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
 import com.flatmapdev.synth.app.getApp
 import com.flatmapdev.synth.keyboardCore.model.Note
 import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardCore.model.ScaleType
-import com.flatmapdev.synth.utils.test
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,31 +24,30 @@ class SharedPreferencesScaleAdapterTest {
     }
 
     @Test
-    fun `it gets a null scale if none is persisted`() = runBlockingTest {
+    fun `it gets a null scale if none is persisted`() = runTest {
         val subject = createSubject()
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isEqualTo(null)
+            }
     }
 
     @Test
-    fun `it persists the scale`() = runBlockingTest {
+    fun `it persists the scale`() = runTest {
         val scale = Scale(Note.E, ScaleType.Major)
         val adapter1 = createSubject()
         val adapter2 = createSubject()
 
-        val testCollector = adapter2.getScale()
-            .test(this)
-        adapter1.storeScale(scale)
-
-        // Store the scale with one adapter and check it is available to the other
-        testCollector.assertValues(null, scale, null)
-            .finish()
+        adapter2.getScale()
+            .test {
+                assertThat(awaitItem()).isEqualTo(null)
+                adapter1.storeScale(scale)
+                assertThat(awaitItem()).isEqualTo(scale)
+            }
     }
 
     @Test
-    fun `it retrieves data stored in a potentially old format 1`() = runBlockingTest {
+    fun `it retrieves data stored in a potentially old format 1`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "C_SHARP_D_FLAT")
             putString("ScaleType", "MINOR_PENTATONIC")
@@ -55,14 +55,13 @@ class SharedPreferencesScaleAdapterTest {
         val scale = Scale(Note.C_SHARP_D_FLAT, ScaleType.MinorPentatonic)
         val subject = createSubject()
 
-        subject.getScale()
-            .test(this)
-            .assertValues(scale)
-            .finish()
+        subject.getScale().test {
+            assertThat(awaitItem()).isEqualTo(scale)
+        }
     }
 
     @Test
-    fun `getScale retrieves data stored in a potentially old format 2`() = runBlockingTest {
+    fun `getScale retrieves data stored in a potentially old format 2`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "A")
             putString("ScaleType", "MAJOR")
@@ -70,36 +69,35 @@ class SharedPreferencesScaleAdapterTest {
         val scale = Scale(Note.A, ScaleType.Major)
         val subject = createSubject()
 
-        subject.getScale()
-            .test(this)
-            .assertValues(scale)
-            .finish()
+        subject.getScale().test {
+            assertThat(awaitItem()).isEqualTo(scale)
+        }
     }
 
     @Test
-    fun `getScale returns null scale if some data is missing 1`() = runBlockingTest {
+    fun `getScale returns null scale if some data is missing 1`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("ScaleType", "MAJOR")
         }
         val subject = createSubject()
 
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isNull()
+            }
     }
 
     @Test
-    fun `it returns null if some data is missing 2`() = runBlockingTest {
+    fun `it returns null if some data is missing 2`() = runTest {
         sharedPreferences.edit(commit = true) {
             putString("Note", "A")
         }
         val subject = createSubject()
 
         subject.getScale()
-            .test(this)
-            .assertValues(null)
-            .finish()
+            .test {
+                assertThat(awaitItem()).isNull()
+            }
     }
 
     private fun createSubject(): SharedPreferencesScaleAdapter {

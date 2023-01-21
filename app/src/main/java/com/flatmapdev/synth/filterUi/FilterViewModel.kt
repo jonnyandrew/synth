@@ -46,7 +46,7 @@ class FilterViewModel(
         private val getFilter: GetFilter,
         private val setFilter: SetFilter
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(FilterViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 FilterViewModel(

@@ -11,9 +11,9 @@ import com.flatmapdev.synth.keyboardCore.model.ScaleType
 import com.flatmapdev.synth.keyboardCore.useCase.GetScale
 import com.flatmapdev.synth.keyboardCore.useCase.SetScale
 import dagger.Reusable
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class KeyboardViewModel(
     private val getScale: GetScale,
@@ -47,7 +47,7 @@ class KeyboardViewModel(
         private val getScale: GetScale,
         private val setScale: SetScale
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(KeyboardViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 KeyboardViewModel(

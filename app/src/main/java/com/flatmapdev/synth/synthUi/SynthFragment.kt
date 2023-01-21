@@ -6,10 +6,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +22,7 @@ import com.flatmapdev.synth.databinding.FragmentSynthBinding
 import com.flatmapdev.synth.keyboardCore.model.Key
 import com.flatmapdev.synth.shared.ui.util.applyTransitions
 import com.flatmapdev.synth.shared.ui.util.viewBinding
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class SynthFragment : Fragment(R.layout.fragment_synth) {
@@ -44,57 +48,43 @@ class SynthFragment : Fragment(R.layout.fragment_synth) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         applyTransitions()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
-        /**
-         * This statement is a workaround for a bug which occurs while testing this
-         * Fragment inside a FragmentScenario (i.e. launchFragmentInContainer<SynthFragment>()).
-         * If the NavHost in this fragment has app:defaultNavHost="true" set, then
-         * the Fragment crashes in onCreateView with the following exception:
-         *
-         *     android.view.InflateException
-         *     ...
-         *     Caused by: IllegalStateException: FragmentManager is already executing transactions
-         *     ...
-         *     at at androidx.navigation.fragment.NavHostFragment.onAttach
-         *
-         * It's because NavHostFragment tries to run a similar transaction during it's onAttach.
-         * So running the transaction later (here in onActivityCreated) is a workaround for now.
-         */
-        childFragmentManager.beginTransaction().setPrimaryNavigationFragment(
-            childFragmentManager.findFragmentById(R.id.synthNavHostFragmentContainer)
-        ).commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init()
-        viewModel.keyboard.observe(viewLifecycleOwner, Observer { keys ->
-            setUpKeyboard(keys)
-        })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                return navController.navigateUp()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.keyboard.collectLatest { keys ->
+                setUpKeyboard(keys)
             }
-            R.id.about -> {
-                navigateToAbout()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    // Add menu items here
+                    menuInflater.inflate(R.menu.menu_main, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    // Handle the menu selection
+                    return when (menuItem.itemId) {
+                        android.R.id.home -> {
+                            return navController.navigateUp()
+                        }
+                        R.id.about -> {
+                            navigateToAbout()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner, Lifecycle.State.RESUMED
+        )
     }
 
     private fun navigateToAbout() {

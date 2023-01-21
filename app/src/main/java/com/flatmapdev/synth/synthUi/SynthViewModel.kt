@@ -1,7 +1,5 @@
 package com.flatmapdev.synth.synthUi
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,9 +8,10 @@ import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
 import dagger.Reusable
-import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SynthViewModel(
     private val getKeyboard: GetKeyboard,
@@ -20,8 +19,8 @@ class SynthViewModel(
     private val stopKeys: StopKeys
 ) : ViewModel() {
 
-    private val _keyboard = MutableLiveData<List<Key>>()
-    val keyboard: LiveData<List<Key>> = _keyboard
+    private val _keyboard = MutableStateFlow<List<Key>>(emptyList())
+    val keyboard: Flow<List<Key>> = _keyboard
 
     fun init() {
         viewModelScope.launch {
@@ -44,7 +43,7 @@ class SynthViewModel(
         private val playKey: PlayKey,
         private val stopKeys: StopKeys
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(SynthViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 SynthViewModel(

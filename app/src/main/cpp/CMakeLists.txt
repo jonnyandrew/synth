@@ -48,7 +48,9 @@ android-*,\
 -clang-analyzer-core.uninitialized.UndefReturn,\
 -clang-diagnostic-unused-command-line-argument")
 
-set(LINT_RUNNER ${CMAKE_BINARY_DIR}/cpp_lint_runner.sh)
+file(MAKE_DIRECTORY ${CPP_SCRIPT_DIR}/${CMAKE_ANDROID_ARCH_ABI})
+
+set(LINT_RUNNER ${CPP_SCRIPT_DIR}/${CMAKE_ANDROID_ARCH_ABI}/cpp_lint_runner.sh)
 
 list_transform_prepend(SYNTH_ENGINE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/")
 add_custom_command(

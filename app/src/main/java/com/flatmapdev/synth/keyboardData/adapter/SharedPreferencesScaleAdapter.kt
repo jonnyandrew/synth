@@ -7,21 +7,21 @@ import com.flatmapdev.synth.keyboardCore.model.Scale
 import com.flatmapdev.synth.keyboardData.mapper.parseNoteFromSharedPreferencesString
 import com.flatmapdev.synth.keyboardData.mapper.parseScaleTypeFromSharedPreferencesString
 import com.flatmapdev.synth.keyboardData.mapper.toSharedPreferencesString
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
+import javax.inject.Named
 
 class SharedPreferencesScaleAdapter @Inject constructor(
     @Named(SHARED_PREFERENCES_NAME)
     val sharedPreferences: SharedPreferences
 ) : ScaleAdapter {
     private val keyChanged = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> offer(key) }
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> trySend(key) }
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
     }

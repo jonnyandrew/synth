@@ -16,7 +16,7 @@ fun Envelope.toFloatArray(): FloatArray {
 
 fun FloatArray.toEnvelope(): Envelope {
     val (attackTimeMs, decayTimeMs, sustainLevel, releaseTimeMs) =
-            this
+        this
     return Envelope(
         (attackTimeMs / ATTACK_MAX_MS * 100).toInt(),
         (decayTimeMs / DECAY_MAX_MS * 100).toInt(),

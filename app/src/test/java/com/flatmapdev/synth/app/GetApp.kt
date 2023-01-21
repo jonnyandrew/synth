@@ -7,5 +7,5 @@ fun getApp(): App {
         .getInstrumentation()
         .targetContext
         .applicationContext
-            as App
+        as App
 }

@@ -17,7 +17,8 @@ class NotePrimitiveMapperParameterizedTest(
         fun data(): Array<Array<Any>> {
             return Note.values().map {
                 arrayOf(
-                    it, when (it) {
+                    it,
+                    when (it) {
                         Note.C -> "C"
                         Note.C_SHARP_D_FLAT -> "C_SHARP_D_FLAT"
                         Note.D -> "D"
@@ -30,7 +31,7 @@ class NotePrimitiveMapperParameterizedTest(
                         Note.A -> "A"
                         Note.A_SHARP_B_FLAT -> "A_SHARP_B_FLAT"
                         Note.B -> "B"
-                    }
+                    } as Any
                 )
             }.toTypedArray()
         }

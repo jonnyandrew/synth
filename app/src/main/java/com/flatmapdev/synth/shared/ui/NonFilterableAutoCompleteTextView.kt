@@ -10,10 +10,12 @@ import com.flatmapdev.synth.R
  * Needed due to a bug in AutoCompleteTextView.
  * See https://github.com/material-components/material-components-android/issues/1464
  */
-class NonFilterableAutoCompleteTextView @JvmOverloads constructor(context: Context,
-                                                                  attributeSet: AttributeSet? = null,
-                                                                  defStyleAttr: Int = R.attr.autoCompleteTextViewStyle)
-    : AppCompatAutoCompleteTextView(context, attributeSet, defStyleAttr) {
+class NonFilterableAutoCompleteTextView @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.autoCompleteTextViewStyle
+) :
+    AppCompatAutoCompleteTextView(context, attributeSet, defStyleAttr) {
     private var isCallingSetText = false
 
     override fun setText(text: CharSequence?, type: BufferType?) {

@@ -1,7 +1,7 @@
 package com.flatmapdev.synth.synthUi
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
+import app.cash.turbine.test
 import com.flatmapdev.synth.doubles.engine.adapter.StubSynthEngineAdapter
 import com.flatmapdev.synth.doubles.keyboard.adapter.FakeScaleAdapter
 import com.flatmapdev.synth.keyboardCore.model.Key
@@ -10,14 +10,14 @@ import com.flatmapdev.synth.keyboardCore.useCase.GetKeyboard
 import com.flatmapdev.synth.keyboardCore.useCase.GetScale
 import com.flatmapdev.synth.keyboardCore.useCase.PlayKey
 import com.flatmapdev.synth.keyboardCore.useCase.StopKeys
-import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +28,7 @@ class SynthViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var stubSynthEngineAdapter: StubSynthEngineAdapter
     private lateinit var spyPlayKey: PlayKey
@@ -36,7 +36,7 @@ class SynthViewModelTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testCoroutineDispatcher)
+        Dispatchers.setMain(testDispatcher)
         stubSynthEngineAdapter = StubSynthEngineAdapter()
         spyPlayKey = spyk(PlayKey(stubSynthEngineAdapter))
         spyStopKeys = spyk(StopKeys(stubSynthEngineAdapter))
@@ -45,20 +45,16 @@ class SynthViewModelTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
-        testCoroutineDispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `it emits the keyboard`() = runBlockingTest {
+    fun `it emits the keyboard`() = runTest {
         val subject = createSubject()
-        val testObserver = mockk<Observer<List<Key>>>(relaxed = true)
 
         subject.init()
-        subject.keyboard
-            .observeForever(testObserver)
 
-        verify(exactly = 1) {
-            testObserver.onChanged(any())
+        subject.keyboard.test {
+            assertThat(awaitItem()).isNotNull
         }
     }
 

@@ -36,7 +36,7 @@ class OscillatorViewModel(
         private val getOscillator: GetOscillator,
         private val setOscillator: SetOscillator
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(OscillatorViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 OscillatorViewModel(

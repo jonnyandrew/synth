@@ -35,14 +35,10 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
         applyTransitions()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
         binding.ampEnvelopeTitle.setOnClickListener { navigateToAmpEnvelope() }
 

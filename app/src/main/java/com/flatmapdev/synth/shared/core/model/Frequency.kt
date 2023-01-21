@@ -1,3 +1,4 @@
 package com.flatmapdev.synth.shared.core.model
 
-inline class Frequency(val value: Float)
+@JvmInline
+value class Frequency(val value: Float)

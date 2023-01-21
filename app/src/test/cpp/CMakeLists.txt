@@ -44,7 +44,7 @@ target_link_libraries(
         synth-engine
 )
 
-set(TEST_RUNNER ${CMAKE_BINARY_DIR}/cpp_test_runner.sh)
+set(TEST_RUNNER ${CPP_SCRIPT_DIR}/${CMAKE_ANDROID_ARCH_ABI}/cpp_test_runner.sh)
 
 add_custom_command(
         TARGET unit-tests POST_BUILD

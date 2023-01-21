@@ -10,10 +10,12 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
-def abi = project.getProperties().getOrDefault('abi', 'x86_64')
+def abi = project.getProperties().getOrDefault('abi', 'x86')
 def keystorePropertiesFile = project.rootProject.file('keystore.properties')
 def appVersionCode = Integer.valueOf(project.getProperties().getOrDefault('versionCode', 1))
 def appVersionName = project.getProperties().getOrDefault('versionName', '1.0')
+def cppScriptDir = new File(project.getBuildDir(), "cppscripts")
+def cppScriptDirForAbi = new File(cppScriptDir, abi)
 
 android {
     compileSdkVersion 33
@@ -27,6 +29,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++14"
+                arguments "-DCPP_SCRIPT_DIR=" + cppScriptDir
             }
         }
     }
@@ -102,11 +105,11 @@ android {
 task cppTest {
     doLast {
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine 'chmod', '+x', './cpp_test_runner.sh'
         }
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine './cpp_test_runner.sh'
         }
     }
@@ -118,11 +121,11 @@ task cppTest {
 task cppLint {
     doLast {
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine 'chmod', '+x', './cpp_lint_runner.sh'
         }
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine './cpp_lint_runner.sh'
         }
     }
@@ -134,11 +137,11 @@ task cppLint {
 task cppLintFix {
     doLast {
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine 'chmod', '+x', './cpp_lint_runner.sh'
         }
         exec {
-            workingDir "./.cxx/cmake/debug/$abi"
+            workingDir cppScriptDirForAbi
             commandLine './cpp_lint_runner.sh', '-fix'
         }
     }

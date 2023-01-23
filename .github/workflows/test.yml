@@ -2,6 +2,9 @@ name: Test
 
 on: [push]
 
+env:
+  NDK_VERSION: 21.0.6113669
+
 jobs:
   lint:
     runs-on: macos-latest
@@ -16,9 +19,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ env.ANDROID_HOME }}/ndk
-        key: ${{ runner.os }}-ndk-${{ hashFiles(format('{0}{1}', env.ANDROID_HOME, '/ndk')) }}
+        key: ${{ runner.os }}-ndk-${{ env.NDK_VERSION }}
     - name: Setup NDK
-      run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
+      run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;$NDK_VERSION" "cmake;3.10.2.4988404"
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -44,9 +47,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.ANDROID_HOME }}/ndk
-          key: ${{ runner.os }}-ndk-${{ hashFiles(format('{0}{1}', env.ANDROID_HOME, '/ndk')) }}
+          key: ${{ runner.os }}-ndk-${{ env.NDK_VERSION }}
       - name: Setup NDK
-        run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
+        run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;$NDK_VERSION" "cmake;3.10.2.4988404"
       - name: set up JDK 11
         uses: actions/setup-java@v3
         with:

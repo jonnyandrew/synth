@@ -12,6 +12,12 @@ jobs:
         auth_header="$(git config --local --get http.https://github.com/.extraheader)"
         git submodule sync --recursive
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Cache NDK
+      id: cache-primes
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.ANDROID_NDK_HOME }}
+        key: ${{ runner.os }}-ndk-${{ hashFiles(env.ANDROID_NDK_HOME) }}
     - name: Setup NDK
       run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
     - name: set up JDK 11
@@ -35,6 +41,12 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Cache NDK
+        id: cache-primes
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.ANDROID_NDK_HOME }}
+          key: ${{ runner.os }}-ndk-${{ hashFiles(env.ANDROID_NDK_HOME) }}
       - name: Setup NDK
         run: echo "y" | $ANDROID_HOME/tools/bin/sdkmanager "ndk;21.0.6113669" "cmake;3.10.2.4988404"
       - name: set up JDK 11

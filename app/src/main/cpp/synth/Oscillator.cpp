@@ -4,6 +4,7 @@
 #include "SineWaveform.h"
 #include "SquareWaveform.h"
 #include "TriangleWaveform.h"
+#include <cassert>
 #include <cmath>
 
 synth::Oscillator::Oscillator(

@@ -1,5 +1,6 @@
 #include "Filter.h"
 #include "Constants.h"
+#include <cassert>
 
 synth::Filter::Filter(const int sampleRate)
         : sampleRate_{static_cast<float>(sampleRate)} {
